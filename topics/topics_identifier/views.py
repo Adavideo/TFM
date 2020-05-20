@@ -1,5 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .forms import *
+from .csv_importer import process_csv
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the topics identifier home page.")
+    template = "topics_identifier/file_upload.html"
+    form = ImportCSVForm()
+    context = {'form': form }
+
+    if request.method == "POST":
+        file = request.FILES['file']
+        result = process_csv(file)
+        context["result"] = result
+
+    return render(request, template, context)

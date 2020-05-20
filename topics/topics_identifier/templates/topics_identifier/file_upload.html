@@ -1,0 +1,23 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block title %}Import CSV files{% endblock %}
+
+{% block content %}
+
+  <h2>Import CSV file</h2>
+  <hr>
+
+  <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload</button>
+  </form>
+
+
+<hr>
+
+{% for line in result %}
+  {{ line }}<br>
+{% endfor %}
+
+{% endblock %}
