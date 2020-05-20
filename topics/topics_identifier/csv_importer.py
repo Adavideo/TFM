@@ -1,14 +1,25 @@
 import csv, io
 
-
 # PROCESS DATA
 
+def process_news(column):
+    return "news: " + str(column) + "\n"
+
+def process_comment(column):
+    return "comment: " + str(column) + "\n"
+
 def process_csv_line(column, file_type):
-    return file_type + ": "+ str(column) + "\n"
+    if file_type == "news":
+        result = process_news(column)
+    elif file_type == "comments":
+        result = process_comment(column)
+    else:
+        result = "File type "+ str(file_type) + " not recognised"
+    return result
 
 def process_data(io_string, file_type):
     result = []
-    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+    for column in csv.reader(io_string, delimiter=',', quotechar='"'):
         r = process_csv_line(column, file_type)
         result.append(r)
     return result
