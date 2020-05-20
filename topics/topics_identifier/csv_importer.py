@@ -3,10 +3,14 @@ import csv, io
 # PROCESS DATA
 
 def process_news(column):
-    return "news: " + str(column) + "\n"
+    title = column[4]
+    content = column[5]
+    text = "title: " + title + "\ncontent: " + content
+    return text
 
 def process_comment(column):
-    return "comment: " + str(column) + "\n"
+    content = column[4]
+    return content
 
 def process_csv_line(column, file_type):
     if file_type == "news":
