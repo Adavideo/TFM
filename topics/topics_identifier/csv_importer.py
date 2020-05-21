@@ -5,18 +5,19 @@ import csv, io
 def process_news_without_author(column):
     title = column[4]
     content = column[5]
-    text = "title: " + title + "\ncontent: " + content
-    return text
+    result = { "title": title, "content": content}
+    return result
 
 def process_news_with_author(column):
     title = column[5]
     content = column[6]
-    text = "title: " + title + "\ncontent: " + content
-    return text
+    result = { "title": title, "content": content}
+    return result
 
 def process_comment(column):
     content = column[4]
-    return content
+    result = { "content": content}
+    return result
 
 def process_csv_line(column, file_type):
     if file_type == "news_without_author":
