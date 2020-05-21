@@ -8,3 +8,5 @@ news_with_author_content1 = 'La Audiencia provincial de València Lorem Ipsum is
 
 comment_example1 = ['29610167', '3298601', '2831', '2020-04-26 02:54:45', '!Brutal! {lol}']
 comment_content1 = '!Brutal! {lol}'
+
+incorrect_header_example = "comment_link_id","comment_date","comment_content","other_stuff"

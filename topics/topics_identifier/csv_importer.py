@@ -47,9 +47,8 @@ def get_headers_types():
                     ]
     return headers_types
 
-def get_file_type(io_string):
+def get_file_type(header):
     file_type = "incorrect"
-    header = next(io_string)
     headers_types = get_headers_types()
     for header_type in headers_types:
         if header_type["header"] in header:
@@ -62,7 +61,8 @@ def get_file_type(io_string):
 def process_csv(file):
     file_content = file.read().decode('UTF-8')
     io_string = io.StringIO(file_content)
-    file_type = get_file_type(io_string)
+    header = next(io_string)
+    file_type = get_file_type(header)
     if file_type == "incorrect":
         result = ["Incorrect file type"]
     else:

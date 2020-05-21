@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .examples_csv import *
-from topics_identifier.csv_importer import process_news_without_author, process_news_with_author, process_comment, process_csv_line
+from topics_identifier.csv_importer import process_news_without_author, process_news_with_author, process_comment, process_csv_line, get_file_type
 
 
 class CSVProcessDataTests(TestCase):
@@ -41,3 +41,11 @@ class CSVProcessDataTests(TestCase):
         column = comment_example1
         result = process_csv_line(column, file_type)
         self.assertEqual(result["content"], comment_content1)
+
+
+class CSVImporterTests(TestCase):
+
+    def test_get_file_type_incorrect_header(self):
+        header = incorrect_header_example
+        result = get_file_type(header)
+        self.assertEqual(result, "incorrect")
