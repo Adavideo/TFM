@@ -2,14 +2,19 @@ import csv, io
 
 # PROCESS DATA
 
+def clean_text(text):
+    quotes = "&quot;"
+    cleaned_text = text.replace(quotes,'"')
+    return cleaned_text
+
 def process_news(column):
-    title = column[5]
-    content = column[6]
+    title = clean_text(column[5])
+    content = clean_text(column[6])
     result = { "title": title, "content": content}
     return result
 
 def process_comment(column):
-    content = column[4]
+    content = clean_text(column[4])
     result = { "content": content}
     return result
 

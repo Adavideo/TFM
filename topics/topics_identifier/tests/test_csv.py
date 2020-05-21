@@ -11,10 +11,21 @@ class CSVProcessDataTests(TestCase):
         self.assertEqual(result["title"], news_title1)
         self.assertEqual(result["content"], news_content1)
 
+    def test_news_with_quotes(self):
+        column = news_example_with_quotes
+        result = process_news(column)
+        self.assertEqual(result["title"], news_title_with_quotes)
+        self.assertEqual(result["content"], news_content_with_quotes)
+
     def test_comment(self):
         column = comment_example1
         result = process_comment(column)
         self.assertEqual(result["content"], comment_content1)
+
+    def test_comment_with_quotes(self):
+        column = comment_example_with_quotes
+        result = process_comment(column)
+        self.assertEqual(result["content"], comment_content_with_quotes)
 
     def test_process_csv_line_news(self):
         file_type = "news"
