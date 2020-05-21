@@ -18,7 +18,8 @@
 Processed  {{ result|length }} new registers
 <hr>
 {% for line in result %}
-  {{ line }}<br><br>
+  {% if line.title %}Title: {{ line.title }}<br>{% endif %}
+  {{ line.content }}<br><br>
 {% endfor %}
 
 {% endblock %}
