@@ -1,4 +1,12 @@
 import csv, io
+data_path = "data/texts/"
+
+# CREATE FILES WITH RETRIEVED TEXTS
+def store_in_file(text, count):
+    filename = data_path + "text" + str(count) + ".txt"
+    out_file = open(filename, 'w')
+    out_file.write(text)
+    out_file.close()
 
 # PROCESS DATA
 
@@ -18,20 +26,25 @@ def process_comment(column):
     result = { "content": content}
     return result
 
-def process_csv_line(column, file_type):
+def process_csv_line(column, file_type, count):
     if file_type == "news":
         result = process_news(column)
+        text = result["title"] + "\n" + result["content"]
+        store_in_file(text, count)
     elif file_type == "comments":
         result = process_comment(column)
+        store_in_file(result["content"], count)
     else:
         result = "File type "+ str(file_type) + " not recognised"
     return result
 
 def process_data(io_string, file_type):
     result = []
+    count = 1
     for column in csv.reader(io_string, delimiter=',', quotechar='"'):
-        r = process_csv_line(column, file_type)
+        r = process_csv_line(column, file_type, count)
         result.append(r)
+        count += 1
     return result
 
 
