@@ -1,8 +1,13 @@
 from sklearn.datasets import load_files
+from .util import texts_path, store_text_dataset
 
 def load_dataset():
-    data_path = "data"
-    dataset = load_files(data_path, shuffle=True, encoding="utf-8")
-    num_examples = len(dataset.data)
-    print("Loaded dataset with " + str(num_examples) + " examples")
+    description = "Texts examples extracted form news and comments from Meneame"
+    dataset = load_files(container_path=texts_path, description=description, shuffle=True, encoding="utf-8")
+    return dataset
+
+def load_and_store_dataset():
+    dataset = load_dataset()
+    store_text_dataset(dataset)
+    print("Stored dataset with "+ str(len(dataset))+ " examples")
     return dataset

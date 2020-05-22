@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
-from .data_importer import load_dataset
+from .data_importer import load_and_store_dataset
 
 def index(request):
     template = "topics_identifier/home.html"
@@ -21,6 +21,6 @@ def import_files(request):
 
 def generate_dataset(request):
     template = "topics_identifier/generate_dataset.html"
-    result = load_dataset()
-    context = { "result": result }
+    dataset = load_and_store_dataset()
+    context = { "result": dataset }
     return render(request, template, context)

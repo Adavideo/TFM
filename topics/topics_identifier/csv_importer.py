@@ -1,16 +1,5 @@
-import csv, io, os
-data_path = "data/texts/"
-
-# CREATE FILES WITH RETRIEVED TEXTS
-def store_in_file(text, count):
-    filename = data_path + "text" + str(count) + ".txt"
-    out_file = open(filename, 'w')
-    out_file.write(text)
-    out_file.close()
-
-def count_existing_files():
-    number_of_files = len(os.listdir(data_path))
-    return number_of_files
+import csv, io
+from .util import store_text_in_file, count_existing_files
 
 # PROCESS DATA
 
@@ -34,17 +23,17 @@ def process_csv_line(column, file_type, file_number):
     if file_type == "news":
         result = process_news(column)
         text = result["title"] + "\n" + result["content"]
-        store_in_file(text, file_number)
+        store_text_in_file(text, file_number)
     elif file_type == "comments":
         result = process_comment(column)
-        store_in_file(result["content"], file_number)
+        store_text_in_file(result["content"], file_number)
     else:
         result = "File type "+ str(file_type) + " not recognised"
     return result
 
 def process_data(io_string, file_type):
     result = []
-    file_number = count_existing_files() + 1
+    file_number = count_existing_files(type="text") + 1
     for column in csv.reader(io_string, delimiter=',', quotechar='"'):
         r = process_csv_line(column, file_type, file_number)
         result.append(r)
