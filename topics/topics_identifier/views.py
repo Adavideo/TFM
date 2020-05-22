@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
+from .data_importer import load_dataset
 
 def index(request):
     template = "topics_identifier/home.html"
@@ -16,4 +17,10 @@ def import_files(request):
         file = request.FILES['file']
         context["result"] = process_csv(file)
 
+    return render(request, template, context)
+
+def generate_dataset(request):
+    template = "topics_identifier/generate_dataset.html"
+    result = load_dataset()
+    context = { "result": result }
     return render(request, template, context)
