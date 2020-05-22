@@ -9,5 +9,4 @@ def load_dataset():
 def load_and_store_dataset():
     dataset = load_dataset()
     store_text_dataset(dataset)
-    print("Stored dataset with "+ str(len(dataset))+ " examples")
     return dataset
