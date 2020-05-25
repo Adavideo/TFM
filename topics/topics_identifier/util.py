@@ -1,6 +1,6 @@
 import os
 texts_path = "data/texts/"
-texts_writing_path = "data/texts/category/"
+texts_import_path = texts_path+"to_classify/"
 text_datasets_path = "data/text_datasets/"
 
 def count_existing_files(directory="", type=""):
@@ -8,7 +8,7 @@ def count_existing_files(directory="", type=""):
         if type == "text_dataset":
             directory = text_datasets_path
         else:
-            directory = texts_writing_path
+            directory = texts_import_path
     number_of_files = len(os.listdir(directory))
     return number_of_files
 
@@ -18,7 +18,7 @@ def store_file(filename, content):
     out_file.close()
 
 def store_text_in_file(text, file_number):
-    filename = texts_writing_path + "text" + str(file_number) + ".txt"
+    filename = texts_import_path + "text" + str(file_number) + ".txt"
     store_file(filename, text)
 
 def store_text_dataset(dataset):

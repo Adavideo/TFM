@@ -1,5 +1,5 @@
-from sklearn.datasets import load_files
 from .util import texts_path, store_text_dataset
+from sklearn.datasets import load_files
 
 def load_dataset():
     description = "Texts examples extracted form news and comments from Meneame"

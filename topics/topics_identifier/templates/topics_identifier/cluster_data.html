@@ -1,0 +1,20 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+<hr>
+<h3>Clusters</h3><br>
+{% for cluster in clusters %}
+  <br>cluster:
+  {% for term in cluster %}
+    {{ term }},
+  {% endfor %}
+{% endfor %}<br>
+<hr>
+<h3>All documents</h3><br>
+Length: {{ documents|length }} <br><br>
+{% for line in documents %}
+  {{ line }}<br>
+{% endfor %}
+<hr>
+
+{% endblock %}
