@@ -1,23 +1,23 @@
 {% extends 'topics_identifier/base.html' %}
 
 {% block content %}
-<hr>
+
 <h3>Clustering attempts</h3>
-{% for clusters in clustering_attempts %}
-  number of clusters:  {{ clusters|length }}<br>
-  {% for cluster in clusters %}
-    cluster {{ forloop.counter }}:
-    {% for term in cluster %}
+{% for attempt in clustering_attempts %}
+  number of clusters:  {{ attempt|length }}<br>
+  {% for cluster in attempt %}
+    <br>  cluster {{ forloop.counter }}:<br>
+    terms:
+    {% for term in cluster.terms %}
       {{ term }},
+    {% endfor %}<br><br>
+
+    {% for document in cluster.documents %}
+      {{ document }}<br><br>
     {% endfor %}<br>
-  {% endfor %}<hr>
+  {% endfor %}
+  <hr>
 {% endfor %}
-<hr>
-<h3>All documents</h3><br>
-Length: {{ documents|length }} <br><br>
-{% for line in documents %}
-  {{ line }}<br>
-{% endfor %}
-<hr>
+
 
 {% endblock %}

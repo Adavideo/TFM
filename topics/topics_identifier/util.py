@@ -27,10 +27,16 @@ def store_text_dataset(dataset):
     filename = text_datasets_path + "text_dataset" + str(file_number)
     store_file(filename, str(dataset))
 
-def store_clusters(clusters):
+def store_clustering_attempt(clustered_documents):
     file_number = count_existing_files(clusters_path) + 1
-    filename = clusters_path + "clusters_" + str(len(clusters)) + "_" + str(file_number) + ".txt"
+    filename = clusters_path + "clusters_" + str(len(clustered_documents)) + "_" + str(file_number) + ".txt"
     out_file = open(filename, 'w')
-    for cluster in clusters:
-        out_file.write(str(cluster)+"\n")
+    count = 0
+    for cluster in clustered_documents:
+        out_file.write("Cluster "+str(count)+". Terms: ")
+        out_file.write(str(cluster["terms"])+"\n")
+        for document in cluster["documents"]:
+            out_file.write(document+"\n")
+        out_file.write("\n")
+        count += 1
     out_file.close()
