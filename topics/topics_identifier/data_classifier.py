@@ -1,8 +1,7 @@
 from .data_importer import load_dataset
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
-import numpy as np
-import pandas as pd
+from .util import store_clusters
 
 def process_data(dataset):
     # Process the documents with the vectorizer.
@@ -23,8 +22,7 @@ def get_clusters(model, terms, num_clusters):
         clusters.append(cluster_terms)
     return clusters
 
-def cluster_with_kmeans(data):
-    num_clusters = 40
+def cluster_with_kmeans(data, num_clusters):
     # Build the model
     model = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=100, n_init=1)
     # Train the model with the pre procesed data
@@ -37,5 +35,10 @@ def cluster_data():
     # Load the dataset with text documents
     dataset = load_dataset()
     processed_data = process_data(dataset)
-    clusters = cluster_with_kmeans(processed_data)
-    return { "documents": dataset.data, "clusters":clusters }
+    # Try to cluster the texts with diferent numbers of clusters
+    clustering_attempts = []
+    for num_clusters in range(20, 41, 5):
+        clusters = cluster_with_kmeans(processed_data, num_clusters)
+        store_clusters(clusters)
+        clustering_attempts.append( clusters )
+    return { "documents": dataset.data, "clustering_attempts": clustering_attempts }

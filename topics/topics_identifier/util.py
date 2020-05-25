@@ -2,6 +2,7 @@ import os
 texts_path = "data/texts/"
 texts_import_path = texts_path+"to_classify/"
 text_datasets_path = "data/text_datasets/"
+clusters_path = "data/clusters/"
 
 def count_existing_files(directory="", type=""):
     if not directory:
@@ -25,3 +26,11 @@ def store_text_dataset(dataset):
     file_number = count_existing_files(text_datasets_path) + 1
     filename = text_datasets_path + "text_dataset" + str(file_number)
     store_file(filename, str(dataset))
+
+def store_clusters(clusters):
+    file_number = count_existing_files(clusters_path) + 1
+    filename = clusters_path + "clusters_" + str(len(clusters)) + "_" + str(file_number) + ".txt"
+    out_file = open(filename, 'w')
+    for cluster in clusters:
+        out_file.write(str(cluster)+"\n")
+    out_file.close()

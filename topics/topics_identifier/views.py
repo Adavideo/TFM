@@ -27,5 +27,4 @@ def generate_dataset_view(request):
 def cluster_data_view(request):
     template = "topics_identifier/cluster_data.html"
     result = cluster_data()
-    context = { "clusters": result["clusters"], "documents": result["documents"] }
-    return render(request, template, context)
+    return render(request, template, result )
