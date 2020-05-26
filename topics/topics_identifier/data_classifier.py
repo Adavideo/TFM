@@ -3,9 +3,18 @@ from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .util import store_clustering_attempt
 
+def get_stop_words():
+    stop_words = []
+    file = open("data/stop_words_spanish.txt", 'r')
+    words_from_file = file.read().split("\n")
+    for word in words_from_file:
+        stop_words.append(word)
+    return stop_words
+
 def process_data(dataset):
     # Process the documents with the vectorizer.
-    vectorizer = TfidfVectorizer()
+    stop_words = get_stop_words()
+    vectorizer = TfidfVectorizer(stop_words=stop_words)
     vectorized_documents = vectorizer.fit_transform(dataset.data)
     # Get the terms extracted from the documents (to be used later to show the results)
     terms = vectorizer.get_feature_names()
