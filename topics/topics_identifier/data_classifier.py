@@ -1,7 +1,7 @@
 from .data_importer import load_dataset
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .util import store_clustering_attempt
+from .util import store_clustered_documents
 
 def get_stop_words():
     stop_words = []
@@ -31,18 +31,6 @@ def get_clusters_terms(model, terms, num_clusters):
         clusters.append(cluster_terms)
     return clusters
 
-def cluster_with_kmeans(documents, processed_data, num_clusters):
-    # Build the model
-    model = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=100, n_init=1)
-    # Train the model with the pre procesed data
-    model.fit(processed_data["vectorized documents"])
-    # predict the categories for each document
-    documents_predicted_clusters = model.predict(processed_data["vectorized documents"])
-    # get the terms selected for each cluster
-    clusters_terms = get_clusters_terms(model, processed_data["terms"], num_clusters)
-    clustered_documents = group_documents_by_cluster(documents, documents_predicted_clusters, clusters_terms, num_clusters)
-    return clustered_documents
-
 def group_documents_by_cluster(documents, documents_predicted_clusters, cluster_terms, num_clusters):
     # For each cluster stores the terms and creates an empty list to store the documents
     clustered_documents = []
@@ -56,14 +44,37 @@ def group_documents_by_cluster(documents, documents_predicted_clusters, cluster_
         document_index += 1
     return clustered_documents
 
+def group_documents(documents, documents_predicted_clusters, num_clusters):
+    clustered_documents = []
+    for i in range(0, num_clusters+1):
+        clustered_documents.append({ "terms": [], "documents": []})
+    # Store the documents in the list of the cluster predicted
+    document_index = 0
+    for predicted_cluster in documents_predicted_clusters:
+        document = documents[document_index]
+        clustered_documents[predicted_cluster]["documents"].append(document)
+        document_index += 1
+    return clustered_documents
+
+def get_num_clusters(model):
+    cluster_centers_indices = model.cluster_centers_indices_
+    num_clusters = len(cluster_centers_indices)
+    return num_clusters
+
+def cluster_documents(processed_data, documents):
+    model = AffinityPropagation()
+    model.fit(processed_data["vectorized documents"])
+    documents_predicted_clusters = model.predict(processed_data["vectorized documents"])
+    num_clusters = get_num_clusters(model)
+    clustered_documents = group_documents(documents, documents_predicted_clusters, num_clusters)
+    #cluster_terms = get_clusters_terms(model, processed_data["terms"], num_clusters)
+    #clustered_documents = group_documents_by_cluster(documents, documents_predicted_clusters, cluster_terms, num_clusters)
+    return clustered_documents
+
 def cluster_data():
     # Load the dataset with text documents
     dataset = load_dataset()
     processed_data = process_data(dataset)
-    # Try to cluster the texts with diferent numbers of clusters
-    clustering_attempts = []
-    for num_clusters in range(30, 41, 5):
-        clustered_documents = cluster_with_kmeans(dataset.data, processed_data, num_clusters)
-        clustering_attempts.append( clustered_documents )
-        store_clustering_attempt( clustered_documents )
-    return { "clustering_attempts": clustering_attempts }
+    clustered_documents = cluster_documents(processed_data, documents=dataset.data)
+    store_clustered_documents( clustered_documents )
+    return { "clusters": clustered_documents }

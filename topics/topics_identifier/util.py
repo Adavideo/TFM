@@ -27,7 +27,7 @@ def store_text_dataset(dataset):
     filename = text_datasets_path + "text_dataset" + str(file_number)
     store_file(filename, str(dataset))
 
-def store_clustering_attempt(clustered_documents):
+def store_clustered_documents(clustered_documents):
     file_number = count_existing_files(clusters_path) + 1
     filename = clusters_path + "clusters_" + str(len(clustered_documents)) + "_" + str(file_number) + ".txt"
     out_file = open(filename, 'w')

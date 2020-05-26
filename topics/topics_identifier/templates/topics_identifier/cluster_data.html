@@ -3,9 +3,9 @@
 {% block content %}
 
 <h3>Clustering attempts</h3>
-{% for attempt in clustering_attempts %}
-  number of clusters:  {{ attempt|length }}<br>
-  {% for cluster in attempt %}
+
+  number of clusters:  {{ clusters|length }}<br>
+  {% for cluster in clusters %}
     <br>  cluster {{ forloop.counter }}:<br>
     terms:
     {% for term in cluster.terms %}
@@ -16,8 +16,5 @@
       {{ document }}<br><br>
     {% endfor %}<br>
   {% endfor %}
-  <hr>
-{% endfor %}
-
 
 {% endblock %}
