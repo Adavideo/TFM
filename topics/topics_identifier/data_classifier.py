@@ -31,16 +31,17 @@ def get_clusters_terms(model, terms, num_clusters):
         clusters.append(cluster_terms)
     return clusters
 
-def cluster_with_kmeans(data, num_clusters):
+def cluster_with_kmeans(documents, processed_data, num_clusters):
     # Build the model
     model = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=100, n_init=1)
     # Train the model with the pre procesed data
-    model.fit(data["vectorized documents"])
-    # get the terms selected for each cluster
-    clusters_terms = get_clusters_terms(model, data["terms"], num_clusters)
+    model.fit(processed_data["vectorized documents"])
     # predict the categories for each document
-    documents_predicted_clusters = model.predict(data["vectorized documents"])
-    return clusters_terms, documents_predicted_clusters
+    documents_predicted_clusters = model.predict(processed_data["vectorized documents"])
+    # get the terms selected for each cluster
+    clusters_terms = get_clusters_terms(model, processed_data["terms"], num_clusters)
+    clustered_documents = group_documents_by_cluster(documents, documents_predicted_clusters, clusters_terms, num_clusters)
+    return clustered_documents
 
 def group_documents_by_cluster(documents, documents_predicted_clusters, cluster_terms, num_clusters):
     # For each cluster stores the terms and creates an empty list to store the documents
@@ -62,8 +63,7 @@ def cluster_data():
     # Try to cluster the texts with diferent numbers of clusters
     clustering_attempts = []
     for num_clusters in range(30, 41, 5):
-        clusters_terms, documents_predicted_clusters = cluster_with_kmeans(processed_data, num_clusters)
-        clustered_documents = group_documents_by_cluster(dataset.data, documents_predicted_clusters, clusters_terms, num_clusters)
+        clustered_documents = cluster_with_kmeans(dataset.data, processed_data, num_clusters)
         clustering_attempts.append( clustered_documents )
         store_clustering_attempt( clustered_documents )
     return { "clustering_attempts": clustering_attempts }
