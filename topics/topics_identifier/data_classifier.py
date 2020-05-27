@@ -1,15 +1,6 @@
-from .data_importer import load_dataset
 from sklearn.cluster import KMeans, AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .util import store_clustered_documents
-
-def get_stop_words():
-    stop_words = []
-    file = open("data/stop_words_spanish.txt", 'r')
-    words_from_file = file.read().split("\n")
-    for word in words_from_file:
-        stop_words.append(word)
-    return stop_words
+from .input_output_files import store_clustered_documents, get_stop_words, load_dataset
 
 def process_data(dataset):
     # Process the documents with the vectorizer.
@@ -72,9 +63,10 @@ def cluster_documents(processed_data, documents):
     return clustered_documents
 
 def cluster_data():
-    # Load the dataset with text documents
     dataset = load_dataset()
+    if not dataset:
+        return { "clusters": [] }
     processed_data = process_data(dataset)
     clustered_documents = cluster_documents(processed_data, documents=dataset.data)
-    store_clustered_documents( clustered_documents )
+    store_clustered_documents(clustered_documents)
     return { "clusters": clustered_documents }
