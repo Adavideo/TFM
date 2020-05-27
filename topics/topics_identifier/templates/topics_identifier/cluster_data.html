@@ -2,12 +2,20 @@
 
 {% block content %}
 
-<h3>Clustering attempts</h3>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Cluster">
+</form>
 
-  number of clusters:  {{ clusters|length }}<br>
+<hr>
+
+{% if clusters %}
+<h2>Clusters found: {{ clusters|length }}</h2>
+
   {% for cluster in clusters %}
-    <br>  cluster {{ forloop.counter }}:<br>
-    terms:
+    <hr><h3>Cluster {{ forloop.counter }}</h3><br>
+    <b>Terms:</b>
     {% for term in cluster.terms %}
       {{ term }},
     {% endfor %}<br><br>
@@ -16,5 +24,6 @@
       {{ document }}<br><br>
     {% endfor %}<br>
   {% endfor %}
+{% endif %}
 
 {% endblock %}

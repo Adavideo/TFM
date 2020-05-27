@@ -26,5 +26,9 @@ def generate_dataset_view(request):
 
 def cluster_data_view(request):
     template = "topics_identifier/cluster_data.html"
-    result = cluster_data()
-    return render(request, template, result )
+    form = ClusterForm(request.POST)
+    context = {'form': form }
+    if request.method == "POST":
+        dataset_name = request.POST["dataset_name"]
+        context["clusters"] = cluster_data(dataset_name)
+    return render(request, template, context )

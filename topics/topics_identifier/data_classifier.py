@@ -62,11 +62,11 @@ def cluster_documents(processed_data, documents):
     #clustered_documents = group_documents_by_cluster(documents, documents_predicted_clusters, cluster_terms, num_clusters)
     return clustered_documents
 
-def cluster_data():
-    dataset = load_dataset()
+def cluster_data(data_name):
+    dataset = load_dataset(data_name)
     if not dataset:
-        return { "clusters": [] }
+        return []
     processed_data = process_data(dataset)
     clustered_documents = cluster_documents(processed_data, documents=dataset.data)
     store_clustered_documents(clustered_documents)
-    return { "clusters": clustered_documents }
+    return clustered_documents

@@ -1,4 +1,4 @@
-import os, json
+import os
 import numpy as np
 from sklearn.datasets.base import Bunch
 
@@ -28,24 +28,32 @@ def store_text_in_file(text, file_number):
 
 def store_text_dataset(dataset):
     file_number = int(count_existing_files(text_datasets_path) / 5) + 1
-    dataname = text_datasets_path + "text_dataset" + str(file_number)
-    np.save(dataname + '_data.npy', dataset.data)
-    np.save(dataname + '_filenames.npy', dataset.filenames)
-    np.save(dataname + '_target.npy', dataset.target)
-    np.save(dataname + '_target_names.npy', dataset.target_names)
-    np.save(dataname + '_descr.npy', dataset.DESCR)
+    dataname = text_datasets_path + "textdataset" + str(file_number)
+    np.save(dataname + '__data.npy', dataset.data)
+    np.save(dataname + '__filenames.npy', dataset.filenames)
+    np.save(dataname + '__target.npy', dataset.target)
+    np.save(dataname + '__target_names.npy', dataset.target_names)
+    np.save(dataname + '__descr.npy', dataset.DESCR)
 
-def load_dataset():
+def get_datasets_names():
     files = os.listdir(text_datasets_path)
     if len(files) == 0:
         return None
-    #filename = text_datasets_path + files[0]
-    dataname = text_datasets_path + "text_dataset1"
+    else:
+        filenames = []
+        for filename in files:
+            name, rest = filename.split("__")
+            if (name not in filenames):
+                filenames.append(name)
+        return filenames
+
+def load_dataset(data_name):
+    data_file = text_datasets_path + data_name
     dataset = Bunch()
-    dataset['data'] = np.load(dataname+'_data.npy')
-    dataset['target'] = np.load(dataname+'_target.npy')
-    dataset['target_names'] = np.load(dataname+'_target_names.npy')
-    dataset['DESCR'] = np.load(dataname+'_descr.npy')
+    dataset['data'] = np.load(data_file+'__data.npy')
+    dataset['target'] = np.load(data_file+'__target.npy')
+    dataset['target_names'] = np.load(data_file+'__target_names.npy')
+    dataset['DESCR'] = np.load(data_file+'__descr.npy')
     return dataset
 
 def get_stop_words():
