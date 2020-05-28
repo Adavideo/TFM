@@ -14,12 +14,13 @@
 <h2>Clusters found: {{ clusters|length }}</h2>
 
   {% for cluster in clusters %}
-    <hr><h3>Cluster {{ forloop.counter }}</h3><br>
+    <hr><h3>Cluster {{ cluster.cluster_number }}</h3><br>
     <b>Terms:</b>
     {% for term in cluster.terms %}
       {{ term }},
     {% endfor %}<br><br>
-
+    <b>Reference document: </b>{{ cluster.reference_document }}<br><br>
+    <b>Documents: </b><br>
     {% for document in cluster.documents %}
       {{ document }}<br><br>
     {% endfor %}<br>
