@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.datasets.base import Bunch
 
 texts_path = "data/texts/"
-texts_import_path = texts_path+"to_classify/"
 text_datasets_path = "data/text_datasets/"
 clusters_path = "data/clusters/"
 stop_words_filename = "data/stop_words_spanish.txt"
@@ -12,8 +11,11 @@ def count_existing_files(directory="", type=""):
     if not directory:
         if type == "text_dataset":
             directory = text_datasets_path
+        elif type == "news" or type == "comments":
+            directory = texts_path + type + "/"
         else:
-            directory = texts_import_path
+            print("File type not recognised")
+            return None
     number_of_files = len(os.listdir(directory))
     return number_of_files
 
@@ -22,8 +24,8 @@ def store_file(filename, content):
     out_file.write(content)
     out_file.close()
 
-def store_text_in_file(text, file_number):
-    filename = texts_import_path + "text" + str(file_number) + ".txt"
+def store_text_in_file(text, file_type, data_name, file_number):
+    filename = texts_path + file_type + "/" + data_name + "_" + str(file_number) + ".txt"
     store_file(filename, text)
 
 def store_text_dataset(dataset):

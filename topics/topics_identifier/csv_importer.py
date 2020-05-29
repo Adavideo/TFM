@@ -19,23 +19,23 @@ def process_comment(column):
     result = { "content": content}
     return result
 
-def process_csv_line(column, file_type, file_number):
+def process_csv_line(column, file_type, data_name, file_number):
     if file_type == "news":
         result = process_news(column)
         text = result["title"] + "\n" + result["content"]
-        store_text_in_file(text, file_number)
+        store_text_in_file(text, file_type, data_name, file_number)
     elif file_type == "comments":
         result = process_comment(column)
-        store_text_in_file(result["content"], file_number)
+        store_text_in_file(result["content"], file_type, data_name, file_number)
     else:
         result = "File type "+ str(file_type) + " not recognised"
     return result
 
-def process_data(io_string, file_type):
+def process_data(io_string, file_type, data_name):
     result = []
-    file_number = count_existing_files(type="text") + 1
+    file_number = count_existing_files(type=file_type) + 1
     for column in csv.reader(io_string, delimiter=',', quotechar='"'):
-        r = process_csv_line(column, file_type, file_number)
+        r = process_csv_line(column, file_type, data_name, file_number)
         result.append(r)
         file_number += 1
     return result
@@ -61,6 +61,7 @@ def get_file_type(header):
 # READ AND PROCESS CSV FILE
 
 def process_csv(file):
+    data_name = file.name.split('.')[0]
     file_content = file.read().decode('UTF-8')
     io_string = io.StringIO(file_content)
     header = next(io_string)
@@ -68,5 +69,5 @@ def process_csv(file):
     if file_type == "incorrect":
         result = ["Incorrect file type"]
     else:
-        result = process_data(io_string, file_type)
+        result = process_data(io_string, file_type, data_name)
     return result
