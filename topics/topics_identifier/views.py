@@ -10,7 +10,7 @@ def index_view(request):
     return render(request, template, context)
 
 def import_files_view(request):
-    template = "topics_identifier/file_upload.html"
+    template = "topics_identifier/import_csv.html"
     form = ImportCSVForm()
     context = {'form': form }
     if request.method == "POST":
