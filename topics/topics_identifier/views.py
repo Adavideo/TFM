@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
 from .data_importer import load_and_store_dataset
+from .input_output_files import load_dataset
 from .data_classifier import cluster_data
 
 def index_view(request):
@@ -36,5 +37,9 @@ def cluster_data_view(request):
     context = {'form': form }
     if request.method == "POST":
         dataset_name = request.POST["dataset_name"]
-        context["clusters"] = cluster_data(dataset_name)
+        context["dataset_name"] = dataset_name
+        dataset = load_dataset(dataset_name)
+        if dataset:
+            context["clusters"] = cluster_data(dataset)
+            context["dataset_description"] = dataset.DESCR
     return render(request, template, context )

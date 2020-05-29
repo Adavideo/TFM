@@ -11,8 +11,9 @@
 <hr>
 
 {% if clusters %}
-<h2>Clusters found: {{ clusters|length }}</h2>
-
+<h2>Clustering dataset {{ dataset_name }}</h2>
+Dataset description: {{ dataset_description }}<br>
+Clusters found: {{ clusters|length }}
   {% for cluster in clusters %}
     <hr><h3>Cluster {{ cluster.cluster_number }}</h3><br>
     <b>Terms:</b>

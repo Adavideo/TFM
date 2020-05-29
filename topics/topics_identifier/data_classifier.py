@@ -1,6 +1,6 @@
 from sklearn.cluster import KMeans, AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .input_output_files import store_clusters, get_stop_words, load_dataset
+from .input_output_files import store_clusters, get_stop_words
 
 # Process the documents with the vectorizer.
 def process_data(dataset):
@@ -46,10 +46,7 @@ def cluster_documents(processed_data, documents):
     clusters_info = get_clusters_info(model, processed_data["terms"], documents, documents_predicted_clusters)
     return clusters_info
 
-def cluster_data(data_name):
-    dataset = load_dataset(data_name)
-    if not dataset:
-        return []
+def cluster_data(dataset):
     processed_data = process_data(dataset)
     clusters_info = cluster_documents(processed_data, documents=dataset.data)
     store_clusters(clusters_info)
