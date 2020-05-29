@@ -1,12 +1,11 @@
 from .input_output_files import texts_path, store_text_dataset
 from sklearn.datasets import load_files
 
-def load_dataset_from_texts():
-    description = "Texts examples extracted form news and comments from Meneame"
+def load_dataset_from_texts(description):
     dataset = load_files(container_path=texts_path, description=description, shuffle=True, encoding="utf-8")
     return dataset
 
-def load_and_store_dataset():
-    dataset = load_dataset_from_texts()
-    store_text_dataset(dataset)
+def load_and_store_dataset(dataset_name, description):
+    dataset = load_dataset_from_texts(description)
+    store_text_dataset(dataset, dataset_name)
     return dataset

@@ -20,8 +20,14 @@ def import_files_view(request):
 
 def generate_dataset_view(request):
     template = "topics_identifier/generate_dataset.html"
-    dataset = load_and_store_dataset()
-    context = { "result": dataset }
+    form = GenerateDatasetForm(request.POST)
+    context = { "form": form }
+    if request.method == "POST":
+        dataset_name = request.POST["dataset_name"]
+        description = request.POST["description"]
+        dataset = load_and_store_dataset(dataset_name, description)
+        context["dataset_name"] = dataset_name
+        context["result"] = dataset
     return render(request, template, context)
 
 def cluster_data_view(request):

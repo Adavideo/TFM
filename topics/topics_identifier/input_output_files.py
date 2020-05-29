@@ -28,9 +28,9 @@ def store_text_in_file(text, file_type, data_name, file_number):
     filename = texts_path + file_type + "/" + data_name + "_" + str(file_number) + ".txt"
     store_file(filename, text)
 
-def store_text_dataset(dataset):
+def store_text_dataset(dataset, dataset_name):
     file_number = int(count_existing_files(text_datasets_path) / 5) + 1
-    dataname = text_datasets_path + "textdataset" + str(file_number)
+    dataname = text_datasets_path + dataset_name.replace(" ", "")
     np.save(dataname + '__data.npy', dataset.data)
     np.save(dataname + '__filenames.npy', dataset.filenames)
     np.save(dataname + '__target.npy', dataset.target)

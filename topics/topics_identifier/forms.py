@@ -17,3 +17,7 @@ class ImportCSVForm(forms.Form):
 
 class ClusterForm(forms.Form):
     dataset_name = forms.ChoiceField(choices=get_dataset_options())
+
+class GenerateDatasetForm(forms.Form):
+    dataset_name = forms.CharField(max_length=25)
+    description = forms.CharField(max_length=None)

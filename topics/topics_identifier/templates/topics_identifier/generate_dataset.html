@@ -2,17 +2,28 @@
 
 {% block content %}
 
-Generated dataset with  {{ result.data|length }} examples
+<h2>Generate dataset</h2>
+<hr>
 
-<hr>
-<h3>Files imported</h3><br>
-{% for line in result.filenames %}
-  {{ line }}<br>
-{% endfor %}
-<hr>
-<h3>Data imported</h3><br>
-{% for line in result.data %}
-  {{ line }}<br><br>
-{% endfor %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Generate</button>
+</form>
+
+{% if result %}
+  <hr>
+  Generated {{ dataset_name }} dataset with  {{ result.data|length }} examples
+  <hr>
+  <h3>Files imported</h3><br>
+  {% for line in result.filenames %}
+    {{ line }}<br>
+  {% endfor %}
+  <hr>
+  <h3>Data imported</h3><br>
+  {% for line in result.data %}
+    {{ line }}<br><br>
+  {% endfor %}
+{% endif %}
 
 {% endblock %}
