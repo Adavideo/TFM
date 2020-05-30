@@ -16,7 +16,9 @@ def import_files_view(request):
     context = {'form': form }
     if request.method == "POST":
         file = request.FILES['file']
-        context["result"] = process_csv(file)
+        registers = process_csv(file)
+        context["registers"] = registers[:100]
+        context["num_registers"] = len(registers)
     return render(request, template, context)
 
 def generate_dataset_view(request):
