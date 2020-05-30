@@ -48,9 +48,11 @@ def process_data(csv_reader, file_type, data_name, total_num_registers):
 # IDENTIFY FILE TYPE
 
 def get_headers_types():
-    headers_types = [ {"file_type":"news", "header": '"link_id","link_author","link_date","link_uri","link_url_title","link_title","link_content"'},
-                      {"file_type":"comments", "header": '"comment_id","comment_link_id","comment_user_id","comment_date","comment_content"'},
-                    ]
+    headers_types = [
+        {"file_type":"comments", "header": '"comment_id","comment_link_id","comment_user_id","comment_date","comment_content"'},
+        {"file_type":"news", "header": '"link_id","link_author","link_date","link_uri","link_url_title","link_title","link_content"'},
+        {"file_type":"news2", "header": '"link_author","link_id","link_date","link_uri","link_url_title","link_title","link_content"'},
+    ]
     return headers_types
 
 def get_file_type(header):
@@ -59,6 +61,8 @@ def get_file_type(header):
     for header_type in headers_types:
         if header_type["header"] in header:
             file_type = header_type["file_type"]
+    if file_type == "news2":
+        file_type = "news"
     return file_type
 
 
