@@ -6,6 +6,9 @@ def load_dataset_from_texts(description):
     return dataset
 
 def load_and_store_dataset(dataset_name, description):
+    print("Loading dataset "+dataset_name+" from texts files.")
     dataset = load_dataset_from_texts(description)
+    print("Dataset "+dataset_name+" loaded. Storing dataset.")
     store_text_dataset(dataset, dataset_name)
+    print("Dataset "+dataset_name+" stored.")
     return dataset

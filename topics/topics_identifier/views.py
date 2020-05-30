@@ -30,7 +30,10 @@ def generate_dataset_view(request):
         description = request.POST["description"]
         dataset = load_and_store_dataset(dataset_name, description)
         context["dataset_name"] = dataset_name
-        context["result"] = dataset
+        context["documents"] = dataset.data[:100]
+        context["num_documents"] = len(dataset.data)
+        context["files"] = dataset.filenames[:100]
+        context["num_files"] = len(dataset.filenames)
     return render(request, template, context)
 
 def cluster_data_view(request):
