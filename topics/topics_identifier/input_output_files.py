@@ -85,3 +85,10 @@ def store_clusters(clusters_info):
         out_file.write("\n")
         count += 1
     out_file.close()
+
+def short_texts_filenames(full_filenames_list):
+    short_filenames_list = []
+    for filename in full_filenames_list:
+        _, short_filename = filename.split(texts_path)
+        short_filenames_list.append(short_filename)
+    return short_filenames_list

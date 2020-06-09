@@ -24,12 +24,9 @@
     {{ line }}<br><br>
   {% endfor %}
   <h3>Files</h3><br>
-  Imported {{ num_files }} files.
-  {% if num_files > 100 %}
-    Showing the first 100.
-  {% endif %}<hr>
+  Imported {{ num_files }} files.<br>
   {% for line in files %}
-    {{ line }}<br>
+    {{ line }},
   {% endfor %}
   <hr>
 

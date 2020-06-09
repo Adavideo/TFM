@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
 from .data_importer import load_and_store_dataset
-from .input_output_files import load_dataset
+from .input_output_files import load_dataset, short_texts_filenames
 from .data_classifier import cluster_data
 
 def index_view(request):
@@ -32,7 +32,9 @@ def generate_dataset_view(request):
         context["dataset_name"] = dataset_name
         context["documents"] = dataset.data[:100]
         context["num_documents"] = len(dataset.data)
-        context["files"] = dataset.filenames[:100]
+        # cuts the path from the filenames to make them shorter
+        short_filenames = short_texts_filenames(dataset.filenames)
+        context["files"] = short_filenames
         context["num_files"] = len(dataset.filenames)
     return render(request, template, context)
 
