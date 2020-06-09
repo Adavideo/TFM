@@ -13,17 +13,18 @@
       <button type="submit">Upload</button>
   </form>
 
+  {% if registers %}
+    <hr>
+    Processed  {{ num_registers }} new registers.
+    {% if num_registers > 100 %}
+      Showing the first 100.
+    {% endif %}
+    <hr>
 
-<hr>
-Processed  {{ num_registers }} new registers.
-{% if num_registers > 100 %}
-  Showing the first 100.
-{% endif %}
-<hr>
-
-{% for line in registers %}
-  {% if line.title %}Title: {{ line.title }}<br>{% endif %}
-  {{ line.content }}<br><br>
-{% endfor %}
+    {% for line in registers %}
+      {% if line.title %}Title: {{ line.title }}<br>{% endif %}
+      {{ line.content }}<br><br>
+    {% endfor %}
+  {% endif %}
 
 {% endblock %}
