@@ -66,3 +66,24 @@ def clusters_view(request, dataset_name=None):
     template = "topics_identifier/clusters.html"
     context = {"clusters_list": clusters_list, "dataset_name": dataset_name }
     return render(request, template, context )
+
+def get_datasets_names():
+    datasets_names = []
+    for cluster in Cluster.objects.all():
+        if cluster.dataset not in datasets_names:
+            datasets_names.append(cluster.dataset)
+    return datasets_names
+
+def get_datasets_clusters_list():
+    datasets_names = get_datasets_names()
+    datasets_list = []
+    for dataset_name in datasets_names:
+        num_clusters = len(Cluster.objects.filter(dataset=dataset_name))
+        info = { "dataset_name": dataset_name, "num_clusters": num_clusters }
+        datasets_list.append(info)
+    return datasets_list
+
+def clusters_index_view(request):
+    context = { "datasets_clusters_list": get_datasets_clusters_list() }
+    template = "topics_identifier/clusters_index.html"
+    return render(request, template, context )

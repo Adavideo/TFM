@@ -9,4 +9,5 @@ urlpatterns = [
     path('cluster_data', views.cluster_data_view, name='cluster_data'),
     path('clusters', views.clusters_view, name='all_clusters'),
     path('clusters/<dataset_name>', views.clusters_view, name='dataset_clusters'),
+    path('clusters_index', views.clusters_index_view, name='clusters_index'),
 ]

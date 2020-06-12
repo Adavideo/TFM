@@ -1,0 +1,16 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+
+
+  <h2>Clusters</h2><br>
+
+  {% for info in datasets_clusters_list %}
+    <h4>
+      <a href="{% url 'dataset_clusters' info.dataset_name %}">
+        Dataset {{ info.dataset_name }}</a>
+       Clusters: {{ info.num_clusters }}</h4><br>
+  {% endfor %}
+
+
+{% endblock %}
