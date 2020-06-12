@@ -52,8 +52,11 @@ def cluster_data_view(request):
         context["clusters"] = Cluster.objects.filter(dataset=dataset_name)
     return render(request, template, context )
 
-def clusters_view(request):
-    clusters = Cluster.objects.all()
+def clusters_view(request, dataset_name=None):
+    if dataset_name:
+        clusters = Cluster.objects.filter(dataset=dataset_name)
+    else:
+        clusters = Cluster.objects.all()
     clusters_list = []
     for cluster in clusters:
         docs = cluster.documents()
@@ -61,5 +64,5 @@ def clusters_view(request):
         clusters_list.append(cluster_info)
 
     template = "topics_identifier/clusters.html"
-    context = {"clusters_list": clusters_list }
+    context = {"clusters_list": clusters_list, "dataset_name": dataset_name }
     return render(request, template, context )
