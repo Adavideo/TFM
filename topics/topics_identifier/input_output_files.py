@@ -67,25 +67,6 @@ def get_stop_words():
         stop_words.append(word)
     return stop_words
 
-def store_clusters(clusters_info):
-    file_number = count_existing_files(clusters_path) + 1
-    filename = clusters_path + "clusters_" + str(len(clusters_info)) + "_" + str(file_number) + ".txt"
-    out_file = open(filename, 'w')
-    count = 0
-    for cluster in clusters_info:
-        out_file.write("Cluster "+str(count)+"\n")
-        out_file.write("Terms: "+str(cluster["terms"])+"\n")
-        out_file.write("Reference document:\n"+ cluster["reference_document"]+"\n")
-        out_file.write("__________\n")
-        out_file.write("Documents:\n")
-        out_file.write("__________\n")
-        for document in cluster["documents"]:
-            out_file.write(document+"\n")
-            out_file.write("__________\n")
-        out_file.write("\n")
-        count += 1
-    out_file.close()
-
 def short_texts_filenames(full_filenames_list):
     short_filenames_list = []
     for filename in full_filenames_list:
