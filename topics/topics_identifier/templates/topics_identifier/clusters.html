@@ -1,0 +1,21 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+
+  <h2>Clusters</h2><br>
+  {% for cluster_info in clusters_list %}
+    <hr><h3>Dataset {{ cluster_info.cluster.dataset }} - Cluster {{ cluster_info.cluster.number }}</h3><br>
+    <b>Terms:</b>
+      {{ cluster_info.cluster.terms }}
+    <br>
+    <b>Reference document: </b>{{ cluster_info.cluster.reference_document }}<br>
+    {{ cluster_info.cluster.reference_document.content }}
+    <br><br><br>
+    {% for document in cluster_info.documents %}
+      {{ document.content }}<br><br>
+    {% endfor %}
+    <hr>
+  {% endfor %}
+
+
+{% endblock %}
