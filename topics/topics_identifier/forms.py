@@ -1,8 +1,8 @@
 from django import forms
-from .input_output_files import get_datasets_names
+from .datasets_manager import get_datasets_names_from_files
 
 def get_dataset_options():
-    datasets_names = get_datasets_names()
+    datasets_names = get_datasets_names_from_files()
     if datasets_names:
         options = []
         for name in datasets_names:

@@ -11,21 +11,22 @@
     <button type="submit">Generate</button>
 </form>
 
-{% if documents %}
+{% if dataset_info.documents %}
 
-  <hr><h4>Generated {{ dataset_name }} dataset with  {{ num_documents }} examples</h4><hr>
-
+  <hr><h4>Generated {{ dataset_info.name }} dataset with  {{ dataset_info.num_documents }} examples</h4><hr>
+  Description: {{ dataset_info.description }}<hr>
+  
   <h3>Data</h3><br>
-  Imported {{ num_documents }} documents.
+  Imported {{ dataset_info.num_documents }} documents.
   {% if num_documents > 100 %}
     Showing the first 100.
   {% endif %}<hr>
-  {% for line in documents %}
+  {% for line in dataset_info.documents %}
     {{ line }}<br><br>
   {% endfor %}
   <h3>Files</h3><br>
-  Imported {{ num_files }} files.<br>
-  {% for line in files %}
+  Imported {{ files.number }} files.<br>
+  {% for line in files.list %}
     {{ line }},
   {% endfor %}
   <hr>

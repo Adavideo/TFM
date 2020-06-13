@@ -1,8 +1,18 @@
+import datetime
 from sklearn.cluster import KMeans, AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .input_output_files import get_stop_words
 from .models import Cluster
-import datetime
+from .file_paths import stop_words_filename
+from .datasets_manager import load_dataset
+
+def get_stop_words():
+    stop_words = []
+    file = open(stop_words_filename, 'r')
+    words_from_file = file.read().split("\n")
+    file.close()
+    for word in words_from_file:
+        stop_words.append(word)
+    return stop_words
 
 # Process the documents with the vectorizer.
 def process_data(dataset):

@@ -1,5 +1,5 @@
 import csv, io
-from .input_output_files import store_text_in_file, count_existing_files
+from .texts_documents_manager import store_text_in_file, count_existing_files
 
 # PROCESS DATA
 
