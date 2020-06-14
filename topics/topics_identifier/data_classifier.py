@@ -1,5 +1,5 @@
 import datetime
-from sklearn.cluster import KMeans, AffinityPropagation
+from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .models import Cluster
 from .file_paths import stop_words_filename
