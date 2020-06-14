@@ -58,12 +58,9 @@ class DataClassifierTests(TestCase):
             test_cluster = test_dataset["clusters"][cluster_index]
             test_documents = test_cluster["documents"]
             doc_index = 0
-            temp = []
             for created_document in created_cluster.documents():
-                temp.append(created_document.content)
                 self.assertEqual(created_document.content, test_documents[doc_index])
                 doc_index += 1
-            print(temp)
             cluster_index += 1
 
     def test_get_stop_words(self):
