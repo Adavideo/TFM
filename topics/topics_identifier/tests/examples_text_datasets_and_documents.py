@@ -24,6 +24,7 @@ cluster3 = {
 
 test_dataset = {
     "name": "test_comments10",
+    "description": "Test dataset with 10 documents",
     "terms": "['13', '2010', '21', '23', '310', '355', '40', '8kbxfauvdxa', 'abrir', 'ahora', 'alarma', 'allá', 'anterior', 'anticuerpos', 'aunque', 'años', 'basta', 'be', 'boe', 'brutal', 'chalao', 'cierto', 'cobra', 'cobran', 'colau', 'consta', 'cuenta', 'currar', 'cuéntame', 'darse', 'deficitarias', 'después', 'dices', 'elegantemente', 'empresas', 'enteras', 'evidente', 'explícale', 'expresidente', 'expresidentes', 'fallout', 'falta', 'forma', 'full', 'gatos', 'guardo', 'gustan', 'hace', 'https', 'improductivas', 'injustamente', 'ir', 'jugar', 'ley', 'llegara', 'lol', 'melón', 'mismo', 'mitad', 'montilla', 'niegan', 'origen', 'pantomima', 'parlamento', 'penalice', 'pensión', 'peor', 'precios', 'privadas', 'problemas', 'prohíba', 'publicaciones', 'pujol', 'regiones', 'retiraron', 'sabes', 'sacado', 'sepas', 'si', 'suban', 'subido', 'sueldo', 'todas', 'torra', 'transpasar', 'youtu']",
     "documents": [
         '#4 Cuéntame tu,  a mi no me consta.',
@@ -37,7 +38,17 @@ test_dataset = {
          'Pantomima Full - Gatos.\nhttps://youtu.be/8kbXfAuvdxA',
          '#13 explícale que es la que hace que las empresas privadas no suban precios'],
     "predicted_clusters": [0, 0, 3, 0, 3, 2, 1, 2, 0, 3],
-    "clusters": [ cluster0, cluster1, cluster2, cluster3 ]
+    "clusters": [ cluster0, cluster1, cluster2, cluster3 ],
+    "filenames": [   'data/texts/comments/comments_sample_small_2.txt',
+                     'data/texts/comments/comments_sample_small_8.txt',
+                     'data/texts/comments/comments_sample_small_4.txt',
+                     'data/texts/comments/comments_sample_small_9.txt',
+                     'data/texts/comments/comments_sample_small_10.txt',
+                     'data/texts/comments/comments_sample_small_6.txt',
+                     'data/texts/comments/comments_sample_small_7.txt',
+                     'data/texts/comments/comments_sample_small_3.txt',
+                     'data/texts/comments/comments_sample_small_1.txt',
+                     'data/texts/comments/comments_sample_small_5.txt']
 }
 
 example_documents_short = [

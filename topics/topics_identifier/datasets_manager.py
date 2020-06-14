@@ -12,6 +12,7 @@ def load_dataset(data_name):
     data_file = text_datasets_path + data_name
     dataset = Bunch()
     dataset['data'] = np.load(data_file+'__data.npy')
+    dataset['filenames'] = np.load(data_file+'__filenames.npy')
     dataset['target'] = np.load(data_file+'__target.npy')
     dataset['target_names'] = np.load(data_file+'__target_names.npy')
     dataset['DESCR'] = np.load(data_file+'__descr.npy')
