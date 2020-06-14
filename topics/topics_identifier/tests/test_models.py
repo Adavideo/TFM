@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document, find_or_create_document
-from .examples_documents import *
+from .examples_text_datasets_and_documents import example_documents_short, example_documents_long, example_terms1
 
 class DocumentTests(TestCase):
 
