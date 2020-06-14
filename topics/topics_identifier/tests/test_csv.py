@@ -29,15 +29,17 @@ class CSVProcessDataTests(TestCase):
 
     def test_process_csv_line_news(self):
         file_type = "news"
+        data_name = "test_delete_me"
         column = news_example1
-        result = process_csv_line(column, file_type,  data_name="test_data", file_number=1)
+        result = process_csv_line(column, file_type, data_name, file_number=1)
         self.assertEqual(result["title"], news_title1)
         self.assertEqual(result["content"], news_content1)
 
     def test_process_csv_line_comment(self):
         file_type = "comments"
+        data_name = "test_delete_me"
         column = comment_example1
-        result = process_csv_line(column, file_type,  data_name="test_data", file_number=1)
+        result = process_csv_line(column, file_type, data_name, file_number=1)
         self.assertEqual(result["content"], comment_content1)
 
 

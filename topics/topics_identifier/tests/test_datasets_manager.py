@@ -19,7 +19,7 @@ class DataClassifierTests(TestCase):
 
     def test_store_text_dataset(self):
         dataset_name = test_dataset["name"]
-        dataset_name2 = dataset_name+"2"
+        dataset_name2 = "test_delete_me"
         dataset = load_dataset(dataset_name)
         store_text_dataset(dataset, dataset_name2)
         dataset2 = load_dataset(dataset_name2)

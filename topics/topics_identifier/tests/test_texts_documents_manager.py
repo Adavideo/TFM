@@ -21,8 +21,8 @@ class DocumentsManagerTests(TestCase):
         content = "Bla bla"
         file_type = "news"
         data_name = "test_delete_me"
-        store_text_in_file(content, file_type, data_name, file_number=1)
-        filename = texts_path+file_type+"/test_delete_me_1.txt"
+        store_text_in_file(content, file_type, data_name, file_number=2)
+        filename = texts_path+file_type+"/test_delete_me_2.txt"
         stored_file_content = open(filename, 'r').read()
         self.assertEqual(stored_file_content, content)
 
@@ -30,7 +30,7 @@ class DocumentsManagerTests(TestCase):
         content = "Bla bla"
         file_type = "comments"
         data_name = "test_delete_me"
-        store_text_in_file(content, file_type, data_name, file_number=1)
-        filename = texts_path+file_type+"/test_delete_me_1.txt"
+        store_text_in_file(content, file_type, data_name, file_number=2)
+        filename = texts_path+file_type+"/test_delete_me_2.txt"
         stored_file_content = open(filename, 'r').read()
         self.assertEqual(stored_file_content, content)
