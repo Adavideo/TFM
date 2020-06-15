@@ -4,7 +4,7 @@ from .examples_text_datasets_and_documents import test_dataset
 
 class DataClassifierTests(TestCase):
 
-    def test_cluster_data(self):
+    def test_load_dataset(self):
         dataset_name = test_dataset["name"]
         dataset = load_dataset(dataset_name)
         self.assertEqual(dataset.DESCR, test_dataset["description"])
