@@ -7,17 +7,10 @@ from .examples_text_datasets_and_documents import test_dataset, cluster0, stop_w
 
 class DataClassifierTests(TestCase):
 
-    def test_cluster_data(self):
-        dataset_name = test_dataset["name"]
-        dataset = load_dataset(dataset_name)
-        cluster_data(dataset, dataset_name)
-        clusters = Cluster.objects.filter(dataset=dataset_name)
-        self.assertEqual(len(clusters), 4)
-        self.assertEqual(clusters[0].dataset, dataset_name)
-        self.assertEqual(clusters[0].number, 0)
-        self.assertEqual(clusters[0].terms, cluster0["terms"])
-        self.assertEqual(clusters[0].reference_document.content, cluster0["reference_doc"])
-
+    def test_get_stop_words(self):
+        stop_words = get_stop_words()
+        self.assertEqual(stop_words, stop_words_test)
+            
     def test_store_clusters(self):
         # Initialize
         dataset_name = test_dataset["name"]
@@ -63,6 +56,13 @@ class DataClassifierTests(TestCase):
                 doc_index += 1
             cluster_index += 1
 
-    def test_get_stop_words(self):
-        stop_words = get_stop_words()
-        self.assertEqual(stop_words, stop_words_test)
+    def test_cluster_data(self):
+        dataset_name = test_dataset["name"]
+        dataset = load_dataset(dataset_name)
+        cluster_data(dataset, dataset_name)
+        clusters = Cluster.objects.filter(dataset=dataset_name)
+        self.assertEqual(len(clusters), 4)
+        self.assertEqual(clusters[0].dataset, dataset_name)
+        self.assertEqual(clusters[0].number, 0)
+        self.assertEqual(clusters[0].terms, cluster0["terms"])
+        self.assertEqual(clusters[0].reference_document.content, cluster0["reference_doc"])
