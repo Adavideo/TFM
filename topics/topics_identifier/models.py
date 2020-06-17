@@ -7,15 +7,6 @@ class Document(models.Model):
         text = "Document "+str(self.id)
         return text
 
-def find_or_create_document(content):
-    doc_search = Document.objects.filter(content=content)
-    if doc_search:
-        doc = doc_search[0]
-    else:
-        doc = Document(content=content)
-        doc.save()
-    return doc
-
 class Cluster(models.Model):
     dataset = models.CharField(max_length=25)
     number = models.IntegerField()
@@ -23,16 +14,13 @@ class Cluster(models.Model):
     terms = models.CharField(max_length=255)
 
     def assign_reference_document(self, content):
-        doc = find_or_create_document(content)
+        doc, created = Document.objects.get_or_create(content=content)
         self.reference_document = doc
         self.save()
 
     def add_document(self, content):
-        doc = find_or_create_document(content)
-        cluster_search = ClusterDocument.objects.filter(cluster=self, document=doc)
-        if not cluster_search:
-            cluster_document = ClusterDocument(cluster=self, document=doc)
-            cluster_document.save()
+        doc, created = Document.objects.get_or_create(content=content)
+        ClusterDocument.objects.get_or_create(cluster=self, document=doc)
 
     def documents(self):
         documents = []

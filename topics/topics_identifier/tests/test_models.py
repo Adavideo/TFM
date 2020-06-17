@@ -1,5 +1,5 @@
 from django.test import TestCase
-from topics_identifier.models import Cluster, Document, find_or_create_document
+from topics_identifier.models import Cluster, Document
 from .examples_text_datasets_and_documents import test_dataset, example_documents, create_example_document, create_example_cluster
 
 class DocumentTests(TestCase):
@@ -13,24 +13,6 @@ class DocumentTests(TestCase):
         doc = create_example_document(type="long")
         self.assertEqual(doc.content, example_documents["long"][0])
         self.assertEqual(str(doc), "Document 1")
-
-    def test_find_or_create_document_created(self):
-        created_doc = create_example_document(type="short")
-        content = example_documents["short"][0]
-        found_doc = find_or_create_document(content)
-        # Ensure that the document returned has the same content
-        self.assertEqual(found_doc.content, content)
-        self.assertEqual(found_doc, created_doc)
-        self.assertEqual(str(found_doc), str(created_doc))
-        # Ensure that the document is not created twice
-        doc_search = Document.objects.filter(content=content)
-        self.assertIs(len(doc_search), 1)
-
-    def test_find_or_create_document_not_created(self):
-        content = example_documents["short"][1]
-        found_doc = find_or_create_document(content)
-        self.assertEqual(found_doc.content, content)
-        self.assertEqual(str(found_doc), "Document 1")
 
 class ClusterTests(TestCase):
 
