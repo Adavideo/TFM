@@ -3,7 +3,7 @@ from .forms import *
 from .csv_importer import process_csv
 from .datasets_manager import load_and_store_dataset, load_dataset
 from .texts_documents_manager import short_texts_filenames
-from .data_classifier import cluster_data
+from .clustering import cluster_data
 from .clusters_navigation import get_clusters_with_documents, get_datasets_clusters_list
 from .models import Cluster
 

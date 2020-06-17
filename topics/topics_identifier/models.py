@@ -29,8 +29,10 @@ class Cluster(models.Model):
 
     def add_document(self, content):
         doc = find_or_create_document(content)
-        cluster_document = ClusterDocument(cluster=self, document=doc)
-        cluster_document.save()
+        cluster_search = ClusterDocument.objects.filter(cluster=self, document=doc)
+        if not cluster_search:
+            cluster_document = ClusterDocument(cluster=self, document=doc)
+            cluster_document.save()
 
     def documents(self):
         documents = []

@@ -18,9 +18,13 @@ class DocumentTests(TestCase):
         created_doc = create_example_document(type="short")
         content = example_documents["short"][0]
         found_doc = find_or_create_document(content)
+        # Ensure that the document returned has the same content
         self.assertEqual(found_doc.content, content)
         self.assertEqual(found_doc, created_doc)
         self.assertEqual(str(found_doc), str(created_doc))
+        # Ensure that the document is not created twice
+        doc_search = Document.objects.filter(content=content)
+        self.assertIs(len(doc_search), 1)
 
     def test_find_or_create_document_not_created(self):
         content = example_documents["short"][1]
