@@ -13,7 +13,14 @@
 {% if clusters %}
 <h2>Clustering dataset {{ dataset_info.name }}</h2>
 Dataset description: {{ dataset_info.description }}<br>
-Clusters: {{ clusters|length }}
+Clusters: {{ num_clusters }}.
+{% if num_clusters > 100 %}
+  Showing the first 100.<br>
+  <a href="{% url 'dataset_clusters' dataset_info.name %}">
+  See all
+  </a>
+{% endif %}
+
   {% for cluster in clusters %}
     <hr><h3>Cluster {{ cluster.number }}</h3><br>
     <b>Terms:</b>

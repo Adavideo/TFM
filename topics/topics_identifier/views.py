@@ -53,7 +53,10 @@ def cluster_data_view(request):
         # Form clusters with the documents on the dataset
         cluster_data(dataset, dataset_name)
         # Prepare the information to show on the web page
-        context["clusters"] = Cluster.objects.filter(dataset=dataset_name)
+        all_clusters = Cluster.objects.filter(dataset=dataset_name)
+        num_clusters = len(all_clusters)
+        context["num_clusters"] = num_clusters
+        context["clusters"] = all_clusters[:100]
         dataset_info = { "name": dataset_name, "description": dataset.DESCR }
         context["dataset_info"] = dataset_info
     return render(request, template, context )
