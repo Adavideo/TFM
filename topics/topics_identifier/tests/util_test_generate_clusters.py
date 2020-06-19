@@ -1,6 +1,6 @@
 from sklearn.cluster import AffinityPropagation
 from topics_identifier.datasets_manager import load_dataset
-from topics_identifier.clustering import store_clusters, process_data
+from topics_identifier.generate_clusters import store_clusters, process_data
 
 def create_and_store_clusters(dataset_name, documents):
     dataset = load_dataset(dataset_name)

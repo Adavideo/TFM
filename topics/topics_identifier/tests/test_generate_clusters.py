@@ -1,9 +1,9 @@
 from django.test import TestCase
-from topics_identifier.clustering import cluster_data, add_documents_to_clusters, get_stop_words
+from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words
 from topics_identifier.datasets_manager import load_dataset
 from topics_identifier.models import Cluster, Document
 from .examples_text_datasets_and_documents import test_dataset, stop_words_test
-from .util_test_clustering import create_and_store_clusters
+from .util_test_generate_clusters import create_and_store_clusters
 
 class ClusteringTests(TestCase):
 

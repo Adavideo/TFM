@@ -3,7 +3,7 @@ from .forms import *
 from .csv_importer import process_csv
 from .datasets_manager import load_and_store_dataset, load_dataset
 from .texts_documents_manager import short_texts_filenames
-from .clustering import cluster_data
+from .generate_clusters import cluster_data
 from .clusters_navigation import get_clusters_with_documents, get_datasets_clusters_list
 from .models import Cluster
 
@@ -42,8 +42,8 @@ def generate_dataset_view(request):
         context["files"] = { "number": len(dataset.filenames), "list": short_filenames }
     return render(request, template, context)
 
-def cluster_data_view(request):
-    template = "topics_identifier/cluster_data.html"
+def generate_clusters_view(request):
+    template = "topics_identifier/generate_clusters.html"
     form = ClusterForm(request.POST)
     context = { "form": form }
     if request.method == "POST":
