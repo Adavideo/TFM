@@ -9,16 +9,16 @@
 {% endif %}
   {% for cluster_info in clusters_list %}
     <hr><h3>Dataset {{ cluster_info.cluster.dataset }} - Cluster {{ cluster_info.cluster.number }}</h3><br>
-    <b>Terms:</b>
-      {{ cluster_info.cluster.terms }}
+    <b>Terms:</b><br>
+      {{ cluster_info.cluster.terms }}<br>
     <br>
-    <b>Reference document: </b>{{ cluster_info.cluster.reference_document }}<br>
+    <b>Reference document: </b><br>
     {{ cluster_info.cluster.reference_document.content }}
-    <br><br><br>
+    <br><br>
+    <b>Documents:</b><br><br>
     {% for document in cluster_info.documents %}
       {{ document.content }}<br><br>
     {% endfor %}
-    <hr>
   {% endfor %}
 
 
