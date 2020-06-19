@@ -1,6 +1,7 @@
 import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.datasets.base import Bunch
 from .models import Cluster
 from .file_paths import stop_words_filename
 from .datasets_manager import load_dataset
@@ -76,3 +77,19 @@ def cluster_data(dataset, dataset_name):
     print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
     add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name)
     print(str(datetime.datetime.now().time())+" - Clustering completed")
+
+def create_dataset_with_reference_documents(dataset_name):
+    all_clusters = Cluster.objects.filter(dataset=dataset_name)
+    reference_documents = []
+    for cluster in all_clusters:
+        reference_documents.append(cluster.reference_document.content)
+    dataset = Bunch()
+    dataset['data'] = reference_documents
+    dataset['DESCR'] = dataset_name + " - level 2 clustering"
+    return dataset
+
+def cluster_two_levels(dataset_name):
+    print("cluster_two_levels")
+    dataset_level2 = create_dataset_with_reference_documents(dataset_name)
+    cluster_data(dataset_level2, dataset_name + "_level_2")
+    
