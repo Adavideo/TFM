@@ -41,30 +41,30 @@ def update_cluster_information(cluster, cluster_center, model, terms, documents)
     cluster.assign_reference_document(content=reference_document)
     cluster.save()
 
-def get_cluster(dataset_name, cluster_number):
-    cluster_search = Cluster.objects.filter(dataset=dataset_name, number=cluster_number)
+def get_cluster(dataset_name, cluster_number, level=1):
+    cluster_search = Cluster.objects.filter(dataset=dataset_name, number=cluster_number, level=level)
     if not cluster_search:
-        cluster = Cluster(dataset=dataset_name, number=cluster_number)
+        cluster = Cluster(dataset=dataset_name, number=cluster_number, level=level)
     else:
         cluster = cluster_search[0]
     return cluster
 
-def store_clusters(model, dataset_name, terms, documents):
+def store_clusters(model, dataset_name, terms, documents, level=1):
     cluster_number = 0
     for cluster_center in model.cluster_centers_:
-        cluster = get_cluster(dataset_name, cluster_number)
+        cluster = get_cluster(dataset_name, cluster_number, level)
         update_cluster_information(cluster, cluster_center, model, terms, documents)
         cluster_number += 1
 
-def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name):
+def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level=1):
     document_index = 0
     for predicted_cluster in documents_predicted_clusters:
         document = documents[document_index]
-        cluster = get_cluster(dataset_name, predicted_cluster)
+        cluster = get_cluster(dataset_name, predicted_cluster, level)
         cluster.add_document(content=document)
         document_index += 1
 
-def cluster_data(dataset, dataset_name):
+def cluster_data(dataset, dataset_name, level=1):
     print(str(datetime.datetime.now().time())+" - Pre-processing documents")
     vectorized_documents, terms = process_data(dataset)
     print(str(datetime.datetime.now().time())+" - Training the model")
@@ -73,9 +73,9 @@ def cluster_data(dataset, dataset_name):
     print(str(datetime.datetime.now().time())+" - Predicting clusters")
     documents_predicted_clusters = model.predict(vectorized_documents)
     print(str(datetime.datetime.now().time())+" - Storing clusters information")
-    store_clusters(model, dataset_name, terms, dataset.data)
+    store_clusters(model, dataset_name, terms, dataset.data, level)
     print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
-    add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name)
+    add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name, level)
     print(str(datetime.datetime.now().time())+" - Clustering completed")
 
 def create_dataset_with_reference_documents(dataset_name):
@@ -85,11 +85,9 @@ def create_dataset_with_reference_documents(dataset_name):
         reference_documents.append(cluster.reference_document.content)
     dataset = Bunch()
     dataset['data'] = reference_documents
-    dataset['DESCR'] = dataset_name + " - level 2 clustering"
     return dataset
 
-def cluster_two_levels(dataset_name):
-    print("cluster_two_levels")
-    dataset_level2 = create_dataset_with_reference_documents(dataset_name)
-    cluster_data(dataset_level2, dataset_name + "_level_2")
-    
+def cluster_sub_level(dataset_name, level=2):
+    dataset = create_dataset_with_reference_documents(dataset_name)
+    print("Generating level "+ str(level)+" clusters")
+    cluster_data(dataset, dataset_name, level)

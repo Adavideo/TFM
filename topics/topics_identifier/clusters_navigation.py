@@ -16,12 +16,11 @@ def get_datasets_clusters_list():
         datasets_list.append(info)
     return datasets_list
 
-def get_clusters_with_documents(dataset_name=""):
+def get_clusters_with_documents(dataset_name="", level=1):
     if dataset_name:
-        clusters = Cluster.objects.filter(dataset=dataset_name)
+        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
     else:
         clusters = Cluster.objects.all()
-
     clusters_list = []
     for cluster in clusters:
         docs = cluster.documents()

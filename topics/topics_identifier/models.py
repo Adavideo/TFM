@@ -10,6 +10,7 @@ class Document(models.Model):
 class Cluster(models.Model):
     dataset = models.CharField(max_length=25)
     number = models.IntegerField()
+    level = models.IntegerField()
     reference_document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
     terms = models.CharField(max_length=255)
 
@@ -29,7 +30,7 @@ class Cluster(models.Model):
         return documents
 
     def __str__(self):
-        text = "Dataset "+self.dataset+" Cluster "+str(self.number)
+        text = "Dataset "+self.dataset+" - level " + str(level) + " cluster "+str(self.number)
         return text
 
 class ClusterDocument(models.Model):

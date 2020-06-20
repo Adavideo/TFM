@@ -1,5 +1,5 @@
 from django.test import TestCase
-from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words
+from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words, create_dataset_with_reference_documents, cluster_sub_level
 from topics_identifier.datasets_manager import load_dataset
 from topics_identifier.models import Cluster, Document
 from .examples_text_datasets_and_documents import test_dataset, stop_words_test
@@ -78,7 +78,7 @@ class ClusteringTests(TestCase):
                 self.assertIs(count, 1)
             cluster_index += 1
 
-    def test_cluster_data(self):
+    def test_cluster_data_level1(self):
         dataset_name = test_dataset["name"]
         cluster0 = test_dataset["clusters"][0]
         dataset = load_dataset(dataset_name)
@@ -89,3 +89,44 @@ class ClusteringTests(TestCase):
         self.assertEqual(clusters[0].number, 0)
         self.assertEqual(clusters[0].terms, cluster0["terms"])
         self.assertEqual(clusters[0].reference_document.content, cluster0["reference_doc"])
+
+    def test_create_dataset_with_reference_documents(self):
+        # Initialize
+        dataset_name = test_dataset["name"]
+        create_and_store_clusters(test_dataset["name"], test_dataset["documents"])
+        # Execute
+        dataset_level2 = create_dataset_with_reference_documents(dataset_name)
+        # Verify
+        documents = dataset_level2.data
+        self.assertEqual(len(documents), 4)
+        for index in range(0,4):
+            reference_document =  test_dataset["clusters"][index]["reference_doc"]
+            self.assertEqual(documents[index], reference_document)
+
+    def test_cluster_data_level2(self):
+        # Initialize
+        dataset_name = test_dataset["name"]
+        create_and_store_clusters(dataset_name, test_dataset["documents"])
+        # Execute
+        cluster_sub_level(dataset_name, level=2)
+        # Validate
+        clusters = Cluster.objects.filter(dataset=dataset_name, level=2)
+        # validate right amount of clusters
+        self.assertEqual(len(clusters), 2)
+        # example reference docs
+        cluster0_ref_doc = test_dataset["clusters"][0]["reference_doc"]
+        cluster1_ref_doc = test_dataset["clusters"][1]["reference_doc"]
+        cluster2_ref_doc = test_dataset["clusters"][2]["reference_doc"]
+        cluster3_ref_doc = test_dataset["clusters"][3]["reference_doc"]
+        # validate reference docs
+        self.assertEqual(clusters[0].reference_document.content, cluster1_ref_doc)
+        self.assertEqual(clusters[1].reference_document.content, cluster2_ref_doc)
+        # validate docs assigned to the clusters
+        cluster1_docs = clusters[0].documents()
+        self.assertEqual(len(cluster1_docs), 2)
+        self.assertEqual(cluster1_docs[0].content, cluster0_ref_doc)
+        self.assertEqual(cluster1_docs[1].content, cluster1_ref_doc)
+        cluster2_docs = clusters[1].documents()
+        self.assertEqual(len(cluster1_docs), 2)
+        self.assertEqual(cluster2_docs[0].content, cluster2_ref_doc)
+        self.assertEqual(cluster2_docs[1].content, cluster3_ref_doc)

@@ -11,12 +11,8 @@
 <hr>
 
 {% if clusters %}
-<h2>Clustering dataset {{ dataset_info.name }}</h2>
-Dataset description: {{ dataset_info.description }}<br>
+<h2>Clustering dataset {{ dataset_name }}</h2>
 Clusters: {{ num_clusters }}.<br>
-  <a href="{% url 'dataset_clusters' dataset_info.name %}">
-  Navigate clusters
-  </a>
 
   {% for cluster in clusters %}
     <hr><h3>Cluster {{ cluster.number }}</h3><br>
