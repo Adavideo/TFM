@@ -3,7 +3,7 @@ from .forms import *
 from .csv_importer import process_csv
 from .datasets_manager import load_and_store_dataset, load_dataset
 from .texts_documents_manager import short_texts_filenames
-from .generate_clusters import cluster_data, cluster_sub_level
+from .generate_clusters import cluster_data, cluster_level
 from .clusters_navigation import get_clusters_with_documents, get_datasets_clusters_list
 from .models import Cluster
 
@@ -69,7 +69,7 @@ def generate_clusters_2_levels_view(request):
         # Load the dataset
         dataset_name = request.POST["dataset_name"]
         # Form clusters with the documents on the dataset
-        cluster_sub_level(dataset_name, level=2)
+        cluster_level(dataset_name, level=2)
         # Prepare the information to show on the web page
         context["dataset_name"] = dataset_name
         all_clusters = Cluster.objects.filter(dataset=dataset_name, level=2)

@@ -87,7 +87,7 @@ def create_dataset_with_reference_documents(dataset_name):
     dataset['data'] = reference_documents
     return dataset
 
-def cluster_sub_level(dataset_name, level=2):
+def cluster_level(dataset_name, level=2):
     dataset = create_dataset_with_reference_documents(dataset_name)
     print("Generating level "+ str(level)+" clusters")
     cluster_data(dataset, dataset_name, level)

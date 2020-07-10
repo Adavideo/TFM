@@ -1,9 +1,9 @@
 from django.test import TestCase
-from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words, create_dataset_with_reference_documents, cluster_sub_level
+from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words, create_dataset_with_reference_documents, cluster_level
 from topics_identifier.datasets_manager import load_dataset
 from topics_identifier.models import Cluster, Document
 from .examples_text_datasets_and_documents import test_dataset, stop_words_test
-from .util_test_generate_clusters import create_and_store_clusters
+from .util_test_generate_clusters import create_and_store_test_clusters
 
 class ClusteringTests(TestCase):
 
@@ -11,10 +11,10 @@ class ClusteringTests(TestCase):
         stop_words = get_stop_words()
         self.assertEqual(stop_words, stop_words_test)
 
-    def test_store_clusters(self):
+    def test_store_clusters_level1(self):
         # Initialize
         dataset_name = test_dataset["name"]
-        create_and_store_clusters(test_dataset["name"], test_dataset["documents"])
+        create_and_store_test_clusters(test_dataset["name"], test_dataset["documents"])
         # Verify
         new_clusters = Cluster.objects.filter(dataset=dataset_name)
         self.assertEqual(len(new_clusters), 4)
@@ -30,7 +30,7 @@ class ClusteringTests(TestCase):
         # Initialize
         dataset_name = test_dataset["name"]
         documents = test_dataset["documents"]
-        create_and_store_clusters(dataset_name, documents)
+        create_and_store_test_clusters(dataset_name, documents)
         # Execute
         add_documents_to_clusters(documents, test_dataset["predicted_clusters"], dataset_name)
         # Verify number of cllusters is correct
@@ -54,7 +54,7 @@ class ClusteringTests(TestCase):
         documents = test_dataset["documents"]
         # Generate clusters and add documents twice
         for i in range(0,2):
-            create_and_store_clusters(dataset_name, documents)
+            create_and_store_test_clusters(dataset_name, documents)
             add_documents_to_clusters(documents, test_dataset["predicted_clusters"], dataset_name)
         # Verify number of cllusters is correct
         created_clusters_list = Cluster.objects.filter(dataset=dataset_name)
@@ -93,7 +93,7 @@ class ClusteringTests(TestCase):
     def test_create_dataset_with_reference_documents(self):
         # Initialize
         dataset_name = test_dataset["name"]
-        create_and_store_clusters(test_dataset["name"], test_dataset["documents"])
+        create_and_store_test_clusters(test_dataset["name"], test_dataset["documents"])
         # Execute
         dataset_level2 = create_dataset_with_reference_documents(dataset_name)
         # Verify
@@ -106,9 +106,9 @@ class ClusteringTests(TestCase):
     def test_cluster_data_level2(self):
         # Initialize
         dataset_name = test_dataset["name"]
-        create_and_store_clusters(dataset_name, test_dataset["documents"])
+        create_and_store_test_clusters(dataset_name, test_dataset["documents"])
         # Execute
-        cluster_sub_level(dataset_name, level=2)
+        cluster_level(dataset_name, level=2)
         # Validate
         clusters = Cluster.objects.filter(dataset=dataset_name, level=2)
         # validate right amount of clusters
