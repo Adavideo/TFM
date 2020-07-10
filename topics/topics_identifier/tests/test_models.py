@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
-from .examples_text_datasets_and_documents import example_documents, test_dataset
-from .util_test_clusters import mock_document, mock_cluster
+from .examples_text_datasets_and_documents import example_documents, test_dataset_with_levels
+from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_children_level2
 
 class DocumentTests(TestCase):
 
@@ -20,6 +20,7 @@ class ClusterTests(TestCase):
 
     def test_create_cluster(self):
         cluster = mock_cluster(num_cluster=0)
+        test_dataset = test_dataset_with_levels[0]
         terms = test_dataset["clusters"][0]["terms"]
         self.assertEqual(cluster.dataset, test_dataset["name"])
         self.assertEqual(cluster.number, 0)
@@ -40,3 +41,16 @@ class ClusterTests(TestCase):
         cluster_documents = cluster.documents()
         self.assertEqual(cluster_documents[0].content, doc1)
         self.assertEqual(cluster_documents[1].content, doc2)
+
+    # Tets that retuns an empty array when asking for the children of level 1 clusters
+    def test_children_level1(self):
+        cluster = mock_cluster(level=1)
+        self.assertEqual(cluster.children(), [])
+
+    def test_children_level2_clusters_not_linked(self):
+        mock_clusters_with_levels(level=2, linked=False)
+        validate_children_level2(self)
+
+    def test_children_level2_with_linked_clusters(self):
+        mock_clusters_with_levels(level=2, linked=True)
+        validate_children_level2(self)

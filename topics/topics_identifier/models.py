@@ -11,6 +11,7 @@ class Cluster(models.Model):
     dataset = models.CharField(max_length=25)
     number = models.IntegerField()
     level = models.IntegerField()
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     reference_document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
     terms = models.CharField(max_length=255)
 
@@ -29,8 +30,22 @@ class Cluster(models.Model):
             documents.append(cluster_document.document)
         return documents
 
+    def children(self):
+        # Level 1 is the lowest level. Does not have children.
+        if self.level == 1:
+            return []
+        # Search clusters that has this cluster assigned as parent
+        children = Cluster.objects.filter(parent=self)
+        if not children:
+            # Search clusters in the inferior level that has one of the document of this cluster as reference document
+            children = []
+            for doc in self.documents():
+                children_search = Cluster.objects.filter(dataset=self.dataset, level=self.level-1, reference_document=doc)
+                children.extend(children_search)
+        return children
+
     def __str__(self):
-        text = "Dataset "+self.dataset+" - level " + str(level) + " cluster "+str(self.number)
+        text = "Dataset "+self.dataset+" - level " + str(self.level) + " cluster "+str(self.number)
         return text
 
 class ClusterDocument(models.Model):

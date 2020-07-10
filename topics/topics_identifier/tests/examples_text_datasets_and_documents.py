@@ -1,3 +1,4 @@
+
 cluster0 = {
     "terms" : "['currar', 'ir', 'guardo', '310']",
     "reference_doc": "#310 No. Las guardo para cuando tenga que ir a currar.",
@@ -50,6 +51,39 @@ test_dataset = {
                      'data/texts/comments/comments_sample_small_1.txt',
                      'data/texts/comments/comments_sample_small_5.txt']
 }
+
+cluster0_level2 = {
+    "num_children" : 2,
+    "terms" : "['elegantemente', 'melón', 'abrir', 'forma', 'evidente', 'peor', 'niegan', 'si', '21']",
+    "reference_doc": "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",
+    "documents": [
+        "#310 No. Las guardo para cuando tenga que ir a currar.",
+        "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente..."
+        ]
+}
+cluster1_level2 = {
+    "num_children" : 2,
+    "terms" : "['chalao', 'dices', 'anticuerpos', 'transpasar', '355']",
+    "reference_doc": "#355 Transpasar anticuerpos? Que dices chalao...",
+    "documents": [
+        "#355 Transpasar anticuerpos? Que dices chalao...",
+        "#13 explícale que es la que hace que las empresas privadas no suban precios"
+        ]
+}
+
+test_dataset_level2 = {
+    "name": "test_comments10",
+    "documents": [
+        "#310 No. Las guardo para cuando tenga que ir a currar.",
+        "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",
+        "#355 Transpasar anticuerpos? Que dices chalao...",
+        "#13 explícale que es la que hace que las empresas privadas no suban precios"
+        ],
+    "clusters": [ cluster0_level2, cluster1_level2 ],
+    "predicted_clusters": [0, 0, 1, 1],
+}
+
+test_dataset_with_levels = [test_dataset, test_dataset_level2]
 
 example_documents_short = [
     "Bla bla bla", "Ble ble ble", "Bli bli bli"

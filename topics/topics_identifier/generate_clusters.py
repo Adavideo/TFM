@@ -64,6 +64,16 @@ def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_n
         cluster.add_document(content=document)
         document_index += 1
 
+# Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
+# Parent clusters are the ones that include the reference document of the children cluster.
+def link_children_clusters_to_parents(dataset_name, level):
+    parent_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+    for parent in parent_clusters:
+        children = parent.children()
+        for child_cluster in children:
+            child_cluster.parent = parent
+            child_cluster.save()
+
 def cluster_data(dataset, dataset_name, level=1):
     print(str(datetime.datetime.now().time())+" - Pre-processing documents")
     vectorized_documents, terms = process_data(dataset)
@@ -76,6 +86,8 @@ def cluster_data(dataset, dataset_name, level=1):
     store_clusters(model, dataset_name, terms, dataset.data, level)
     print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
     add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name, level)
+    print(str(datetime.datetime.now().time())+" - Linking new clusters to their children clusters in level "+str(level-1))
+    link_children_clusters_to_parents(dataset_name, level)
     print(str(datetime.datetime.now().time())+" - Clustering completed")
 
 def create_dataset_with_reference_documents(dataset_name):
