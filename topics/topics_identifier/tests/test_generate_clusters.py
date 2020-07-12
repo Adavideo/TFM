@@ -1,10 +1,10 @@
 from django.test import TestCase
-from topics_identifier.generate_clusters import cluster_data, add_documents_to_clusters, get_stop_words, create_dataset_with_reference_documents, cluster_level
+from topics_identifier.generate_clusters import *
 from topics_identifier.datasets_manager import load_dataset
 from topics_identifier.models import Cluster, Document
 from .example_datasets_and_documents import example_datasets, dataset_name, example_documents
 from .util_test_generate_clusters import create_and_store_test_clusters
-from .util_test_clusters import validate_cluster, validate_documents, validate_cluster_list
+from .util_test_clusters import validate_cluster, validate_documents, validate_cluster_list, mock_clusters_with_levels
 from .example_stop_words import example_stop_words
 
 class ClusteringTests(TestCase):
@@ -97,12 +97,35 @@ class ClusteringTests(TestCase):
             self.assertEqual(documents[index], reference_document)
 
     def test_cluster_data_level2(self):
+        level = 2
         # Initialize
         create_and_store_test_clusters(dataset_name, example_documents)
         # Execute
-        cluster_level(dataset_name, level=2)
+        cluster_level(dataset_name, level)
         # Validate
-        clusters = Cluster.objects.filter(dataset=dataset_name, level=2)
-        self.assertEqual(len(clusters), 2)
-        example_clusters_level2 = example_datasets[1]["clusters"]
-        validate_cluster_list(self, clusters, example_clusters_level2)
+        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+        example_clusters = example_datasets[level-1]["clusters"]
+        validate_cluster_list(self, clusters, example_clusters)
+
+    def test_link_children_clusters_to_parents_level1(self):
+        mock_clusters_with_levels(level=1, linked=False)
+        link_children_clusters_to_parents(dataset_name, level=1)
+        parents = Cluster.objects.filter(dataset=dataset_name, level=1)
+        for cluster in parents:
+            children = cluster.children()
+            self.assertIs(len(children), 0)
+
+    def test_link_children_clusters_to_parents_level2(self):
+        level = 2
+        mock_clusters_with_levels(level, linked=False)
+        link_children_clusters_to_parents(dataset_name, level)
+        parents = Cluster.objects.filter(dataset=dataset_name, level=level)
+        level1_clusters = example_datasets[0]["clusters"]
+        example_children = [ [ level1_clusters[0], level1_clusters[1] ],
+                             [ level1_clusters[2], level1_clusters[3] ]]
+        i = 0
+        for cluster in parents:
+            children = cluster.children()
+            validate_cluster_list(self, children, example_children[i])
+            self.assertIs(len(children), 2)
+            i += 1
