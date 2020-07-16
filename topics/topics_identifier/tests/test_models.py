@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
 from .example_datasets_and_documents import example_datasets, dataset_name, example_documents, example_document_long
-from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_children_level2
+from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_cluster_tree
 
 class DocumentTests(TestCase):
 
@@ -43,14 +43,14 @@ class ClusterTests(TestCase):
         self.assertEqual(cluster_documents[1].content, doc2)
 
     # Tets that retuns an empty array when asking for the children of level 1 clusters
-    def test_children_level1(self):
-        cluster = mock_cluster(level=1)
+    def test_children_level0(self):
+        cluster = mock_cluster(level=0)
         self.assertEqual(cluster.children(), [])
 
-    def test_children_level2_clusters_not_linked(self):
-        mock_clusters_with_levels(level=2, linked=False)
-        validate_children_level2(self)
+    def test_children_level1_clusters_not_linked(self):
+        mock_clusters_with_levels(level=1, linked=False)
+        validate_cluster_tree(self, level=1)
 
-    def test_children_level2_with_linked_clusters(self):
-        mock_clusters_with_levels(level=2, linked=True)
-        validate_children_level2(self)
+    def test_children_level1_with_linked_clusters(self):
+        mock_clusters_with_levels(level=1, linked=True)
+        validate_cluster_tree(self, level=1)

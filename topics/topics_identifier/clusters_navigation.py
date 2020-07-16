@@ -16,7 +16,7 @@ def get_datasets_clusters_list():
         datasets_list.append(info)
     return datasets_list
 
-def get_clusters_with_documents(dataset_name="", level=1):
+def get_clusters_with_documents(dataset_name="", level=0):
     if dataset_name:
         clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
     else:

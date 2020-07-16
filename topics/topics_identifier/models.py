@@ -31,8 +31,8 @@ class Cluster(models.Model):
         return documents
 
     def children(self):
-        # Level 1 is the lowest level. Does not have children.
-        if self.level == 1:
+        # Level 0 is the lowest level. Does not have children.
+        if self.level == 0:
             return []
         # Search clusters that has this cluster assigned as parent
         children = Cluster.objects.filter(parent=self)

@@ -42,39 +42,38 @@ def generate_dataset_view(request):
         context["files"] = { "number": len(dataset.filenames), "list": short_filenames }
     return render(request, template, context)
 
-def generate_clusters_view(request):
+def generate_clusters_level0_view(request):
+    level = 0
     template = "topics_identifier/generate_clusters.html"
     form = ClusterForm(request.POST)
     context = { "form": form }
     if request.method == "POST":
-        # Load the dataset
         dataset_name = request.POST["dataset_name"]
-        dataset = load_dataset(dataset_name)
         # Form clusters with the documents on the dataset
-        cluster_data(dataset, dataset_name)
+        cluster_level(dataset_name, level=level)
         # Prepare the information to show on the web page
-        all_clusters = Cluster.objects.filter(dataset=dataset_name)
+        all_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
         num_clusters = len(all_clusters)
         context["num_clusters"] = num_clusters
         context["clusters"] = all_clusters[:100]
-        dataset_info = { "name": dataset_name, "description": dataset.DESCR }
+        dataset_info = { "name": dataset_name }
         context["dataset_info"] = dataset_info
     return render(request, template, context )
 
-def generate_clusters_2_levels_view(request):
+def generate_clusters_level1_view(request):
+    level = 1
     template = "topics_identifier/generate_clusters_2_levels.html"
     form = ClusterForm(request.POST)
     context = { "form": form }
     if request.method == "POST":
-        # Load the dataset
         dataset_name = request.POST["dataset_name"]
         # Form clusters with the documents on the dataset
-        cluster_level(dataset_name, level=2)
+        cluster_level(dataset_name, level=level)
         # Prepare the information to show on the web page
-        context["dataset_name"] = dataset_name
-        all_clusters = Cluster.objects.filter(dataset=dataset_name, level=2)
+        all_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
         context["num_clusters"] = len(all_clusters)
         context["clusters"] = all_clusters
+        context["dataset_name"] = dataset_name
     return render(request, template, context )
 
 def clusters_view(request, dataset_name=None):

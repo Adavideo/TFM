@@ -41,7 +41,7 @@ def update_cluster_information(cluster, cluster_center, model, terms, documents)
     cluster.assign_reference_document(content=reference_document)
     cluster.save()
 
-def get_cluster(dataset_name, cluster_number, level=1):
+def get_cluster(dataset_name, cluster_number, level):
     cluster_search = Cluster.objects.filter(dataset=dataset_name, number=cluster_number, level=level)
     if not cluster_search:
         cluster = Cluster(dataset=dataset_name, number=cluster_number, level=level)
@@ -49,14 +49,14 @@ def get_cluster(dataset_name, cluster_number, level=1):
         cluster = cluster_search[0]
     return cluster
 
-def store_clusters(model, dataset_name, terms, documents, level=1):
+def store_clusters(model, dataset_name, terms, documents, level):
     cluster_number = 0
     for cluster_center in model.cluster_centers_:
         cluster = get_cluster(dataset_name, cluster_number, level)
         update_cluster_information(cluster, cluster_center, model, terms, documents)
         cluster_number += 1
 
-def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level=1):
+def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level=0):
     document_index = 0
     for predicted_cluster in documents_predicted_clusters:
         document = documents[document_index]
@@ -74,7 +74,7 @@ def link_children_clusters_to_parents(dataset_name, level):
             child_cluster.parent = parent
             child_cluster.save()
 
-def cluster_data(dataset, dataset_name, level=1):
+def cluster_data(dataset, dataset_name, level):
     print(str(datetime.datetime.now().time())+" - Pre-processing documents")
     vectorized_documents, terms = process_data(dataset)
     print(str(datetime.datetime.now().time())+" - Training the model")
@@ -99,7 +99,10 @@ def create_dataset_with_reference_documents(dataset_name):
     dataset['data'] = reference_documents
     return dataset
 
-def cluster_level(dataset_name, level=2):
-    dataset = create_dataset_with_reference_documents(dataset_name)
+def cluster_level(dataset_name, level):
+    if level == 0:
+        dataset = load_dataset(dataset_name)
+    else:
+        dataset = create_dataset_with_reference_documents(dataset_name)
     print("Generating level "+ str(level)+" clusters")
     cluster_data(dataset, dataset_name, level)
