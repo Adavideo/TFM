@@ -1,10 +1,9 @@
 from django.test import TestCase
 from topics_identifier.generate_clusters import *
-from topics_identifier.datasets_manager import load_dataset
-from topics_identifier.models import Cluster, Document
-from .example_datasets_and_documents import example_datasets, dataset_name, example_documents
-from .util_test_generate_clusters import create_and_store_test_clusters
-from .util_test_clusters import validate_cluster, validate_documents, validate_cluster_list, mock_clusters_with_levels
+from topics_identifier.datasets_manager import get_dataset
+from topics_identifier.models import Document
+from .util_test_generate_clusters import *
+from .util_test_clusters import *
 from .example_stop_words import example_stop_words
 
 class ClusteringTests(TestCase):
@@ -14,26 +13,19 @@ class ClusteringTests(TestCase):
         self.assertEqual(stop_words, example_stop_words)
 
     def test_store_clusters_level0(self):
-        # Initialize
-        level = 0
-        example_dataset = example_datasets[level]
-        example_clusters = example_dataset["clusters"]
-        create_and_store_test_clusters(dataset_name, example_documents)
-        # Verify
-        new_clusters = Cluster.objects.filter(dataset=dataset_name)
-        self.assertEqual(len(new_clusters), 4)
-        index = 0
-        for cluster in new_clusters:
-            self.assertEqual(cluster.dataset, dataset_name)
-            validate_cluster(self, cluster, example_clusters[index], documents=False)
-            index += 1
+        validate_store_clusters(self, level=0)
+
+    def test_store_clusters_level1(self):
+        mock_clusters_with_levels(level=0)
+        validate_store_clusters(self, level=1)
 
     def test_add_documents_to_clusters(self):
         # Initialize
-        example_dataset = example_datasets[0]
-        create_and_store_test_clusters(dataset_name, example_documents)
+        level = 0
+        example_dataset = example_datasets[level]
+        create_and_store_test_clusters(level)
         # Execute
-        add_documents_to_clusters(example_documents, example_dataset["predicted_clusters"], dataset_name)
+        add_documents_to_clusters(example_documents, example_dataset["predicted_clusters"], dataset_name, level)
         # Verify number of cllusters is correct
         created_clusters_list = Cluster.objects.filter(dataset=dataset_name)
         self.assertEqual(len(created_clusters_list), 4)
@@ -46,13 +38,14 @@ class ClusteringTests(TestCase):
 
     # Test that documents and clusters are not created twice on the database
     def test_add_documents_to_clusters_with_document_already_on_database(self):
-        test_dataset = example_datasets[0]
+        level = 0
+        test_dataset = example_datasets[level]
         # Generate clusters and add documents twice
         for i in range(0,2):
-            create_and_store_test_clusters(dataset_name, example_documents)
-            add_documents_to_clusters(example_documents, test_dataset["predicted_clusters"], dataset_name)
+            create_and_store_test_clusters(level=level)
+            add_documents_to_clusters(example_documents, test_dataset["predicted_clusters"], dataset_name, level)
         # Verify number of cllusters is correct
-        created_clusters_list = Cluster.objects.filter(dataset=dataset_name)
+        created_clusters_list = Cluster.objects.filter(dataset=dataset_name, level=level)
         self.assertEqual(len(created_clusters_list), 4)
         # Verify documents are not created or assigned twice
         cluster_index = 0
@@ -73,35 +66,18 @@ class ClusteringTests(TestCase):
                 self.assertIs(count, 1)
             cluster_index += 1
 
-    def test_cluster_data_level0(self):
-        # Initialize
-        level = 0
-        dataset = load_dataset(dataset_name)
-        # Execute
-        cluster_data(dataset, dataset_name, level)
+    def test_cluster_level0(self):
+        cluster_level(dataset_name, level=0)
         # Verify
         clusters = Cluster.objects.filter(dataset=dataset_name)
         example_clusters = example_datasets[0]["clusters"]
         validate_cluster_list(self, clusters, example_clusters)
 
-    def test_create_dataset_with_reference_documents(self):
+    def test_cluster_level1(self):
         # Initialize
-        create_and_store_test_clusters(dataset_name, example_documents)
-        # Execute
-        dataset_level1 = create_dataset_with_reference_documents(dataset_name)
-        # Verify
-        documents = dataset_level1.data
-        example_clusters = example_datasets[0]["clusters"]
-        num_clusters = len(example_clusters)
-        self.assertEqual(len(documents), num_clusters)
-        for index in range(0,num_clusters):
-            reference_document = example_clusters[index]["reference_doc"]
-            self.assertEqual(documents[index], reference_document)
-
-    def test_cluster_data_level1(self):
         level = 1
-        # Initialize
-        create_and_store_test_clusters(dataset_name, example_documents)
+        # mock the clusters up to the inmediate lower level
+        mock_clusters_with_levels(level-1, linked=False)
         # Execute
         cluster_level(dataset_name, level)
         # Validate

@@ -1,10 +1,9 @@
 import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.datasets.base import Bunch
 from .models import Cluster
 from .file_paths import stop_words_filename
-from .datasets_manager import load_dataset
+from .datasets_manager import get_dataset
 
 def get_stop_words():
     stop_words = []
@@ -56,7 +55,7 @@ def store_clusters(model, dataset_name, terms, documents, level):
         update_cluster_information(cluster, cluster_center, model, terms, documents)
         cluster_number += 1
 
-def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level=0):
+def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level):
     document_index = 0
     for predicted_cluster in documents_predicted_clusters:
         document = documents[document_index]
@@ -86,23 +85,12 @@ def cluster_data(dataset, dataset_name, level):
     store_clusters(model, dataset_name, terms, dataset.data, level)
     print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
     add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name, level)
-    print(str(datetime.datetime.now().time())+" - Linking new clusters to their children clusters in level "+str(level-1))
-    link_children_clusters_to_parents(dataset_name, level)
+    if level > 0:
+        print(str(datetime.datetime.now().time())+" - Linking new clusters to their children clusters in level "+str(level-1))
+        link_children_clusters_to_parents(dataset_name, level)
     print(str(datetime.datetime.now().time())+" - Clustering completed")
 
-def create_dataset_with_reference_documents(dataset_name):
-    all_clusters = Cluster.objects.filter(dataset=dataset_name)
-    reference_documents = []
-    for cluster in all_clusters:
-        reference_documents.append(cluster.reference_document.content)
-    dataset = Bunch()
-    dataset['data'] = reference_documents
-    return dataset
-
 def cluster_level(dataset_name, level):
-    if level == 0:
-        dataset = load_dataset(dataset_name)
-    else:
-        dataset = create_dataset_with_reference_documents(dataset_name)
-    print("Generating level "+ str(level)+" clusters")
+    dataset = get_dataset(dataset_name, level)
+    print("\nGenerating level "+ str(level)+" clusters")
     cluster_data(dataset, dataset_name, level)

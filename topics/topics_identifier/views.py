@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
-from .datasets_manager import load_and_store_dataset, load_dataset
+from .datasets_manager import load_and_store_dataset
 from .texts_documents_manager import short_texts_filenames
 from .generate_clusters import cluster_data, cluster_level
 from .clusters_navigation import get_clusters_with_documents, get_datasets_clusters_list

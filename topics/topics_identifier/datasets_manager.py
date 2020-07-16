@@ -2,13 +2,22 @@ import os
 import numpy as np
 from sklearn.datasets import load_files
 from sklearn.datasets.base import Bunch
+from .models import Cluster
 from .file_paths import texts_path, text_datasets_path
+
+def get_dataset(dataset_name, level):
+    if level == 0:
+        dataset = load_dataset_from_file(dataset_name)
+    else:
+        # Creates a dataset with the reference documents of the inferior level
+        dataset = create_dataset_with_reference_documents(dataset_name, level-1)
+    return dataset
 
 def load_dataset_from_texts(description):
     dataset = load_files(container_path=texts_path, description=description, shuffle=True, encoding="utf-8")
     return dataset
 
-def load_dataset(data_name):
+def load_dataset_from_file(data_name):
     data_file = text_datasets_path + data_name
     dataset = Bunch()
     dataset['data'] = np.load(data_file+'__data.npy')
@@ -16,6 +25,15 @@ def load_dataset(data_name):
     dataset['target'] = np.load(data_file+'__target.npy')
     dataset['target_names'] = np.load(data_file+'__target_names.npy')
     dataset['DESCR'] = np.load(data_file+'__descr.npy')
+    return dataset
+
+def create_dataset_with_reference_documents(dataset_name, level):
+    all_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+    reference_documents = []
+    for cluster in all_clusters:
+        reference_documents.append(cluster.reference_document.content)
+    dataset = Bunch()
+    dataset['data'] = reference_documents
     return dataset
 
 def store_text_dataset(dataset, dataset_name):
