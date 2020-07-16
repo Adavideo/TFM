@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.clusters_navigation import get_datasets_names_from_clusters, get_datasets_clusters_list, get_clusters_with_documents
 from .example_datasets_and_documents import example_datasets, dataset_name
-from .util_test_clusters import mock_cluster, validate_documents
+from .util_test_clusters import mock_cluster, validate_documents, mock_clusters_with_levels, validate_cluster_list
 
 class ClustersNavigationTests(TestCase):
 
@@ -72,3 +72,17 @@ class ClustersNavigationTests(TestCase):
             example_documents = example_cluster["documents"]
             validate_documents(self, cluster_info["documents"], example_documents)
             cluster_index += 1
+
+    # Test geting clusters for level 1
+    def test_get_clusters_level1(self):
+        # Initialize
+        level = 1
+        mock_clusters_with_levels(level, linked=True)
+        # Execute
+        clusters_with_documents = get_clusters_with_documents(dataset_name, level)
+        # Validate
+        clusters = []
+        for c in clusters_with_documents:
+            clusters.append(c["cluster"])
+        example_clusters = example_datasets[level]["clusters"]
+        validate_cluster_list(self, clusters, example_clusters)
