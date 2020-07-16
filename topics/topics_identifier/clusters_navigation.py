@@ -16,14 +16,28 @@ def get_datasets_clusters_list():
         datasets_list.append(info)
     return datasets_list
 
-def get_clusters_with_documents(dataset_name="", level=0):
-    if dataset_name:
-        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
-    else:
-        clusters = Cluster.objects.all()
+def insert_children(cluster, cluster_info):
+    print("\ninsert_children")
+    print(cluster)
+    children = cluster.children()
+    print(children)
+    children_with_documents = get_clusters_list_with_documents(children)
+    cluster_info["children"] = children_with_documents
+
+def get_clusters_list_with_documents(clusters, include_children=False):
     clusters_list = []
     for cluster in clusters:
         docs = cluster.documents()
         cluster_info = {"cluster": cluster, "documents": docs}
+        if include_children:
+            insert_children(cluster, cluster_info)
         clusters_list.append(cluster_info)
+    return clusters_list
+
+def get_clusters_with_documents(dataset_name="", level=0, include_children=False):
+    if dataset_name:
+        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+    else:
+        clusters = Cluster.objects.all()
+    clusters_list = get_clusters_list_with_documents(clusters, include_children)
     return clusters_list

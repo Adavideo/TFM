@@ -59,7 +59,7 @@ def validate_cluster_list(test, cluster_list, example_clusters):
         index += 1
 
 
-# CLUSTERS TREES VALIDATION
+# CLUSTERS TREES VALIDATION ON DATABASE
 
 def validate_number_of_children(test, children, parent_index, level):
     parent_dataset = example_datasets[level]

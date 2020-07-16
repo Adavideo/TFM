@@ -78,7 +78,7 @@ def generate_clusters_level1_view(request):
 
 def clusters_view(request, dataset_name=None):
     template = "topics_identifier/clusters.html"
-    clusters_list = get_clusters_with_documents(dataset_name)
+    clusters_list = get_clusters_with_documents(dataset_name, level=1, include_children=True)
     context = {"clusters_list": clusters_list, "dataset_name": dataset_name }
     return render(request, template, context )
 
