@@ -1,5 +1,5 @@
 from django.test import TestCase
-from topics_identifier.clusters_navigation import get_datasets_names_from_clusters, get_datasets_clusters_list, get_clusters_with_documents
+from topics_identifier.clusters_navigation import *
 from .example_datasets_and_documents import example_datasets, dataset_name
 from .util_test_clusters import mock_cluster, validate_documents, mock_clusters_with_levels, validate_cluster_list
 from .util_test_cluster_navigation import *
@@ -11,6 +11,16 @@ class ClustersNavigationTests(TestCase):
         datasets_names = get_datasets_names_from_clusters()
         self.assertIs(dataset_name in datasets_names, True)
 
+    def test_get_max_level_0(self):
+        mock_cluster()
+        level = get_max_level(dataset_name)
+        self.assertIs(level, 0)
+
+    def test_get_max_level_1(self):
+        mock_clusters_with_levels(level=1)
+        level = get_max_level(dataset_name)
+        self.assertIs(level, 1)
+
     def test_get_datasets_clusters_list_empty(self):
         clusters_list = get_datasets_clusters_list()
         self.assertIs(len(clusters_list), 0)
@@ -21,6 +31,7 @@ class ClustersNavigationTests(TestCase):
         self.assertIs(len(datasets_list), 1)
         self.assertEqual(datasets_list[0]["dataset_name"], dataset_name)
         self.assertIs(datasets_list[0]["num_clusters"], 1)
+        self.assertIs(datasets_list[0]["levels"], 1)
 
     def test_get_datasets_clusters_list_with_two_clusters(self):
         mock_cluster()
@@ -28,6 +39,12 @@ class ClustersNavigationTests(TestCase):
         datasets_list = get_datasets_clusters_list()
         self.assertIs(len(datasets_list), 1)
         self.assertIs(datasets_list[0]["num_clusters"], 2)
+
+    def test_get_datasets_clusters_list_level1(self):
+        mock_clusters_with_levels(level=1)
+        datasets_list = get_datasets_clusters_list()
+        self.assertIs(datasets_list[0]["levels"], 2)
+        self.assertIs(datasets_list[0]["num_clusters"], 4)
 
     # Testing the search without indicating the name of the dataset
     def test_get_clusters_with_documents_no_data_name_no_documents(self):
