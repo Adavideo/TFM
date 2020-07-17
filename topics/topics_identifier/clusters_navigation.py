@@ -45,3 +45,35 @@ def get_clusters_tree(dataset_name, include_documents):
     clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
     clusters_tree = compose_clusters_tree(clusters, include_documents)
     return clusters_tree
+
+def get_terms_from_string(terms_string):
+    terms_list = terms_string.split(",")
+    characters_to_remove = ["'","[","]"]
+    i = 0
+    for term in terms_list:
+        cleaned_term = term.strip()
+        for c in characters_to_remove:
+            cleaned_term = cleaned_term.replace(c,'')
+        terms_list[i] = cleaned_term
+        i += 1
+    return terms_list
+
+def terms_match(search_string, cluster_terms_string):
+    if not search_string:
+        return False
+    search_terms_list = get_terms_from_string(search_string)
+    cluster_terms_list = get_terms_from_string(cluster_terms_string)
+    for search_term in search_terms_list:
+        for cluster_term in cluster_terms_list:
+            if search_term == cluster_term:
+                return True
+    return False
+
+def cluster_search(dataset_name, search_string):
+    clusters_tree = []
+    all_clusters = Cluster.objects.filter(dataset=dataset_name)
+    for cluster in all_clusters:
+        if terms_match(search_string, cluster.terms):
+            tree = compose_clusters_tree([cluster], include_documents=False)
+            clusters_tree.append(tree)
+    return clusters_tree

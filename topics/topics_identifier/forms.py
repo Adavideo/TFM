@@ -21,3 +21,6 @@ class ClusterForm(forms.Form):
 class GenerateDatasetForm(forms.Form):
     dataset_name = forms.CharField(max_length=25)
     description = forms.CharField(max_length=None)
+
+class ClusterSeachForm(forms.Form):
+    search_terms = forms.CharField(max_length=100)

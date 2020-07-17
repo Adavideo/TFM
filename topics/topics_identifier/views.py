@@ -4,7 +4,7 @@ from .csv_importer import process_csv
 from .datasets_manager import load_and_store_dataset
 from .texts_documents_manager import short_texts_filenames
 from .generate_clusters import cluster_data, cluster_level
-from .clusters_navigation import get_clusters_tree, get_datasets_clusters_list, compose_clusters_tree
+from .clusters_navigation import get_clusters_tree, get_datasets_clusters_list, compose_clusters_tree, cluster_search
 from .models import Cluster
 
 def index_view(request):
@@ -84,9 +84,16 @@ def cluster_view(request, cluster_id):
     return render(request, template, context )
 
 def clusters_tree_view(request, dataset_name=None):
-    template = "topics_identifier/clusters_tree.html"
-    clusters_tree = get_clusters_tree(dataset_name, include_documents=False)
-    context = { "clusters_tree": clusters_tree, "dataset_name": dataset_name }
+    template = "topics_identifier/clusters_trees.html"
+    form = ClusterSeachForm()
+    context = {"dataset_name": dataset_name, 'form': form }
+    if request.method == "POST":
+        search_string = request.POST["search_terms"]
+        context["search_string"] = search_string
+        context["trees"] = cluster_search(dataset_name, search_string)
+    else:
+        clusters_tree = get_clusters_tree(dataset_name, include_documents=False)
+        context["trees"] = [ clusters_tree ]
     return render(request, template, context )
 
 def clusters_index_view(request):

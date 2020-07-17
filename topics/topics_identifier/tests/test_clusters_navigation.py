@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.clusters_navigation import *
 from .example_datasets_and_documents import example_datasets, dataset_name
-from .util_test_clusters import mock_cluster, validate_documents, mock_clusters_with_levels, validate_cluster_list
+from .util_test_clusters import *
 from .util_test_cluster_navigation import *
 
 class ClustersNavigationTests(TestCase):
@@ -110,3 +110,57 @@ class ClustersNavigationTests(TestCase):
         clusters_tree = get_clusters_tree(dataset_name, include_documents=True)
         # Validate
         validate_clusters_tree(self, clusters_tree, level)
+
+
+    #   CLUSTERS SEARCH
+
+    def test_get_terms_from_string_one_word(self):
+        terms_string = "hola "
+        terms = get_terms_from_string(terms_string)
+        self.assertEqual(terms, ["hola"])
+
+    def test_get_terms_from_string_two_words(self):
+        terms_string = "hola, adios"
+        terms = get_terms_from_string(terms_string)
+        self.assertEqual(terms, ["hola", "adios"])
+
+    def test_get_terms_from_string_cluster_terms_format(self):
+        terms_string = "['one', 'two', 'three']"
+        terms = get_terms_from_string(terms_string)
+        self.assertEqual(terms, ["one", "two", "three"])
+
+    def test_terms_match_empty_search(self):
+        search_string = ""
+        cluster_terms_string = "['one', 'two', 'three']"
+        match = terms_match(search_string, cluster_terms_string)
+        self.assertIs(match, False)
+
+    def test_terms_match_false(self):
+        search_string = "four"
+        cluster_terms_string = "['one', 'two', 'three']"
+        match = terms_match(search_string, cluster_terms_string)
+        self.assertIs(match, False)
+
+    def test_cluster_search_not_found(self):
+        mock_clusters_with_levels(level=1, linked=True)
+        search_string = "aaa"
+        clusters_tree = cluster_search(dataset_name, search_string)
+        self.assertEqual(clusters_tree, [])
+
+    def test_cluster_search_found(self):
+        mock_clusters_with_levels(level=1, linked=True)
+        search_string = "abrir"
+        trees = cluster_search(dataset_name, search_string)
+        self.assertEqual(len(trees), 2)
+        cluster0 = trees[0][0]["cluster"]
+        self.assertEqual(type(cluster0), type(Cluster()))
+        self.assertEqual(cluster0.level, 0)
+        self.assertEqual(cluster0.number, 1)
+        example_cluster0 = example_datasets[0]["clusters"][1]
+        validate_cluster(self, cluster0, example_cluster0, documents=False)
+        cluster1 = trees[1][0]["cluster"]
+        self.assertEqual(type(cluster1), type(Cluster()))
+        self.assertEqual(cluster1.level, 1)
+        self.assertEqual(cluster1.number, 0)
+        example_cluster1 = example_datasets[1]["clusters"][0]
+        validate_cluster(self, cluster1, example_cluster1, documents=False)
