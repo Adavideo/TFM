@@ -7,7 +7,7 @@
 
   {% for info in datasets_clusters_list %}
     <h4>
-      <a href="{% url 'dataset_clusters' info.dataset_name %}">
+      <a href="{% url 'clusters_tree' info.dataset_name %}">
         Dataset {{ info.dataset_name }}</a>
         Clusters: {{ info.num_clusters }}
         Levels: {{ info.levels }}

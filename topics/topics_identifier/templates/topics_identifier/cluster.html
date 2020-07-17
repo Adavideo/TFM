@@ -1,0 +1,46 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+
+  <h2>Cluster {{ cluster_info.cluster.number }} level 1 - from dataset {{ cluster_info.cluster.dataset }}</h2><br>
+
+    <b>Terms:</b><br>
+      {{ cluster_info.cluster.terms }}<br>
+    <br>
+    <b>Reference document: </b><br>
+    {{ cluster_info.cluster.reference_document.content }}
+    <br>
+
+      <br>
+      <b>Documents:</b><br><br>
+      {% for document in cluster_info.documents %}
+        {{ document.content }}<br><br>
+      {% endfor %}
+
+
+    {% if cluster_info.children %}
+      <hr>
+      <h3>Sub clusters: </h3><br>
+
+      {% for child in cluster_info.children %}
+        <h4>level 0 - Cluster {{ child.cluster.number }}</h4>
+        <b>Terms:</b><br>
+          {{ child.cluster.terms }}<br>
+        <br>
+        <b>Reference document: </b><br>
+        {{ child.cluster.reference_document.content }}
+        <br><br>
+
+        {% if child.documents %}
+          <b>Documents:</b><br><br>
+          {% for document in child.documents %}
+            {{ document.content }}<br><br>
+          {% endfor %}
+        {% endif %}
+
+      {% endfor %}
+    {% endif %}
+
+
+
+{% endblock %}

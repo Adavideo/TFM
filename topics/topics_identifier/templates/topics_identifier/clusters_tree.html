@@ -2,15 +2,13 @@
 
 {% block content %}
 
-{% if dataset_name %}
-  <h2>Clusters from dataset {{ dataset_name }}</h2><br>
-{% else %}
-  <h2>Clusters</h2><br>
-{% endif %}
+<h2>Clusters from dataset {{ dataset_name }}</h2><br>
 
-  {% for cluster_info in clusters_list %}
+  {% for cluster_info in clusters_tree %}
     <hr>
-    <h3>Level 1 - Cluster {{ cluster_info.cluster.number }} </h3><br>
+    <h3><a href="{% url 'cluster' cluster_info.cluster.id %}">
+      Level 1 - Cluster {{ cluster_info.cluster.number }}</a>
+    </h3><br>
     <b>Terms:</b><br>
       {{ cluster_info.cluster.terms }}<br>
     <br>
