@@ -10,32 +10,41 @@
 
   {% for cluster_info in clusters_list %}
     <hr>
-    <h3>Dataset {{ cluster_info.cluster.dataset }} level 1 - Cluster {{ cluster_info.cluster.number }} </h3><br>
+    <h3>Level 1 - Cluster {{ cluster_info.cluster.number }} </h3><br>
     <b>Terms:</b><br>
       {{ cluster_info.cluster.terms }}<br>
     <br>
     <b>Reference document: </b><br>
     {{ cluster_info.cluster.reference_document.content }}
-    <br><br>
-    <b>Documents:</b><br><br>
-    {% for document in cluster_info.documents %}
-      {{ document.content }}<br><br>
-    {% endfor %}
+    <br>
+
+    {% if cluster_info.documents %}
+      <br>
+      <b>Documents:</b><br><br>
+      {% for document in cluster_info.documents %}
+        {{ document.content }}<br><br>
+      {% endfor %}
+    {% endif %}
 
     {% if cluster_info.children %}
-      <h3>Sub clusters: </h3>
-      {% for children in cluster_info.children %}
-        <h4>level 0 - Cluster {{ children.cluster.number }}</h4>
+      <hr>
+      <h3>Sub clusters: </h3><br>
+      {% for child in cluster_info.children %}
+        <h4>level 0 - Cluster {{ child.cluster.number }}</h4>
         <b>Terms:</b><br>
-          {{ children.cluster.terms }}<br>
+          {{ child.cluster.terms }}<br>
         <br>
         <b>Reference document: </b><br>
-        {{ children.cluster.reference_document.content }}
+        {{ child.cluster.reference_document.content }}
         <br><br>
-        <b>Documents:</b><br><br>
-        {% for document in children.documents %}
-          {{ document.content }}<br><br>
-        {% endfor %}
+
+        {% if child.documents %}
+          <b>Documents:</b><br><br>
+          {% for document in children.documents %}
+            {{ document.content }}<br><br>
+          {% endfor %}
+        {% endif %}
+
       {% endfor %}
     {% endif %}
   {% endfor %}

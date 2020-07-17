@@ -25,23 +25,23 @@ def get_datasets_clusters_list():
         datasets_list.append(info)
     return datasets_list
 
-def insert_children(cluster, cluster_info):
+def insert_children(cluster, cluster_info, include_documents):
     children = cluster.children()
-    children_with_documents = get_clusters_list_with_documents(children)
-    cluster_info["children"] = children_with_documents
+    children_tree = compose_clusters_tree(children, include_documents)
+    cluster_info["children"] = children_tree
 
-def get_clusters_list_with_documents(clusters, include_children=True):
-    clusters_list = []
+def compose_clusters_tree(clusters, include_documents):
+    clusters_tree = []
     for cluster in clusters:
-        docs = cluster.documents()
-        cluster_info = {"cluster": cluster, "documents": docs}
-        if include_children:
-            insert_children(cluster, cluster_info)
-        clusters_list.append(cluster_info)
-    return clusters_list
+        cluster_info = {"cluster": cluster }
+        insert_children(cluster, cluster_info, include_documents)
+        if include_documents:
+            cluster_info["documents"] = cluster.documents()
+        clusters_tree.append(cluster_info)
+    return clusters_tree
 
-def get_clusters_information(dataset_name, include_children=True):
+def get_clusters_tree(dataset_name, include_documents):
     level = get_max_level(dataset_name)
     clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
-    clusters_list = get_clusters_list_with_documents(clusters, include_children)
-    return clusters_list
+    clusters_tree = compose_clusters_tree(clusters, include_documents)
+    return clusters_tree
