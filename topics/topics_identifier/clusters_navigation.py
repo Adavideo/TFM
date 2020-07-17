@@ -26,10 +26,7 @@ def get_datasets_clusters_list():
     return datasets_list
 
 def insert_children(cluster, cluster_info):
-    print("\ninsert_children")
-    print(cluster)
     children = cluster.children()
-    print(children)
     children_with_documents = get_clusters_list_with_documents(children)
     cluster_info["children"] = children_with_documents
 
