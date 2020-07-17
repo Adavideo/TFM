@@ -49,7 +49,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search without indicating the name of the dataset
     def test_get_clusters_with_documents_no_data_name_no_documents(self):
         new_cluster0 = mock_cluster()
-        clusters_list = get_clusters_with_documents()
+        clusters_list = get_clusters_information(dataset_name)
         self.assertIs(len(clusters_list), 1)
         self.assertEqual(clusters_list[0]["cluster"], new_cluster0)
         self.assertEqual(clusters_list[0]["documents"], [])
@@ -57,7 +57,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search indicating the name of the dataset
     def test_get_clusters_with_documents_search_data_name_no_documents(self):
         new_cluster0 = mock_cluster()
-        clusters_list = get_clusters_with_documents(dataset_name)
+        clusters_list = get_clusters_information(dataset_name)
         self.assertIs(len(clusters_list), 1)
         self.assertEqual(clusters_list[0]["cluster"], new_cluster0)
         self.assertEqual(clusters_list[0]["documents"], [])
@@ -65,7 +65,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search with documents already assigned to one cluster
     def test_get_clusters_with_documents_mock_documents_one_cluster(self):
         mock_cluster0 = mock_cluster(num_cluster=0, documents=True)
-        clusters_list = get_clusters_with_documents(dataset_name)
+        clusters_list = get_clusters_information(dataset_name)
         self.assertIs(len(clusters_list), 1)
         cluster = clusters_list[0]["cluster"]
         self.assertEqual(cluster, mock_cluster0)
@@ -76,7 +76,7 @@ class ClustersNavigationTests(TestCase):
     def test_get_clusters_with_documents_mock_documents_two_clusters(self):
         mock_cluster0 = mock_cluster(num_cluster=0, documents=True)
         mock_cluster1 = mock_cluster(num_cluster=1, documents=True)
-        clusters_list = get_clusters_with_documents(dataset_name)
+        clusters_list = get_clusters_information(dataset_name)
         # Validate clusters
         self.assertIs(len(clusters_list), 2)
         cluster0 = clusters_list[0]["cluster"]
@@ -97,7 +97,7 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level, linked=False)
         # Execute
-        clusters_with_documents = get_clusters_with_documents(dataset_name, level)
+        clusters_with_documents = get_clusters_information(dataset_name, level)
         # Validate
         validate_clusters_with_documents(self, clusters_with_documents, level, include_children=False)
 
@@ -106,6 +106,6 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level, linked=True)
         # Execute
-        clusters_with_documents = get_clusters_with_documents(dataset_name, level, include_children=True)
+        clusters_with_documents = get_clusters_information(dataset_name, level, include_children=True)
         # Validate
         validate_clusters_with_documents(self, clusters_with_documents, level, include_children=True)

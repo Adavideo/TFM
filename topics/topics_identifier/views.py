@@ -4,7 +4,7 @@ from .csv_importer import process_csv
 from .datasets_manager import load_and_store_dataset
 from .texts_documents_manager import short_texts_filenames
 from .generate_clusters import cluster_data, cluster_level
-from .clusters_navigation import get_clusters_with_documents, get_datasets_clusters_list
+from .clusters_navigation import get_clusters_information, get_datasets_clusters_list
 from .models import Cluster
 
 def index_view(request):
@@ -78,7 +78,7 @@ def generate_clusters_level1_view(request):
 
 def clusters_view(request, dataset_name=None):
     template = "topics_identifier/clusters.html"
-    clusters_list = get_clusters_with_documents(dataset_name, level=1, include_children=True)
+    clusters_list = get_clusters_information(dataset_name, include_children=True)
     context = {"clusters_list": clusters_list, "dataset_name": dataset_name }
     return render(request, template, context )
 

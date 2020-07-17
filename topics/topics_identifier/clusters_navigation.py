@@ -40,10 +40,7 @@ def get_clusters_list_with_documents(clusters, include_children=False):
         clusters_list.append(cluster_info)
     return clusters_list
 
-def get_clusters_with_documents(dataset_name="", level=0, include_children=False):
-    if dataset_name:
-        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
-    else:
-        clusters = Cluster.objects.all()
+def get_clusters_information(dataset_name, level=0, include_children=False):
+    clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
     clusters_list = get_clusters_list_with_documents(clusters, include_children)
     return clusters_list
