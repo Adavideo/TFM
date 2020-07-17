@@ -30,7 +30,7 @@ def insert_children(cluster, cluster_info):
     children_with_documents = get_clusters_list_with_documents(children)
     cluster_info["children"] = children_with_documents
 
-def get_clusters_list_with_documents(clusters, include_children=False):
+def get_clusters_list_with_documents(clusters, include_children=True):
     clusters_list = []
     for cluster in clusters:
         docs = cluster.documents()
@@ -40,7 +40,7 @@ def get_clusters_list_with_documents(clusters, include_children=False):
         clusters_list.append(cluster_info)
     return clusters_list
 
-def get_clusters_information(dataset_name, level=0, include_children=False):
+def get_clusters_information(dataset_name, level=0, include_children=True):
     clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
     clusters_list = get_clusters_list_with_documents(clusters, include_children)
     return clusters_list
