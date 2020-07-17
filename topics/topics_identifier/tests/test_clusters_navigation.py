@@ -97,7 +97,7 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level, linked=False)
         # Execute
-        clusters_with_documents = get_clusters_information(dataset_name, level)
+        clusters_with_documents = get_clusters_information(dataset_name)
         # Validate
         validate_clusters_with_documents(self, clusters_with_documents, level, include_children=False)
 
@@ -106,6 +106,6 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level, linked=True)
         # Execute
-        clusters_with_documents = get_clusters_information(dataset_name, level, include_children=True)
+        clusters_with_documents = get_clusters_information(dataset_name)
         # Validate
         validate_clusters_with_documents(self, clusters_with_documents, level, include_children=True)
