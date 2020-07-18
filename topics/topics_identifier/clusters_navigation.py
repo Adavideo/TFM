@@ -58,16 +58,28 @@ def get_terms_from_string(terms_string):
         i += 1
     return terms_list
 
+def get_match_list(search_terms, cluster_terms):
+    match_list = []
+    for term in search_terms:
+        term_match = False
+        for cluster_term in cluster_terms:
+            if term == cluster_term:
+                term_match = True
+        match_list.append(term_match)
+    return match_list
+
+
 def terms_match(search_string, cluster_terms_string):
     if not search_string:
         return False
-    search_terms_list = get_terms_from_string(search_string)
-    cluster_terms_list = get_terms_from_string(cluster_terms_string)
-    for search_term in search_terms_list:
-        for cluster_term in cluster_terms_list:
-            if search_term == cluster_term:
-                return True
-    return False
+    search_terms = get_terms_from_string(search_string)
+    cluster_terms = get_terms_from_string(cluster_terms_string)
+    match_list = get_match_list(search_terms, cluster_terms)
+    # If any of the terms doesn't match returns False
+    for term_match in match_list:
+        if not term_match:
+            return False
+    return True
 
 def cluster_search(dataset_name, search_string):
     clusters_tree = []

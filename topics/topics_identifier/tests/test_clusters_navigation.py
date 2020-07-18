@@ -147,9 +147,27 @@ class ClustersNavigationTests(TestCase):
         clusters_tree = cluster_search(dataset_name, search_string)
         self.assertEqual(clusters_tree, [])
 
-    def test_cluster_search_found(self):
+    def test_cluster_search_found_one_term(self):
         mock_clusters_with_levels(level=1, linked=True)
         search_string = "abrir"
+        trees = cluster_search(dataset_name, search_string)
+        self.assertEqual(len(trees), 2)
+        cluster0 = trees[0][0]["cluster"]
+        self.assertEqual(type(cluster0), type(Cluster()))
+        self.assertEqual(cluster0.level, 0)
+        self.assertEqual(cluster0.number, 1)
+        example_cluster0 = example_datasets[0]["clusters"][1]
+        validate_cluster(self, cluster0, example_cluster0, documents=False)
+        cluster1 = trees[1][0]["cluster"]
+        self.assertEqual(type(cluster1), type(Cluster()))
+        self.assertEqual(cluster1.level, 1)
+        self.assertEqual(cluster1.number, 0)
+        example_cluster1 = example_datasets[1]["clusters"][0]
+        validate_cluster(self, cluster1, example_cluster1, documents=False)
+
+    def test_cluster_search_found_two_terms(self):
+        mock_clusters_with_levels(level=1, linked=True)
+        search_string = "abrir, melón"
         trees = cluster_search(dataset_name, search_string)
         self.assertEqual(len(trees), 2)
         cluster0 = trees[0][0]["cluster"]
