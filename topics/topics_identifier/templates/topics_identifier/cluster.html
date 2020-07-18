@@ -1,46 +1,28 @@
-{% extends 'topics_identifier/base.html' %}
 
-{% block content %}
+<h3><a href="{% url 'cluster' cluster.id %}">
+  Level {{ cluster.level }} - Cluster {{ cluster.number }}</a>
+</h3><br>
+<b>Terms:</b><br>
+  {{ cluster.terms }}<br>
+<br>
+<b>Reference document: </b><br>
+{{ cluster.reference_document.content }}
+<br>
 
-  <h2>Level {{ cluster_info.cluster.level }} Cluster {{ cluster_info.cluster.number }} - from dataset {{ cluster_info.cluster.dataset }}</h2><br>
+{% if documents %}
+  <br>
+  <b>Documents:</b><br><br>
+  {% for document in documents %}
+    {{ document.content }}<br><br>
+  {% endfor %}
+{% endif %}
 
-    <b>Terms:</b><br>
-      {{ cluster_info.cluster.terms }}<br>
-    <br>
-    <b>Reference document: </b><br>
-    {{ cluster_info.cluster.reference_document.content }}
-    <br>
-
-      <br>
-      <b>Documents:</b><br><br>
-      {% for document in cluster_info.documents %}
-        {{ document.content }}<br><br>
-      {% endfor %}
-
-
-    {% if cluster_info.children %}
-      <hr>
-      <h3>Sub clusters: </h3><br>
-
-      {% for child in cluster_info.children %}
-        <h4>level 0 - Cluster {{ child.cluster.number }}</h4>
-        <b>Terms:</b><br>
-          {{ child.cluster.terms }}<br>
-        <br>
-        <b>Reference document: </b><br>
-        {{ child.cluster.reference_document.content }}
-        <br><br>
-
-        {% if child.documents %}
-          <b>Documents:</b><br><br>
-          {% for document in child.documents %}
-            {{ document.content }}<br><br>
-          {% endfor %}
-        {% endif %}
-
-      {% endfor %}
-    {% endif %}
-
-
-
-{% endblock %}
+{% if children %}
+  <hr>
+  <h3>Sub clusters: </h3><br>
+  {% for child in children %}
+    {% with cluster=child.cluster documents=child.documents children=child.children %}
+      {% include "topics_identifier/cluster.html" %}
+    {% endwith %}
+  {% endfor %}
+{% endif %}

@@ -77,7 +77,7 @@ def generate_clusters_level1_view(request):
     return render(request, template, context )
 
 def cluster_view(request, cluster_id):
-    template = "topics_identifier/cluster.html"
+    template = "topics_identifier/cluster_page.html"
     cluster = Cluster.objects.get(id=cluster_id)
     cluster_tree = compose_clusters_tree([cluster], include_documents=True)
     context = { "cluster_info": cluster_tree[0] }
