@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.clusters_navigation import *
-from .example_datasets_and_documents import example_datasets, dataset_name
+from .example_datasets_and_documents import example_datasets, tree_name
 from .util_test_clusters import *
 from .util_test_cluster_navigation import *
 
@@ -9,16 +9,16 @@ class ClustersNavigationTests(TestCase):
     def test_get_datasets_names_from_clusters(self):
         cluster = mock_cluster()
         datasets_names = get_datasets_names_from_clusters()
-        self.assertIs(dataset_name in datasets_names, True)
+        self.assertIs(tree_name in datasets_names, True)
 
     def test_get_max_level_0(self):
         mock_cluster()
-        level = get_max_level(dataset_name)
+        level = get_max_level(tree_name)
         self.assertIs(level, 0)
 
     def test_get_max_level_1(self):
         mock_clusters_with_levels(level=1)
-        level = get_max_level(dataset_name)
+        level = get_max_level(tree_name)
         self.assertIs(level, 1)
 
     def test_get_datasets_clusters_list_empty(self):
@@ -29,7 +29,7 @@ class ClustersNavigationTests(TestCase):
         mock_cluster()
         datasets_list = get_datasets_clusters_list()
         self.assertIs(len(datasets_list), 1)
-        self.assertEqual(datasets_list[0]["dataset_name"], dataset_name)
+        self.assertEqual(datasets_list[0]["dataset_name"], tree_name)
         self.assertIs(datasets_list[0]["num_clusters"], 1)
         self.assertIs(datasets_list[0]["levels"], 1)
 
@@ -49,7 +49,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search whithout documents
     def test_get_clusters_tree(self):
         new_cluster0 = mock_cluster()
-        clusters_list = get_clusters_tree(dataset_name, include_documents=True)
+        clusters_list = get_clusters_tree(tree_name, include_documents=True)
         self.assertIs(len(clusters_list), 1)
         self.assertEqual(clusters_list[0]["cluster"], new_cluster0)
         self.assertEqual(clusters_list[0]["documents"], [])
@@ -57,7 +57,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search when we request the documents but there is none
     def test_get_clusters_with_documents_when_no_documents_exist(self):
         new_cluster0 = mock_cluster()
-        clusters_list = get_clusters_tree(dataset_name, include_documents=True)
+        clusters_list = get_clusters_tree(tree_name, include_documents=True)
         self.assertIs(len(clusters_list), 1)
         self.assertEqual(clusters_list[0]["cluster"], new_cluster0)
         self.assertEqual(clusters_list[0]["documents"], [])
@@ -65,7 +65,7 @@ class ClustersNavigationTests(TestCase):
     # Testing the search with documents already assigned to one cluster
     def test_get_clusters_with_documents_mock_documents_one_cluster(self):
         mock_cluster0 = mock_cluster(num_cluster=0, documents=True)
-        clusters_list = get_clusters_tree(dataset_name, include_documents=True)
+        clusters_list = get_clusters_tree(tree_name, include_documents=True)
         self.assertIs(len(clusters_list), 1)
         cluster = clusters_list[0]["cluster"]
         self.assertEqual(cluster, mock_cluster0)
@@ -76,7 +76,7 @@ class ClustersNavigationTests(TestCase):
     def test_get_clusters_with_documents_mock_documents_two_clusters(self):
         mock_cluster0 = mock_cluster(num_cluster=0, documents=True)
         mock_cluster1 = mock_cluster(num_cluster=1, documents=True)
-        clusters_list = get_clusters_tree(dataset_name, include_documents=True)
+        clusters_list = get_clusters_tree(tree_name, include_documents=True)
         # Validate clusters
         self.assertIs(len(clusters_list), 2)
         cluster0 = clusters_list[0]["cluster"]
@@ -97,7 +97,7 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level=level, linked=True)
         # Execute
-        clusters_tree = get_clusters_tree(dataset_name, include_documents=False)
+        clusters_tree = get_clusters_tree(tree_name, include_documents=False)
         # Validate
         validate_clusters_tree(self, clusters_tree, level)
 
@@ -107,7 +107,7 @@ class ClustersNavigationTests(TestCase):
         level = 1
         mock_clusters_with_levels(level=level, linked=True)
         # Execute
-        clusters_tree = get_clusters_tree(dataset_name, include_documents=True)
+        clusters_tree = get_clusters_tree(tree_name, include_documents=True)
         # Validate
         validate_clusters_tree(self, clusters_tree, level)
 
@@ -144,13 +144,13 @@ class ClustersNavigationTests(TestCase):
     def test_cluster_search_not_found(self):
         mock_clusters_with_levels(level=1, linked=True)
         search_string = "aaa"
-        clusters_tree = cluster_search(dataset_name, search_string)
+        clusters_tree = cluster_search(tree_name, search_string)
         self.assertEqual(clusters_tree, [])
 
     def test_cluster_search_found_one_term(self):
         mock_clusters_with_levels(level=1, linked=True)
         search_string = "abrir"
-        trees = cluster_search(dataset_name, search_string)
+        trees = cluster_search(tree_name, search_string)
         self.assertEqual(len(trees), 2)
         cluster0 = trees[0][0]["cluster"]
         self.assertEqual(type(cluster0), type(Cluster()))
@@ -168,7 +168,7 @@ class ClustersNavigationTests(TestCase):
     def test_cluster_search_found_two_terms(self):
         mock_clusters_with_levels(level=1, linked=True)
         search_string = "abrir, melón"
-        trees = cluster_search(dataset_name, search_string)
+        trees = cluster_search(tree_name, search_string)
         self.assertEqual(len(trees), 2)
         cluster0 = trees[0][0]["cluster"]
         self.assertEqual(type(cluster0), type(Cluster()))

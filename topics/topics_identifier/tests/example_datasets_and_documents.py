@@ -17,7 +17,7 @@ example_document_long = '''Explicando el famoso paper: "Proyectando la dinámica
 
 # DATASETS
 
-dataset_name = "test_comments10"
+tree_name = "test_comments10"
 
 # DATASET LEVEL 0
 
@@ -46,7 +46,7 @@ cluster3_level0 = {
 }
 
 dataset_level0 = {
-    "name": dataset_name,
+    "name": tree_name,
     "description": "Test dataset with 10 documents",
     "terms": "['13', '2010', '21', '23', '310', '355', '40', '8kbxfauvdxa', 'abrir', 'ahora', 'alarma', 'allá', 'anterior', 'anticuerpos', 'aunque', 'años', 'basta', 'be', 'boe', 'brutal', 'chalao', 'cierto', 'cobra', 'cobran', 'colau', 'consta', 'cuenta', 'currar', 'cuéntame', 'darse', 'deficitarias', 'después', 'dices', 'elegantemente', 'empresas', 'enteras', 'evidente', 'explícale', 'expresidente', 'expresidentes', 'fallout', 'falta', 'forma', 'full', 'gatos', 'guardo', 'gustan', 'hace', 'https', 'improductivas', 'injustamente', 'ir', 'jugar', 'ley', 'llegara', 'lol', 'melón', 'mismo', 'mitad', 'montilla', 'niegan', 'origen', 'pantomima', 'parlamento', 'penalice', 'pensión', 'peor', 'precios', 'privadas', 'problemas', 'prohíba', 'publicaciones', 'pujol', 'regiones', 'retiraron', 'sabes', 'sacado', 'sepas', 'si', 'suban', 'subido', 'sueldo', 'todas', 'torra', 'transpasar', 'youtu']",
     "documents": example_documents,
@@ -87,7 +87,7 @@ cluster1_level1 = {
 }
 
 dataset_level1 = {
-    "name": dataset_name,
+    "name": tree_name,
     "documents": [
         "#310 No. Las guardo para cuando tenga que ir a currar.",
         "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",

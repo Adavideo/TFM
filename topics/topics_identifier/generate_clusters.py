@@ -3,7 +3,7 @@ from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .models import Cluster
 from .file_paths import stop_words_filename
-from .datasets_manager import get_dataset
+from .datasets_manager import generate_dataset
 
 def get_stop_words():
     stop_words = []
@@ -40,40 +40,40 @@ def update_cluster_information(cluster, cluster_center, model, terms, documents)
     cluster.assign_reference_document(content=reference_document)
     cluster.save()
 
-def get_cluster(dataset_name, cluster_number, level):
-    cluster_search = Cluster.objects.filter(dataset=dataset_name, number=cluster_number, level=level)
+def get_cluster(tree_name, cluster_number, level):
+    cluster_search = Cluster.objects.filter(dataset=tree_name, number=cluster_number, level=level)
     if not cluster_search:
-        cluster = Cluster(dataset=dataset_name, number=cluster_number, level=level)
+        cluster = Cluster(dataset=tree_name, number=cluster_number, level=level)
     else:
         cluster = cluster_search[0]
     return cluster
 
-def store_clusters(model, dataset_name, terms, documents, level):
+def store_clusters(model, tree_name, terms, documents, level):
     cluster_number = 0
     for cluster_center in model.cluster_centers_:
-        cluster = get_cluster(dataset_name, cluster_number, level)
+        cluster = get_cluster(tree_name, cluster_number, level)
         update_cluster_information(cluster, cluster_center, model, terms, documents)
         cluster_number += 1
 
-def add_documents_to_clusters(documents, documents_predicted_clusters, dataset_name, level):
+def add_documents_to_clusters(documents, documents_predicted_clusters, tree_name, level):
     document_index = 0
     for predicted_cluster in documents_predicted_clusters:
         document = documents[document_index]
-        cluster = get_cluster(dataset_name, predicted_cluster, level)
+        cluster = get_cluster(tree_name, predicted_cluster, level)
         cluster.add_document(content=document)
         document_index += 1
 
 # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
 # Parent clusters are the ones that include the reference document of the children cluster.
-def link_children_clusters_to_parents(dataset_name, level):
-    parent_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+def link_children_clusters_to_parents(tree_name, level):
+    parent_clusters = Cluster.objects.filter(dataset=tree_name, level=level)
     for parent in parent_clusters:
         children = parent.children()
         for child_cluster in children:
             child_cluster.parent = parent
             child_cluster.save()
 
-def cluster_data(dataset, dataset_name, level):
+def cluster_data(dataset, tree_name, level):
     print(str(datetime.datetime.now().time())+" - Pre-processing documents")
     vectorized_documents, terms = process_data(dataset)
     print(str(datetime.datetime.now().time())+" - Training the model")
@@ -82,15 +82,15 @@ def cluster_data(dataset, dataset_name, level):
     print(str(datetime.datetime.now().time())+" - Predicting clusters")
     documents_predicted_clusters = model.predict(vectorized_documents)
     print(str(datetime.datetime.now().time())+" - Storing clusters information")
-    store_clusters(model, dataset_name, terms, dataset.data, level)
+    store_clusters(model, tree_name, terms, dataset.data, level)
     print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
-    add_documents_to_clusters(dataset.data, documents_predicted_clusters, dataset_name, level)
+    add_documents_to_clusters(dataset.data, documents_predicted_clusters, tree_name, level)
     if level > 0:
         print(str(datetime.datetime.now().time())+" - Linking new clusters to their children clusters in level "+str(level-1))
-        link_children_clusters_to_parents(dataset_name, level)
+        link_children_clusters_to_parents(tree_name, level)
     print(str(datetime.datetime.now().time())+" - Clustering completed")
 
-def cluster_level(dataset_name, level):
-    dataset = get_dataset(dataset_name, level)
+def cluster_level(tree_name, level):
+    dataset = generate_dataset(level, tree_name)
     print("\nGenerating level "+ str(level)+" clusters")
-    cluster_data(dataset, dataset_name, level)
+    cluster_data(dataset, tree_name, level)

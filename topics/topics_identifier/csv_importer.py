@@ -1,7 +1,12 @@
 import csv, io
-from .texts_documents_manager import store_text_in_file, count_existing_files
+from topics_identifier.models import Document
 
 # PROCESS DATA
+
+def store_document(text, file_type):
+    doc, created = Document.objects.get_or_create(content=text)
+    if created:
+        doc.save()
 
 def clean_text(text):
     quotes = "&quot;"
@@ -19,29 +24,32 @@ def process_comment(column):
     result = { "content": content}
     return result
 
-def process_csv_line(column, file_type, data_name, file_number):
+def process_csv_line(column, file_type):
     if file_type == "news":
         result = process_news(column)
         text = result["title"] + "\n" + result["content"]
-        store_text_in_file(text, file_type, data_name, file_number)
+        store_document(text, file_type)
     elif file_type == "comments":
         result = process_comment(column)
-        store_text_in_file(result["content"], file_type, data_name, file_number)
+        store_document(result["content"], file_type)
     else:
         result = "File type "+ str(file_type) + " not recognised"
     return result
 
-def process_data(csv_reader, file_type, data_name, total_num_registers):
+def show_progress(num_register, total):
+    completed = 100.0 * num_register / total
+    progress = str(num_register)+" of "+str(total)+" registers. "+str(completed)+"% completed"
+    print(progress)
+    return progress
+
+def process_data(csv_reader, file_type, total_num_registers):
     result = []
-    existing_files = count_existing_files(type=file_type)
-    file_number = existing_files + 1
+    num_register = 1
     for column in csv_reader:
-        r = process_csv_line(column, file_type, data_name, file_number)
+        r = process_csv_line(column, file_type)
         result.append(r)
-        register = file_number - existing_files
-        completed = 100.0 * register / total_num_registers
-        print(str(register)+" of "+str(total_num_registers)+" registers. "+str(completed)+"% completed")
-        file_number += 1
+        show_progress(num_register, total_num_registers)
+        num_register += 1
     return result
 
 
@@ -86,8 +94,7 @@ def process_csv(file):
     if file_type == "incorrect":
         result = ["Incorrect file type"]
     else:
-        data_name = file.name.split('.')[0]
         num_registers = get_number_of_registers(file_content)
         print("\nProcessing "+file_type+" csv file with "+str(num_registers)+" registers.")
-        result = process_data(csv_reader, file_type, data_name, num_registers)
+        result = process_data(csv_reader, file_type, num_registers)
     return result

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.generate_clusters import *
-from topics_identifier.datasets_manager import get_dataset
+from topics_identifier.datasets_manager import generate_dataset
 from topics_identifier.models import Document
 from .util_test_generate_clusters import *
 from .util_test_clusters import *
@@ -13,6 +13,7 @@ class ClusteringTests(TestCase):
         self.assertEqual(stop_words, example_stop_words)
 
     def test_store_clusters_level0(self):
+        mock_documents()
         validate_store_clusters(self, level=0)
 
     def test_store_clusters_level1(self):
@@ -23,11 +24,12 @@ class ClusteringTests(TestCase):
         # Initialize
         level = 0
         example_dataset = example_datasets[level]
+        mock_documents()
         create_and_store_test_clusters(level)
         # Execute
-        add_documents_to_clusters(example_documents, example_dataset["predicted_clusters"], dataset_name, level)
+        add_documents_to_clusters(example_documents, example_dataset["predicted_clusters"], tree_name, level)
         # Verify number of cllusters is correct
-        created_clusters_list = Cluster.objects.filter(dataset=dataset_name)
+        created_clusters_list = Cluster.objects.filter(dataset=tree_name)
         self.assertEqual(len(created_clusters_list), 4)
         # Verify documents are assigned to the correct cluster
         cluster_index = 0
@@ -40,12 +42,13 @@ class ClusteringTests(TestCase):
     def test_add_documents_to_clusters_with_document_already_on_database(self):
         level = 0
         test_dataset = example_datasets[level]
+        mock_documents()
         # Generate clusters and add documents twice
         for i in range(0,2):
             create_and_store_test_clusters(level=level)
-            add_documents_to_clusters(example_documents, test_dataset["predicted_clusters"], dataset_name, level)
+            add_documents_to_clusters(example_documents, test_dataset["predicted_clusters"], tree_name, level)
         # Verify number of cllusters is correct
-        created_clusters_list = Cluster.objects.filter(dataset=dataset_name, level=level)
+        created_clusters_list = Cluster.objects.filter(dataset=tree_name, level=level)
         self.assertEqual(len(created_clusters_list), 4)
         # Verify documents are not created or assigned twice
         cluster_index = 0
@@ -67,9 +70,10 @@ class ClusteringTests(TestCase):
             cluster_index += 1
 
     def test_cluster_level0(self):
-        cluster_level(dataset_name, level=0)
+        mock_documents()
+        cluster_level(tree_name, level=0)
         # Verify
-        clusters = Cluster.objects.filter(dataset=dataset_name)
+        clusters = Cluster.objects.filter(dataset=tree_name)
         example_clusters = example_datasets[0]["clusters"]
         validate_cluster_list(self, clusters, example_clusters)
 
@@ -79,17 +83,17 @@ class ClusteringTests(TestCase):
         # mock the clusters up to the inmediate lower level
         mock_clusters_with_levels(level-1, linked=False)
         # Execute
-        cluster_level(dataset_name, level)
+        cluster_level(tree_name, level)
         # Validate
-        clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+        clusters = Cluster.objects.filter(dataset=tree_name, level=level)
         example_clusters = example_datasets[level]["clusters"]
         validate_cluster_list(self, clusters, example_clusters)
 
     def test_link_children_clusters_to_parents_level1(self):
         level = 1
         mock_clusters_with_levels(level, linked=False)
-        link_children_clusters_to_parents(dataset_name, level)
-        parents = Cluster.objects.filter(dataset=dataset_name, level=level)
+        link_children_clusters_to_parents(tree_name, level)
+        parents = Cluster.objects.filter(dataset=tree_name, level=level)
         for cluster in parents:
             children = cluster.children()
             self.assertIs(len(children), 0)
@@ -97,8 +101,8 @@ class ClusteringTests(TestCase):
     def test_link_children_clusters_to_parents_level1(self):
         level = 1
         mock_clusters_with_levels(level, linked=False)
-        link_children_clusters_to_parents(dataset_name, level)
-        parents = Cluster.objects.filter(dataset=dataset_name, level=level)
+        link_children_clusters_to_parents(tree_name, level)
+        parents = Cluster.objects.filter(dataset=tree_name, level=level)
         children_clusters = example_datasets[level-1]["clusters"]
         example_children = [ [ children_clusters[0], children_clusters[1] ],
                              [ children_clusters[2], children_clusters[3] ]]
