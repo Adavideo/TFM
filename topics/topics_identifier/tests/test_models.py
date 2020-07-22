@@ -1,18 +1,13 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
-from .example_datasets_and_documents import example_tree, tree_name, example_documents, example_document_long
+from .example_datasets_and_documents import example_tree, tree_name, example_documents
 from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_cluster_tree
 
 class DocumentTests(TestCase):
 
     def test_create_document_short(self):
-        doc = mock_document(type="short")
+        doc = mock_document()
         self.assertEqual(doc.content, example_documents[0])
-        self.assertEqual(str(doc), "Document 1")
-
-    def test_create_document_long(self):
-        doc = mock_document(type="long")
-        self.assertEqual(doc.content, example_document_long)
         self.assertEqual(str(doc), "Document 1")
 
 
@@ -35,7 +30,7 @@ class ClusterTests(TestCase):
     def test_add_document(self):
         cluster = mock_cluster()
         doc1 = example_documents[0]
-        doc2 = example_document_long
+        doc2 = example_documents[1]
         cluster.add_document(doc1)
         cluster.add_document(doc2)
         cluster_documents = cluster.documents()

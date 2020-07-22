@@ -1,6 +1,6 @@
 from topics_identifier.models import Cluster, Document
 from topics_identifier.generate_clusters import link_children_clusters_to_parents
-from .example_datasets_and_documents import example_tree, example_documents, example_document_long, tree_name
+from .example_datasets_and_documents import example_tree, example_documents, tree_name
 
 # MOCK CLUSTERS AND DOCUMENTS
 
@@ -22,11 +22,8 @@ def mock_clusters_with_levels(max_level, linked=False):
         if linked:
             link_children_clusters_to_parents(tree_name, level)
 
-def mock_document(type="short"):
-    if type == "short":
-        content = example_documents[0]
-    else:
-        content = example_document_long
+def mock_document():
+    content = example_documents[0]
     doc = Document(content=content)
     doc.save()
     return doc
@@ -81,7 +78,7 @@ def validate_children(test, parent, parent_index, level):
         validate_cluster(test, children[child_index], example_cluster)
 
 def validate_number_of_parents(test, level, num_parents):
-    # Obtain the number of clusters for this level 
+    # Obtain the number of clusters for this level
     num_clusters = len(example_tree[level]["clusters"])
     test.assertIs(num_parents, num_clusters)
 
