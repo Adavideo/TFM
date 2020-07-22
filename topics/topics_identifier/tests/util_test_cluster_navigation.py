@@ -1,4 +1,4 @@
-from .example_datasets_and_documents import example_tree
+from .examples import example_tree
 from .util_test_clusters import validate_cluster_list, validate_number_of_children
 
 def validate_tree_children(test, clusters_tree, level):

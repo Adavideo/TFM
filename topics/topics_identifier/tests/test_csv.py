@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .examples_csv import *
-from .example_datasets_and_documents import example_documents
+from .examples import example_documents
 from topics_identifier.csv_importer import *
 
 

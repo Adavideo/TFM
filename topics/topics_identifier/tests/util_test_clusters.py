@@ -1,6 +1,6 @@
 from topics_identifier.models import Cluster, Document
 from topics_identifier.generate_clusters import link_children_clusters_to_parents
-from .example_datasets_and_documents import example_tree, example_documents, tree_name
+from .examples import example_tree, example_documents, tree_name
 
 # MOCK CLUSTERS AND DOCUMENTS
 

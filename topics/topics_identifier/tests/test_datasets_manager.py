@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.datasets_manager import *
-from .example_datasets_and_documents import example_tree, tree_name
+from .examples import example_tree, tree_name
 from .util_test_generate_clusters import create_and_store_test_clusters
 from .util_test_clusters import mock_documents
 

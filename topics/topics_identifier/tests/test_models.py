@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
-from .example_datasets_and_documents import example_tree, tree_name, example_documents
+from .examples import example_tree, tree_name, example_documents
 from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_cluster_tree
 
 class DocumentTests(TestCase):

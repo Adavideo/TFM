@@ -4,7 +4,7 @@ from topics_identifier.datasets_manager import generate_dataset
 from topics_identifier.models import Document
 from .util_test_generate_clusters import *
 from .util_test_clusters import *
-from .example_stop_words import example_stop_words
+from .examples import example_stop_words
 
 class ClusteringTests(TestCase):
 

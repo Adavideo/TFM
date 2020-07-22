@@ -2,7 +2,7 @@ from sklearn.cluster import AffinityPropagation
 from topics_identifier.datasets_manager import generate_dataset
 from topics_identifier.generate_clusters import store_clusters, process_data
 from topics_identifier.models import Cluster
-from .example_datasets_and_documents import example_tree, tree_name, example_documents
+from .examples import example_tree, tree_name, example_documents
 from .util_test_clusters import validate_cluster, mock_documents
 
 def create_and_store_test_clusters(level):
