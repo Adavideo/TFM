@@ -2,7 +2,6 @@ from django.test import TestCase
 from topics_identifier.generate_clusters import *
 from topics_identifier.datasets_manager import generate_dataset
 from topics_identifier.models import Document
-from .util_test_generate_clusters import *
 from .util_test_clusters import *
 from .examples import example_stop_words
 

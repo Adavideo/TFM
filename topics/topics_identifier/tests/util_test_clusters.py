@@ -1,6 +1,9 @@
+from sklearn.cluster import AffinityPropagation
 from topics_identifier.models import Cluster, Document
-from topics_identifier.generate_clusters import link_children_clusters_to_parents
+from topics_identifier.generate_clusters import store_clusters, process_data, link_children_clusters_to_parents
+from topics_identifier.datasets_manager import generate_dataset
 from .examples import example_tree, example_documents, tree_name
+
 
 # MOCK CLUSTERS AND DOCUMENTS
 
@@ -59,7 +62,25 @@ def validate_cluster_list(test, cluster_list, example_clusters):
         index += 1
 
 
-# CLUSTERS TREES VALIDATION ON DATABASE
+# TREES VALIDATION
+
+def validate_tree_children(test, clusters_tree, level):
+    parent_index = 0
+    for c in clusters_tree:
+        children = c["children"]
+        validate_number_of_children(test, children, parent_index, level)
+        parent_index += 1
+
+def validate_clusters_tree(test, clusters_tree, level):
+    clusters = []
+    for c in clusters_tree:
+        clusters.append(c["cluster"])
+    example_clusters = example_tree[level]["clusters"]
+    validate_cluster_list(test, clusters, example_clusters)
+    validate_tree_children(test, clusters_tree, level)
+
+
+# TREES VALIDATION ON DATABASE
 
 def validate_number_of_children(test, children, parent_index, level):
     parent_level = example_tree[level]
@@ -88,3 +109,24 @@ def validate_cluster_tree(test, level):
     validate_number_of_parents(test, level, num_parents)
     for i in range(0, num_parents):
         validate_children(test, parents[i], i, level)
+
+# VALIDATE STORE CLUSTERS
+
+def create_and_store_test_clusters(level):
+    dataset = generate_dataset(level, tree_name)
+    vectorized_documents, terms = process_data(dataset)
+    model = AffinityPropagation()
+    model.fit(vectorized_documents)
+    store_clusters(model, tree_name, terms, dataset.data, level)
+
+def validate_store_clusters(test, level):
+    example_clusters = example_tree[level]["clusters"]
+    create_and_store_test_clusters(level=level)
+    # Verify
+    new_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
+    test.assertEqual(len(new_clusters), len(example_clusters))
+    index = 0
+    for cluster in new_clusters:
+        test.assertEqual(cluster.tree_name, tree_name)
+        validate_cluster(test, cluster, example_clusters[index], documents=False)
+        index += 1

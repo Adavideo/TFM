@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.clusters_navigation import *
 from .examples import example_tree, tree_name
 from .util_test_clusters import *
-from .util_test_cluster_navigation import *
+
 
 class ClustersNavigationTests(TestCase):
 

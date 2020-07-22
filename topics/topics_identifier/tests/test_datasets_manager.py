@@ -1,8 +1,7 @@
 from django.test import TestCase
 from topics_identifier.datasets_manager import *
 from .examples import example_tree, tree_name
-from .util_test_generate_clusters import create_and_store_test_clusters
-from .util_test_clusters import mock_documents
+from .util_test_clusters import mock_documents, create_and_store_test_clusters
 
 
 class DataClassifierTests(TestCase):
