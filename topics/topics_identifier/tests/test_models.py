@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
-from .example_datasets_and_documents import example_datasets, tree_name, example_documents, example_document_long
+from .example_datasets_and_documents import example_tree, tree_name, example_documents, example_document_long
 from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_cluster_tree
 
 class DocumentTests(TestCase):
@@ -20,9 +20,9 @@ class ClusterTests(TestCase):
 
     def test_create_cluster(self):
         cluster = mock_cluster(num_cluster=0)
-        test_dataset = example_datasets[0]
+        test_dataset = example_tree[0]
         terms = test_dataset["clusters"][0]["terms"]
-        self.assertEqual(cluster.dataset, tree_name)
+        self.assertEqual(cluster.tree_name, tree_name)
         self.assertEqual(cluster.number, 0)
         self.assertEqual(cluster.terms, terms)
 
@@ -48,9 +48,9 @@ class ClusterTests(TestCase):
         self.assertEqual(cluster.children(), [])
 
     def test_children_level1_clusters_not_linked(self):
-        mock_clusters_with_levels(level=1, linked=False)
+        mock_clusters_with_levels(max_level=1, linked=False)
         validate_cluster_tree(self, level=1)
 
     def test_children_level1_with_linked_clusters(self):
-        mock_clusters_with_levels(level=1, linked=True)
+        mock_clusters_with_levels(max_level=1, linked=True)
         validate_cluster_tree(self, level=1)

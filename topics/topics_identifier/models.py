@@ -8,7 +8,7 @@ class Document(models.Model):
         return text
 
 class Cluster(models.Model):
-    dataset = models.CharField(max_length=25)
+    tree_name = models.CharField(max_length=25)
     number = models.IntegerField()
     level = models.IntegerField()
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
@@ -40,12 +40,12 @@ class Cluster(models.Model):
             # Search clusters in the inferior level that has one of the document of this cluster as reference document
             children = []
             for doc in self.documents():
-                children_search = Cluster.objects.filter(dataset=self.dataset, level=self.level-1, reference_document=doc)
+                children_search = Cluster.objects.filter(tree_name=self.tree_name, level=self.level-1, reference_document=doc)
                 children.extend(children_search)
         return children
 
     def __str__(self):
-        text = "Dataset "+self.dataset+" - level " + str(self.level) + " cluster "+str(self.number)
+        text = "Tree "+self.tree_name+" - level " + str(self.level) + " cluster "+str(self.number)
         return text
 
 class ClusterDocument(models.Model):

@@ -1,36 +1,36 @@
 from .models import Cluster
 
-def get_datasets_names_from_clusters():
-    datasets_names = []
+def get_tree_names_from_clusters():
+    tree_names = []
     for cluster in Cluster.objects.all():
-        if cluster.dataset not in datasets_names:
-            datasets_names.append(cluster.dataset)
-    return datasets_names
+        if cluster.tree_name not in tree_names:
+            tree_names.append(cluster.tree_name)
+    return tree_names
 
-def get_max_level(dataset_name):
-    clusters = Cluster.objects.filter(dataset=dataset_name)
+def get_max_level(tree_name):
+    clusters = Cluster.objects.filter(tree_name=tree_name)
     max_level = 0
     for cluster in Cluster.objects.all():
         if cluster.level > max_level:
             max_level = cluster.level
     return max_level
 
-def get_datasets_clusters_list():
-    datasets_names = get_datasets_names_from_clusters()
-    datasets_list = []
-    for dataset_name in datasets_names:
-        num_clusters = len(Cluster.objects.filter(dataset=dataset_name, level=0))
-        max_level = get_max_level(dataset_name)
-        info = { "dataset_name": dataset_name, "num_clusters": num_clusters, "levels":max_level+1 }
-        datasets_list.append(info)
-    return datasets_list
+def get_trees_list():
+    tree_names_list = get_tree_names_from_clusters()
+    trees_list = []
+    for tree_name in tree_names_list:
+        num_clusters = len(Cluster.objects.filter(tree_name=tree_name, level=0))
+        max_level = get_max_level(tree_name)
+        info = { "tree_name": tree_name, "num_clusters": num_clusters, "levels":max_level+1 }
+        trees_list.append(info)
+    return trees_list
 
 def insert_children(cluster, cluster_info, include_documents):
     children = cluster.children()
-    children_tree = compose_clusters_tree(children, include_documents)
+    children_tree = compose_tree(children, include_documents)
     cluster_info["children"] = children_tree
 
-def compose_clusters_tree(clusters, include_documents):
+def compose_tree(clusters, include_documents):
     clusters_tree = []
     for cluster in clusters:
         cluster_info = {"cluster": cluster }
@@ -40,10 +40,10 @@ def compose_clusters_tree(clusters, include_documents):
         clusters_tree.append(cluster_info)
     return clusters_tree
 
-def get_clusters_tree(dataset_name, include_documents):
-    level = get_max_level(dataset_name)
-    clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
-    clusters_tree = compose_clusters_tree(clusters, include_documents)
+def get_tree(tree_name, include_documents):
+    level = get_max_level(tree_name)
+    clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
+    clusters_tree = compose_tree(clusters, include_documents)
     return clusters_tree
 
 def get_terms_from_string(terms_string):
@@ -81,11 +81,11 @@ def terms_match(search_string, cluster_terms_string):
             return False
     return True
 
-def cluster_search(dataset_name, search_string):
+def cluster_search(tree_name, search_string):
     clusters_tree = []
-    all_clusters = Cluster.objects.filter(dataset=dataset_name)
+    all_clusters = Cluster.objects.filter(tree_name=tree_name)
     for cluster in all_clusters:
         if terms_match(search_string, cluster.terms):
-            tree = compose_clusters_tree([cluster], include_documents=False)
+            tree = compose_tree([cluster], include_documents=False)
             clusters_tree.append(tree)
     return clusters_tree

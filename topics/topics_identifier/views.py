@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
-from .generate_clusters import cluster_data, cluster_level
-from .clusters_navigation import get_clusters_tree, get_datasets_clusters_list, compose_clusters_tree, cluster_search
+from .generate_clusters import cluster_level
+from .clusters_navigation import get_tree, get_trees_list, compose_tree, cluster_search
 from .models import Cluster
 
 def index_view(request):
@@ -27,16 +27,15 @@ def generate_clusters_level0_view(request):
     form = ClusterForm(request.POST)
     context = { "form": form }
     if request.method == "POST":
-        dataset_name = request.POST["dataset_name"]
-        # Form clusters with the documents on the dataset
-        cluster_level(dataset_name, level=level)
+        tree_name = request.POST["tree_name"]
+        context["tree_name"] = tree_name
+        # Form clusters with the documents on the tree
+        cluster_level(tree_name, level=level)
         # Prepare the information to show on the web page
-        all_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+        all_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
+        context["clusters"] = all_clusters[:100]
         num_clusters = len(all_clusters)
         context["num_clusters"] = num_clusters
-        context["clusters"] = all_clusters[:100]
-        dataset_info = { "name": dataset_name }
-        context["dataset_info"] = dataset_info
     return render(request, template, context )
 
 def generate_clusters_level1_view(request):
@@ -45,38 +44,38 @@ def generate_clusters_level1_view(request):
     form = ClusterForm(request.POST)
     context = { "form": form }
     if request.method == "POST":
-        dataset_name = request.POST["dataset_name"]
-        # Form clusters with the documents on the dataset
-        cluster_level(dataset_name, level=level)
+        tree_name = request.POST["tree_name"]
+        # Form clusters with the documents on the tree
+        cluster_level(tree_name, level=level)
         # Prepare the information to show on the web page
-        all_clusters = Cluster.objects.filter(dataset=dataset_name, level=level)
+        all_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
         context["num_clusters"] = len(all_clusters)
         context["clusters"] = all_clusters
-        context["dataset_name"] = dataset_name
+        context["tree_name"] = tree_name
     return render(request, template, context )
 
 def cluster_view(request, cluster_id):
     template = "topics_identifier/cluster_page.html"
     cluster = Cluster.objects.get(id=cluster_id)
-    cluster_tree = compose_clusters_tree([cluster], include_documents=True)
+    cluster_tree = compose_tree([cluster], include_documents=True)
     context = { "cluster_info": cluster_tree[0] }
     return render(request, template, context )
 
-def clusters_tree_view(request, dataset_name=None):
+def clusters_tree_view(request, tree_name=None):
     template = "topics_identifier/clusters_trees.html"
     form = ClusterSeachForm()
-    context = {"dataset_name": dataset_name, 'form': form }
+    context = {"tree_name": tree_name, 'form': form }
     if request.method == "POST":
         search_string = request.POST["search_terms"]
         context["search_string"] = search_string
-        context["trees"] = cluster_search(dataset_name, search_string)
+        context["trees"] = cluster_search(tree_name, search_string)
     else:
-        clusters_tree = get_clusters_tree(dataset_name, include_documents=False)
+        clusters_tree = get_tree(tree_name, include_documents=False)
         context["trees"] = [ clusters_tree ]
     return render(request, template, context )
 
 def clusters_index_view(request):
     template = "topics_identifier/clusters_index.html"
-    clusters_list = get_datasets_clusters_list()
-    context = { "datasets_clusters_list": clusters_list }
+    trees = get_trees_list()
+    context = { "trees_list": trees }
     return render(request, template, context )

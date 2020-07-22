@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.datasets_manager import *
-from .example_datasets_and_documents import example_datasets, tree_name
+from .example_datasets_and_documents import example_tree, tree_name
 from .util_test_generate_clusters import create_and_store_test_clusters
 from .util_test_clusters import mock_documents
 
@@ -15,7 +15,7 @@ class DataClassifierTests(TestCase):
         # Execute
         documents = get_reference_documents(tree_name, level)
         # Verify
-        example_clusters = example_datasets[0]["clusters"]
+        example_clusters = example_tree[0]["clusters"]
         num_clusters = len(example_clusters)
         self.assertEqual(len(documents), num_clusters)
         for index in range(0,num_clusters):

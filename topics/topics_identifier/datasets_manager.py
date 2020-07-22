@@ -9,7 +9,7 @@ def select_documents():
     return documents
 
 def get_reference_documents(tree_name, level):
-    all_clusters = Cluster.objects.filter(dataset=tree_name, level=level)
+    all_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
     reference_documents = []
     for cluster in all_clusters:
         reference_documents.append(cluster.reference_document.content)

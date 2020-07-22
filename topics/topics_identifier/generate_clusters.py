@@ -41,9 +41,9 @@ def update_cluster_information(cluster, cluster_center, model, terms, documents)
     cluster.save()
 
 def get_cluster(tree_name, cluster_number, level):
-    cluster_search = Cluster.objects.filter(dataset=tree_name, number=cluster_number, level=level)
+    cluster_search = Cluster.objects.filter(tree_name=tree_name, number=cluster_number, level=level)
     if not cluster_search:
-        cluster = Cluster(dataset=tree_name, number=cluster_number, level=level)
+        cluster = Cluster(tree_name=tree_name, number=cluster_number, level=level)
     else:
         cluster = cluster_search[0]
     return cluster
@@ -66,7 +66,7 @@ def add_documents_to_clusters(documents, documents_predicted_clusters, tree_name
 # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
 # Parent clusters are the ones that include the reference document of the children cluster.
 def link_children_clusters_to_parents(tree_name, level):
-    parent_clusters = Cluster.objects.filter(dataset=tree_name, level=level)
+    parent_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
     for parent in parent_clusters:
         children = parent.children()
         for child_cluster in children:

@@ -11,8 +11,8 @@
 <hr>
 
 {% if clusters %}
-<h2>Clustering dataset {{ dataset_name }}</h2>
-Clusters: {{ num_clusters }}.<br>
+  <h2>Generating tree: {{ tree_name }}</h2>
+    Clustering {{ num_clusters }} documents.
 
   {% for cluster in clusters %}
     <hr><h3>Cluster {{ cluster.number }}</h3><br>

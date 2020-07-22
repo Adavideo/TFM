@@ -2,7 +2,7 @@ from sklearn.cluster import AffinityPropagation
 from topics_identifier.datasets_manager import generate_dataset
 from topics_identifier.generate_clusters import store_clusters, process_data
 from topics_identifier.models import Cluster
-from .example_datasets_and_documents import example_datasets, tree_name, example_documents
+from .example_datasets_and_documents import example_tree, tree_name, example_documents
 from .util_test_clusters import validate_cluster, mock_documents
 
 def create_and_store_test_clusters(level):
@@ -13,14 +13,13 @@ def create_and_store_test_clusters(level):
     store_clusters(model, tree_name, terms, dataset.data, level)
 
 def validate_store_clusters(test, level):
-    example_dataset = example_datasets[level]
-    example_clusters = example_dataset["clusters"]
+    example_clusters = example_tree[level]["clusters"]
     create_and_store_test_clusters(level=level)
     # Verify
-    new_clusters = Cluster.objects.filter(dataset=tree_name, level=level)
+    new_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
     test.assertEqual(len(new_clusters), len(example_clusters))
     index = 0
     for cluster in new_clusters:
-        test.assertEqual(cluster.dataset, tree_name)
+        test.assertEqual(cluster.tree_name, tree_name)
         validate_cluster(test, cluster, example_clusters[index], documents=False)
         index += 1
