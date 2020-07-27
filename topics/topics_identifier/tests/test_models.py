@@ -1,12 +1,14 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
 from .examples import example_tree, tree_name, example_documents
-from .util_test_clusters import mock_document, mock_cluster, mock_clusters_with_levels, validate_cluster_tree
+from .util_test_clusters import mock_cluster, mock_clusters_tree, validate_cluster_tree
 
 class DocumentTests(TestCase):
 
     def test_create_document_short(self):
-        doc = mock_document()
+        content = example_documents[0]
+        doc = Document(content=content)
+        doc.save()
         self.assertEqual(doc.content, example_documents[0])
         self.assertEqual(str(doc), "Document 1")
 
@@ -43,9 +45,9 @@ class ClusterTests(TestCase):
         self.assertEqual(cluster.children(), [])
 
     def test_children_level1_clusters_not_linked(self):
-        mock_clusters_with_levels(max_level=1, linked=False)
+        mock_clusters_tree(max_level=1, linked=False)
         validate_cluster_tree(self, level=1)
 
     def test_children_level1_with_linked_clusters(self):
-        mock_clusters_with_levels(max_level=1, linked=True)
+        mock_clusters_tree(max_level=1, linked=True)
         validate_cluster_tree(self, level=1)

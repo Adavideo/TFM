@@ -17,19 +17,13 @@ def mock_cluster(num_cluster=0, level=0, documents=False):
             cluster.add_document(doc)
     return cluster
 
-def mock_clusters_with_levels(max_level, linked=False):
+def mock_clusters_tree(max_level, linked):
     for level in range(0, max_level+1):
         num_clusters = len(example_tree[level]["clusters"])
         for n in range(0, num_clusters):
             mock_cluster(num_cluster=n, level=level, documents=True)
         if linked:
             link_children_clusters_to_parents(tree_name, level)
-
-def mock_document():
-    content = example_documents[0]
-    doc = Document(content=content)
-    doc.save()
-    return doc
 
 def mock_documents():
     for content in example_documents:

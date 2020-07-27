@@ -16,7 +16,7 @@ class ClusteringTests(TestCase):
         validate_store_clusters(self, level=0)
 
     def test_store_clusters_level1(self):
-        mock_clusters_with_levels(max_level=0)
+        mock_clusters_tree(max_level=0, linked=False)
         validate_store_clusters(self, level=1)
 
     def test_add_documents_to_clusters(self):
@@ -81,7 +81,7 @@ class ClusteringTests(TestCase):
         # Initialize
         level = 1
         # mock the clusters up to the inmediate lower level
-        mock_clusters_with_levels(level-1, linked=False)
+        mock_clusters_tree(level-1, linked=False)
         # Execute
         cluster_level(tree_name, level)
         # Validate
@@ -91,7 +91,7 @@ class ClusteringTests(TestCase):
 
     def test_link_children_clusters_to_parents_level1(self):
         level = 1
-        mock_clusters_with_levels(level, linked=False)
+        mock_clusters_tree(level, linked=False)
         link_children_clusters_to_parents(tree_name, level)
         parents = Cluster.objects.filter(tree_name=tree_name, level=level)
         for cluster in parents:
@@ -100,7 +100,7 @@ class ClusteringTests(TestCase):
 
     def test_link_children_clusters_to_parents_level1(self):
         level = 1
-        mock_clusters_with_levels(level, linked=False)
+        mock_clusters_tree(level, linked=False)
         link_children_clusters_to_parents(tree_name, level)
         parents = Cluster.objects.filter(tree_name=tree_name, level=level)
         children_clusters = example_tree[level-1]["clusters"]
