@@ -1,22 +1,27 @@
 from django.test import TestCase
-from topics_identifier.datasets_manager import *
-from .examples import example_tree, tree_name
-from .util_test_clusters import mock_documents, create_and_store_test_clusters
+from topics_identifier.datasets_manager import generate_dataset, select_documents_level0
+from .examples import example_documents, example_tree
+from .mocks import mock_documents, mock_tree
+from .validations import validate_documents_content
 
 
-class DataClassifierTests(TestCase):
+class DatasetManagerTests(TestCase):
 
-    def test_get_reference_documents(self):
-        # Initialize
-        level = 0
+    def test_select_documents_level0(self):
         mock_documents()
-        create_and_store_test_clusters(level=level)
-        # Execute
-        documents = get_reference_documents(tree_name, level)
-        # Verify
-        example_clusters = example_tree[0]["clusters"]
-        num_clusters = len(example_clusters)
-        self.assertEqual(len(documents), num_clusters)
-        for index in range(0,num_clusters):
-            reference_document = example_clusters[index]["reference_doc"]
-            self.assertEqual(documents[index], reference_document)
+        documents_content = select_documents_level0()
+        validate_documents_content(self, documents_content, example_documents)
+
+    def test_generate_dataset_level0(self):
+        mock_documents()
+        tree = mock_tree()
+        dataset = generate_dataset(level=0, tree=tree)
+        validate_documents_content(self, dataset.data, example_documents)
+
+    def test_generate_dataset_level1(self):
+        level = 1
+        mock_documents()
+        tree = mock_tree(level, linked=True)
+        dataset = generate_dataset(level, tree)
+        documents_level1 = example_tree[1]["documents"]
+        validate_documents_content(self, dataset.data, documents_level1)

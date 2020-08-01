@@ -1,26 +1,20 @@
 from sklearn.datasets.base import Bunch
-from .models import Cluster, Document
+from .models import Document
 
-def select_documents():
+
+def select_documents_level0():
     documents = []
     documents_list = Document.objects.all()
     for doc in documents_list:
         documents.append(doc.content)
     return documents
 
-def get_reference_documents(tree_name, level):
-    all_clusters = Cluster.objects.filter(tree_name=tree_name, level=level)
-    reference_documents = []
-    for cluster in all_clusters:
-        reference_documents.append(cluster.reference_document.content)
-    return reference_documents
-
-def generate_dataset(level, tree_name=""):
-    dataset = Bunch()
+def generate_dataset(level, tree):
     if level == 0:
-        documents = select_documents()
+        documents = select_documents_level0()
     else:
         # Gets the reference documents of the inferior level
-        documents = get_reference_documents(tree_name, level-1)
+        documents = tree.get_reference_documents(level-1)
+    dataset = Bunch()
     dataset['data'] = documents
     return dataset

@@ -1,14 +1,69 @@
 from django.db import models
 
-class Document(models.Model):
-    content = models.CharField(max_length=41000) # max length news 40921, comments 19996
+
+class Tree(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+    news = models.BooleanField(default=False)
+    comments = models.BooleanField(default=False)
+
+    def get_cluster(self, cluster_number, level):
+        cluster, cleated = Cluster.objects.get_or_create(tree=self, number=cluster_number, level=level)
+        return cluster
+
+    def get_clusters_of_level(self, level):
+        clusters = Cluster.objects.filter(tree=self, level=level)
+        return clusters
+
+    def get_reference_documents(self, level):
+        clusters_list = self.get_clusters_of_level(level)
+        reference_documents = []
+        for cluster in clusters_list:
+            reference_documents.append(cluster.reference_document.content)
+        return reference_documents
+
+    def add_clusters(self, level, clusters_information):
+        num_clusters = len(clusters_information["terms"])
+        for cluster_index in range(0, num_clusters):
+            cluster = self.get_cluster(cluster_index, level)
+            cluster.terms = clusters_information["terms"][cluster_index]
+            reference_document = clusters_information["reference_documents"][cluster_index]
+            cluster.assign_reference_document(content=reference_document)
+            cluster.save()
+
+    # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
+    # Parent clusters are the ones that include the reference document of the children cluster.
+    def link_children_to_parents(self, parents_level):
+        parent_clusters = Cluster.objects.filter(tree=self, level=parents_level)
+        for parent in parent_clusters:
+            children = parent.children()
+            for child_cluster in children:
+                child_cluster.parent = parent
+                child_cluster.save()
+
+    def add_documents_to_clusters(self, level, documents_clusters_list):
+        for doc_cluster in documents_clusters_list:
+            cluster_number = doc_cluster["cluster_number"]
+            cluster = self.get_cluster(cluster_number, level)
+            document = doc_cluster["document"]
+            cluster.add_document(content=document)
+        if level > 0:
+            self.link_children_to_parents(level)
 
     def __str__(self):
-        text = "Document "+str(self.id)
+        text = "Tree "+ self.name
         return text
 
+
+class Document(models.Model):
+    content = models.CharField(max_length=41000, unique=True) # max length news 40921, comments 19996
+
+    def __str__(self):
+        text = "Document "+str(self.id)+" - content: "+ self.content
+        return text
+
+
 class Cluster(models.Model):
-    tree_name = models.CharField(max_length=25)
+    tree = models.ForeignKey(Tree, on_delete=models.CASCADE, null=False)
     number = models.IntegerField()
     level = models.IntegerField()
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
@@ -40,13 +95,14 @@ class Cluster(models.Model):
             # Search clusters in the inferior level that has one of the document of this cluster as reference document
             children = []
             for doc in self.documents():
-                children_search = Cluster.objects.filter(tree_name=self.tree_name, level=self.level-1, reference_document=doc)
+                children_search = Cluster.objects.filter(tree=self.tree, level=self.level-1, reference_document=doc)
                 children.extend(children_search)
         return children
 
     def __str__(self):
-        text = "Tree "+self.tree_name+" - level " + str(self.level) + " cluster "+str(self.number)
+        text = "Cluster - tree "+ self.tree.name+", level " + str(self.level) + ", num cluster "+str(self.number)
         return text
+
 
 class ClusterDocument(models.Model):
     cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)

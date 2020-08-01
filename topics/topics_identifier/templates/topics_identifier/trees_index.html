@@ -1,0 +1,16 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+
+
+  <h2>Clusters trees</h2><br>
+
+  {% for tree in trees_list %}
+    <h4>
+      <a href="{% url 'tree' tree.id %}">
+        Tree {{ tree.name }}</a>
+    </h4><br>
+  {% endfor %}
+
+
+{% endblock %}

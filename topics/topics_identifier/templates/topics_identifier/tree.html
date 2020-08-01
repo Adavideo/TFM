@@ -1,0 +1,34 @@
+{% extends 'topics_identifier/base.html' %}
+
+{% block content %}
+
+  <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Search</button>
+  </form>
+
+  <hr>
+
+  <h2>Tree: {{ tree.name }}</h2>
+    {% if search_string %}
+      <h3>search for: {{ search_string }}</h3>
+      <hr>
+      {% for cluster_info in search_results %}
+          {% with cluster=cluster_info.cluster documents=cluster_info.documents children=cluster_info.children %}
+            {% include "topics_identifier/cluster.html" %}
+          {% endwith %}
+          <hr>
+      {% endfor %}
+
+    {% else %}
+      <hr>
+
+      {% for cluster in clusters %}
+          {% include "topics_identifier/cluster.html" %}
+          <hr>
+      {% endfor %}
+
+  {% endif %}
+
+{% endblock %}
