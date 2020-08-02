@@ -29,8 +29,9 @@ def generate_tree_view(request):
     context = { "form": form }
     if request.method == "POST":
         tree_name = request.POST["tree_name"]
+        document_types = request.POST["document_types"]
         # Cluster the documents in two levels and store them in a cluster tree
-        generator = TreeGenerator(tree_name, max_level=level)
+        generator = TreeGenerator(tree_name, document_types=document_types, max_level=level)
         tree = generator.generate_tree()
         # Prepare the information to show on the web page
         level1_clusters = tree.get_clusters_of_level(level)

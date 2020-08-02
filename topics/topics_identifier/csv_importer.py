@@ -4,7 +4,11 @@ from topics_identifier.models import Document
 # PROCESS DATA
 
 def store_document(text, file_type):
-    doc, created = Document.objects.get_or_create(content=text)
+    if file_type == "news":
+        news = True
+    else:
+        news = False
+    doc, created = Document.objects.get_or_create(content=text, news=news)
     if created:
         doc.save()
 

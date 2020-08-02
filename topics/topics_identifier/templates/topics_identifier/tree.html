@@ -11,8 +11,9 @@
   <hr>
 
   <h2>Tree: {{ tree.name }}</h2>
+    <h4>{% include "topics_identifier/document_types.html" %}</h4>
     {% if search_string %}
-      <h3>search for: {{ search_string }}</h3>
+      <h4>search for: {{ search_string }}</h4>
       <hr>
       {% for cluster_info in search_results %}
           {% with cluster=cluster_info.cluster documents=cluster_info.documents children=cluster_info.children %}

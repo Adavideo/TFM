@@ -1,16 +1,37 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster
+from topics_identifier.TreeGenerator import TreeGenerator, get_stop_words, short_document_types
 from .examples import example_tree, example_stop_words, example_documents_clusters
 from .mocks import mock_documents, mock_tree_generator
-from .validations import validate_clusters_terms, validate_tree_level, validate_clusters_reference_documents, validate_clusters_list
+from .validations import *
 
 
 class TreeGeneratorTests(TestCase):
 
     def test_get_stop_words(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        stop_words = tree_generator.get_stop_words()
+        stop_words = get_stop_words()
         self.assertEqual(stop_words, example_stop_words)
+
+    def test_short_document_types_both(self):
+        news, comments = short_document_types(document_types="both")
+        self.assertEqual(news, True)
+        self.assertEqual(comments, True)
+
+    def test_short_document_types_news(self):
+        news, comments = short_document_types(document_types="news")
+        self.assertEqual(news, True)
+        self.assertEqual(comments, False)
+
+    def test_short_document_types_comments(self):
+        news, comments = short_document_types(document_types="comments")
+        self.assertEqual(news, False)
+        self.assertEqual(comments, True)
+
+    def test_create_tree_generator(self):
+        document_types = "both"
+        max_level = 1
+        generator = TreeGenerator(tree_name="", document_types=document_types, max_level=max_level)
+        validate_tree_document_types(self, generator.tree, document_types)
 
     def test_cluster_level_0(self):
         level = 0

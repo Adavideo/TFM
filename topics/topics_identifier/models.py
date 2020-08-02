@@ -50,13 +50,19 @@ class Tree(models.Model):
             self.link_children_to_parents(level)
 
     def __str__(self):
-        text = "Tree "+ self.name
+        text = "Tree "+ self.name + " - documents: "
+        if news:
+            text += "news"
+        if news and comments:
+            text += " and"
+        if comments:
+            text += "comments"
         return text
 
 
 class Document(models.Model):
     content = models.CharField(max_length=41000, unique=True) # max length news 40921, comments 19996
-    news = models.BooleanField(default=True)
+    news = models.BooleanField(null=False)
 
     def __str__(self):
         text = "Document "+ str(self.id) + " - "
@@ -77,12 +83,12 @@ class Cluster(models.Model):
     terms = models.CharField(max_length=255)
 
     def assign_reference_document(self, content):
-        doc, created = Document.objects.get_or_create(content=content)
+        doc = Document.objects.get(content=content)
         self.reference_document = doc
         self.save()
 
     def add_document(self, content):
-        doc, created = Document.objects.get_or_create(content=content)
+        doc = Document.objects.get(content=content)
         ClusterDocument.objects.get_or_create(cluster=self, document=doc)
 
     def documents(self):

@@ -1,11 +1,15 @@
 from django.test import TestCase
-from topics_identifier.models import Cluster
+from topics_identifier.models import Cluster, Tree
 from .examples import example_tree, example_documents_clusters
 from .mocks import mock_tree, mock_documents, mock_empty_tree, mock_clusters_information
-from .validations import validate_cluster, validate_clusters_list, validate_reference_documents
+from .validations import *
 
 
 class TreeTests(TestCase):
+
+    def test_create_tree(self):
+        tree = Tree(name="", news=True, comments=True)
+        validate_tree_document_types(self, tree, document_types="both")
 
     def test_get_cluster(self):
         # Initialize
@@ -32,7 +36,6 @@ class TreeTests(TestCase):
         # Initialize
         level = 1
         example_clusters = example_tree[level]["clusters"]
-        mock_documents()
         tree = mock_tree(max_level=level, linked=True)
         # Execute
         clusters_list = tree.get_clusters_of_level(level)
@@ -53,7 +56,6 @@ class TreeTests(TestCase):
         # Initialize
         level = 1
         example_clusters = example_tree[level]["clusters"]
-        mock_documents()
         tree = mock_tree(max_level=level, linked=True)
         # Execute
         reference_documents = tree.get_reference_documents(level)
@@ -64,6 +66,7 @@ class TreeTests(TestCase):
         # Initialize
         level = 0
         example_clusters = example_tree[level]["clusters"]
+        mock_documents()
         tree = mock_empty_tree()
         clusters_info = mock_clusters_information(level)
         # Execute
@@ -75,7 +78,6 @@ class TreeTests(TestCase):
     def test_link_children_to_parents(self):
         level = 1
         example_clusters = example_tree[level]["clusters"]
-        mock_documents()
         tree = mock_tree(max_level=level, linked=False)
         tree.link_children_to_parents(parents_level=level)
         # validation

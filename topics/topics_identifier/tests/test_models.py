@@ -1,7 +1,7 @@
 from django.test import TestCase
-from topics_identifier.models import Document, Cluster
+from topics_identifier.models import Document, Cluster, Tree
 from .examples import example_documents, example_tree
-from .mocks import mock_cluster, mock_tree
+from .mocks import mock_cluster, mock_tree, mock_documents
 from .validations import validate_cluster, validate_tree, validate_clusters_list
 
 class DocumentTests(TestCase):
@@ -57,20 +57,19 @@ class ClusterTests(TestCase):
 
     # Ensure that the same document is not stored twice
     def test_add_document_twice(self):
-        # Mocking cluster and checking initial state
-        cluster = mock_cluster()
-        all_documents = Document.objects.all()
-        # When mocking the cluster, it creates the reference document
-        self.assertIs(len(all_documents), 1)
-        self.assertEqual(all_documents[0].content, example_documents[3])
+        mock_documents()
+        tree = Tree(name="")
+        tree.save()
+        cluster = Cluster(tree=tree, level=0, number=0)
+        cluster.save()
         # Adding new document twice
-        new_doc = example_documents[0]
-        cluster.add_document(new_doc)
-        cluster.add_document(new_doc)
+        content = example_documents[0]
+        cluster.add_document(content)
+        cluster.add_document(content)
         # Validating that the document is not created twice
-        all_documents = Document.objects.all()
-        self.assertIs(len(all_documents), 2)
-        self.assertEqual(all_documents[1].content, new_doc)
+        documents = Document.objects.filter(content=content)
+        self.assertIs(len(documents), 1)
+        self.assertEqual(documents[0].content, content)
 
     def test_find_children_by_reference_document(self):
         level = 1

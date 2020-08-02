@@ -12,6 +12,7 @@ class CSVProcessDataTests(TestCase):
         store_document(text, file_type)
         doc = Document.objects.get(content=text)
         self.assertEqual(doc.content, text)
+        self.assertEqual(doc.news, True)
 
     def test_store_document_comment(self):
         text = example_documents[0]
@@ -19,6 +20,7 @@ class CSVProcessDataTests(TestCase):
         store_document(text, file_type)
         doc = Document.objects.get(content=text)
         self.assertEqual(doc.content, text)
+        self.assertEqual(doc.news, False)
 
     # Try to store the same document twice
     def test_store_document_twice(self):

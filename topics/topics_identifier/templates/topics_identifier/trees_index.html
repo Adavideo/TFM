@@ -8,7 +8,7 @@
   {% for tree in trees_list %}
     <h4>
       <a href="{% url 'tree' tree.id %}">
-        Tree {{ tree.name }}</a>
+        Tree {{ tree.name }}</a> - {% include "topics_identifier/document_types.html" %}
     </h4><br>
   {% endfor %}
 

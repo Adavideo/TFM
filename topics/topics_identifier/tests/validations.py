@@ -1,5 +1,6 @@
 from topics_identifier.models import Cluster
 from .examples import example_tree
+from .mocks import select_example_documents
 
 
 # DOCUMENTS VALIDATION
@@ -13,11 +14,13 @@ def validate_documents(test, documents, documents_info):
         doc_index +=1
 
 # Compares a list of strings with the example documents
-def validate_documents_content(test, documents_content, documents_info):
-    test.assertEqual(len(documents_content), len(documents_info))
+def validate_documents_content(test, documents_content, documents_info, document_types="both"):
+    # Selects example documents to compare with them. They can be news, comments or both.
+    selected_documents = select_example_documents(document_types, documents_info)
+    test.assertEqual(len(documents_content), len(selected_documents))
     doc_index = 0
     for doc_content in documents_content:
-        test.assertEqual(doc_content, documents_info[doc_index])
+        test.assertEqual(doc_content, selected_documents[doc_index])
         doc_index +=1
 
 def validate_reference_documents(test, reference_documents, example_clusters):
@@ -59,9 +62,22 @@ def validate_tree_level(test, tree, level):
     example_clusters = example_tree[level]["clusters"]
     validate_clusters_list(test, clusters_list, example_clusters, with_documents=True)
 
-def validate_tree(test, tree, max_level):
+def validate_tree_document_types(test, tree, document_types):
+    if document_types == "both":
+        test.assertIs(tree.news, True)
+        test.assertIs(tree.comments, True)
+    elif document_types == "news":
+        test.assertEqual(tree.news, True)
+        test.assertEqual(tree.comments, False)
+    else:
+        test.assertEqual(tree.news, False)
+        test.assertEqual(tree.comments, True)
+
+def validate_tree(test, tree, max_level, document_types="both"):
+    validate_tree_document_types(test, tree, document_types)
     for level in range(0, max_level):
         validate_tree_level(test, tree, level)
+
 
 # TREE BUILDING VALIDATIONS
 

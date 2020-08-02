@@ -1,16 +1,40 @@
 from sklearn.datasets.base import Bunch
 from topics_identifier.models import Cluster, Document, Tree
 from topics_identifier.ClustersGenerator import ClustersGenerator
-from topics_identifier.TreeGenerator import TreeGenerator
+from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
 from .examples import example_documents, tree_name, example_tree, example_stop_words
 
+# Simulate that half the documents are news and the other half are comments
+def select_example_documents(document_types, documents=example_documents):
+    # If we ask for both types of documents, it return all of them
+    if document_types == "both":
+        return documents
+
+    half = int(len(example_documents)/2)
+    if document_types == "news":
+        # If we ask for news documents, returns the first half of the list
+        return documents[:half]
+    else:
+        # If we want comments documents, returns the second half of the list
+        return documents[half:]
+
 def mock_documents():
-    for content in example_documents:
-        doc = Document(content=content)
+    # Mock half the documents as news
+    news_documents = select_example_documents(document_types="news")
+    for content in news_documents:
+        doc, created = Document.objects.get_or_create(content=content, news=True)
+        doc.save()
+    # Mock half the documents as comments
+    comments_documents = select_example_documents(document_types="comments")
+    for content in comments_documents:
+        doc, created = Document.objects.get_or_create(content=content, news=False)
         doc.save()
 
-def mock_empty_tree():
-    tree = Tree(name=tree_name)
+def mock_empty_tree(document_types="both"):
+    if not Document.objects.all():
+        mock_documents()
+    news, comments = short_document_types(document_types)
+    tree = Tree(name=tree_name, news=news, comments=comments)
     tree.save()
     return tree
 
@@ -26,8 +50,8 @@ def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False):
             cluster.add_document(doc)
     return cluster
 
-def mock_tree(max_level=0, linked=False, with_documents=True):
-    tree = mock_empty_tree()
+def mock_tree(max_level=0, linked=False, with_documents=True, document_types="both"):
+    tree = mock_empty_tree(document_types)
     for level in range(0, max_level+1):
         num_clusters = len(example_tree[level]["clusters"])
         for n in range(0, num_clusters):
@@ -56,5 +80,5 @@ def mock_cluster_generator():
     generator = ClustersGenerator(dataset, example_stop_words)
     return generator
 
-def mock_tree_generator(max_level):
-    return TreeGenerator(tree_name, max_level)
+def mock_tree_generator(max_level, document_types="both"):
+    return TreeGenerator(tree_name, document_types, max_level)

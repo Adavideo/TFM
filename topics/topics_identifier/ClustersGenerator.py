@@ -52,12 +52,16 @@ class ClustersGenerator:
         return clusters_information
 
     def cluster_data(self):
+        if not self.dataset.data:
+            return []
         self.process_data()
         self.train_model()
         clusters_information = self.get_clusters_information()
         return clusters_information
 
     def get_documents_clusters(self):
+        if not self.dataset.data:
+            return []
         print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
         predicted_clusters = self.model.predict(self.vectorized_documents)
         all_documents = self.dataset.data
