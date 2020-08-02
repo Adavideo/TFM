@@ -85,6 +85,14 @@ class Cluster(models.Model):
             documents.append(cluster_document.document)
         return documents
 
+    # Search for clusters in the inferior level that have a document of this cluster as reference document
+    def find_children_by_reference_document(self):
+        children = []
+        for doc in self.documents():
+            children_search = Cluster.objects.filter(tree=self.tree, level=self.level-1, reference_document=doc)
+            children.extend(children_search)
+        return children
+
     def children(self):
         # Level 0 is the lowest level. Does not have children.
         if self.level == 0:
@@ -92,11 +100,7 @@ class Cluster(models.Model):
         # Search clusters that has this cluster assigned as parent
         children = Cluster.objects.filter(parent=self)
         if not children:
-            # Search clusters in the inferior level that has one of the document of this cluster as reference document
-            children = []
-            for doc in self.documents():
-                children_search = Cluster.objects.filter(tree=self.tree, level=self.level-1, reference_document=doc)
-                children.extend(children_search)
+            children = self.find_children_by_reference_document()
         return children
 
     def __str__(self):

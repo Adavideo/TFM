@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.models import Document, Cluster
 from .examples import example_documents, example_tree
 from .mocks import mock_cluster, mock_tree
-from .validations import validate_cluster, validate_tree
+from .validations import validate_cluster, validate_tree, validate_clusters_list
 
 class DocumentTests(TestCase):
 
@@ -63,6 +63,16 @@ class ClusterTests(TestCase):
         all_documents = Document.objects.all()
         self.assertIs(len(all_documents), 2)
         self.assertEqual(all_documents[1].content, new_doc)
+
+    def test_find_children_by_reference_document(self):
+        level = 1
+        cluster_number = 0
+        tree = mock_tree(level, linked=False)
+        cluster = tree.get_cluster(cluster_number, level)
+        children = cluster.find_children_by_reference_document()
+        self.assertEqual(len(children), 2)
+        example_clusters = example_tree[level]["clusters"][cluster_number]["children"]
+        validate_clusters_list(self, children, example_clusters, with_documents=True)
 
     # Tets that retuns an empty array when asking for the children of level 0 clusters
     def test_children_level0(self):
