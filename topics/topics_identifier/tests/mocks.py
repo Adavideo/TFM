@@ -22,12 +22,12 @@ def mock_documents():
     # Mock half the documents as news
     news_documents = select_example_documents(document_types="news")
     for content in news_documents:
-        doc, created = Document.objects.get_or_create(content=content, news=True)
+        doc, created = Document.objects.get_or_create(content=content, is_news=True)
         doc.save()
     # Mock half the documents as comments
     comments_documents = select_example_documents(document_types="comments")
     for content in comments_documents:
-        doc, created = Document.objects.get_or_create(content=content, news=False)
+        doc, created = Document.objects.get_or_create(content=content, is_news=False)
         doc.save()
 
 def mock_empty_tree(document_types="both"):

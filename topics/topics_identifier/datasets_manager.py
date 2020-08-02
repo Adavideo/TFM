@@ -7,8 +7,8 @@ def select_documents_level0(news, comments):
     if news and comments:
         documents_list = Document.objects.all()
     else:
-        documents_list = Document.objects.filter(news=news)
-    
+        documents_list = Document.objects.filter(is_news=news)
+
     for doc in documents_list:
         documents.append(doc.content)
     return documents

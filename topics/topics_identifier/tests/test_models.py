@@ -8,18 +8,18 @@ class DocumentTests(TestCase):
 
     def test_create_document_news(self):
         content = example_documents[2]
-        doc = Document(content=content, news=True)
+        doc = Document(content=content, is_news=True)
         doc.save()
         self.assertEqual(doc.content, example_documents[2])
-        self.assertIs(doc.news, True)
+        self.assertIs(doc.is_news, True)
         self.assertEqual(str(doc), "Document 1 - type news, content: "+ example_documents[2])
 
     def test_create_document_comment(self):
         content = example_documents[0]
-        doc = Document(content=content, news=False)
+        doc = Document(content=content, is_news=False)
         doc.save()
         self.assertEqual(doc.content, example_documents[0])
-        self.assertIs(doc.news, False)
+        self.assertIs(doc.is_news, False)
         self.assertEqual(str(doc), "Document 1 - type comment, content: "+ example_documents[0])
 
 class ClusterTests(TestCase):

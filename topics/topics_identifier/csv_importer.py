@@ -8,7 +8,7 @@ def store_document(text, file_type):
         news = True
     else:
         news = False
-    doc, created = Document.objects.get_or_create(content=text, news=news)
+    doc, created = Document.objects.get_or_create(content=text, is_news=news)
     if created:
         doc.save()
 
