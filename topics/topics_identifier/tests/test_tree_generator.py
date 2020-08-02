@@ -1,8 +1,8 @@
 from django.test import TestCase
-from topics_identifier.models import Cluster
+from topics_identifier.models import Cluster, Tree
 from topics_identifier.TreeGenerator import TreeGenerator, get_stop_words, short_document_types
-from .examples import example_tree, example_stop_words, example_documents_clusters
-from .mocks import mock_documents, mock_tree_generator
+from .examples import example_tree, example_stop_words, example_documents_clusters, tree_name
+from .mocks import mock_documents, mock_tree_generator, mock_empty_tree
 from .validations import *
 
 
@@ -32,6 +32,13 @@ class TreeGeneratorTests(TestCase):
         max_level = 1
         generator = TreeGenerator(tree_name="", document_types=document_types, max_level=max_level)
         validate_tree_document_types(self, generator.tree, document_types)
+
+    def test_create_tree_generator_with_tree_name_that_already_exist(self):
+        max_level = 1
+        tree = Tree(name=tree_name, news=False, comments=True)
+        tree.save()
+        generator = TreeGenerator(tree_name=tree_name, document_types="news", max_level=max_level)
+        self.assertEqual(generator.tree, None)
 
     def test_cluster_level_0(self):
         level = 0

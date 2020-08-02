@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .csv_importer import process_csv
-from .TreeGenerator import TreeGenerator
+from .TreeGenerator import TreeGenerator, tree_already_exist
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
@@ -29,6 +29,9 @@ def generate_tree_view(request):
     context = { "form": form }
     if request.method == "POST":
         tree_name = request.POST["tree_name"]
+        if tree_already_exist(tree_name):
+            context["message"] = "Tree name already in use. Pick a different one."
+            return render(request, template, context)
         document_types = request.POST["document_types"]
         # Cluster the documents in two levels and store them in a cluster tree
         generator = TreeGenerator(tree_name, document_types=document_types, max_level=level)

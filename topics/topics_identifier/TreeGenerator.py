@@ -4,6 +4,7 @@ from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import generate_dataset
 from .file_paths import stop_words_filename
 
+
 def get_stop_words():
     stop_words = []
     file = open(stop_words_filename, 'r')
@@ -25,16 +26,26 @@ def short_document_types(document_types):
         comments = True
     return news, comments
 
+def tree_already_exist(tree_name):
+    tree_search = Tree.objects.filter(name=tree_name)
+    if tree_search:
+        return True
+    else:
+        return False
 
 class TreeGenerator:
 
     def __init__(self, tree_name, document_types, max_level=1):
-        self.max_level = max_level
-        self.stop_words = get_stop_words()
-        news, comments = short_document_types(document_types)
-        self.tree, created = Tree.objects.get_or_create(name=tree_name, news=news, comments=comments)
-        if created:
+        # Avoids trying to create a tree with a name that is already taken
+        if tree_already_exist(tree_name):
+            self.tree = None
+            return None
+        else:
+            news, comments = short_document_types(document_types)
+            self.tree = Tree(name=tree_name, news=news, comments=comments)
             self.tree.save()
+            self.max_level = max_level
+            self.stop_words = get_stop_words()
 
     def cluster_level(self, level):
         print("\nGenerating level "+ str(level)+" clusters")

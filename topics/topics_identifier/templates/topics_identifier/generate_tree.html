@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{{ message }}<br><br>
+
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -12,7 +14,7 @@
 
 {% if clusters %}
   <h2>Generating tree: {{ tree_name }}</h2>
-    {{ num_clusters }} clusters 
+    {{ num_clusters }} clusters
 
   {% for cluster in clusters %}
     <hr><h3>Cluster {{ cluster.number }}</h3><br>
