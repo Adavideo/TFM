@@ -6,13 +6,21 @@ from .validations import validate_cluster, validate_tree, validate_clusters_list
 
 class DocumentTests(TestCase):
 
-    def test_create_document(self):
+    def test_create_document_news(self):
+        content = example_documents[2]
+        doc = Document(content=content, news=True)
+        doc.save()
+        self.assertEqual(doc.content, example_documents[2])
+        self.assertIs(doc.news, True)
+        self.assertEqual(str(doc), "Document 1 - type news, content: "+ example_documents[2])
+
+    def test_create_document_comment(self):
         content = example_documents[0]
-        doc = Document(content=content)
+        doc = Document(content=content, news=False)
         doc.save()
         self.assertEqual(doc.content, example_documents[0])
-        self.assertEqual(str(doc), "Document 1 - content: #4 Cuéntame tu,  a mi no me consta.")
-
+        self.assertIs(doc.news, False)
+        self.assertEqual(str(doc), "Document 1 - type comment, content: "+ example_documents[0])
 
 class ClusterTests(TestCase):
 

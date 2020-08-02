@@ -56,9 +56,15 @@ class Tree(models.Model):
 
 class Document(models.Model):
     content = models.CharField(max_length=41000, unique=True) # max length news 40921, comments 19996
+    news = models.BooleanField(default=True)
 
     def __str__(self):
-        text = "Document "+str(self.id)+" - content: "+ self.content
+        text = "Document "+ str(self.id) + " - "
+        if self.news:
+            text += "type news, "
+        else:
+            text += "type comment, "
+        text += "content: "+ self.content
         return text
 
 
