@@ -11,8 +11,13 @@ class Thread(models.Model):
         self.uri = uri
         self.save()
 
+    def news(self):
+        news = Document.objects.filter(is_news=True, thread=self)
+        if news: return news[0]
+        return None
+
     def comments(self):
-        comments = Document.objects.filter(is_news=False, thread=self)
+        comments = Document.objects.filter(is_news=False, thread=self).order_by("date")
         return comments
 
     def __str__(self):
