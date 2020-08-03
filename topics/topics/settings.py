@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'topics_identifier.apps.TopicsIdentifierConfig',
     'csv_import.apps.CsvImportConfig',
+    'timeline.apps.TimelineConfig',
 ]
 
 MIDDLEWARE = [

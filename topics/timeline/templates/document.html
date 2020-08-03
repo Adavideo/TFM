@@ -1,0 +1,8 @@
+
+    <tr>
+      <td>{{ document.date }}</td>
+      <td>{{ document.author }}</td>
+      <td>{% if document.is_news %}news{% else %}comment{% endif %}</td>
+      <td>{{ document.thread }}</td>
+      <td>{{ document.content }}</td>
+    </tr>

@@ -21,5 +21,6 @@ urlpatterns = [
     path('', views.home_view, name='home'),
     path('admin/', admin.site.urls),
     path('topics_identifier/', include('topics_identifier.urls')),
-    path('import_csv/', include('csv_import.urls'))
+    path('import_csv/', include('csv_import.urls')),
+    path('timeline/', include('timeline.urls'))
 ]

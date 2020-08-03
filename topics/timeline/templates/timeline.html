@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <table border=1 >
+    <thead>
+      <th width=15%>Date</th>
+      <th>Author</th>
+      <th>Type</th>
+      <th>Thread</th>
+      <th width=40%>Content</th>
+    </thead>
+
+    {% for document in documents_list %}
+        {% include "document.html" %}
+    {% endfor %}
+  </table>
+{% endblock %}
