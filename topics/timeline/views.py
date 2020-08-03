@@ -3,6 +3,6 @@ from topics_identifier.models import Document
 
 def timeline_view(request):
     template = "timeline.html"
-    all_documents = Document.objects.all()
+    all_documents = Document.objects.all().order_by("date")
     context = { "documents_list": all_documents}
     return render(request, template, context)
