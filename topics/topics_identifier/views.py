@@ -5,10 +5,6 @@ from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 
-def index_view(request):
-    template = "topics_identifier/home.html"
-    context = {}
-    return render(request, template, context)
 
 def generate_tree_view(request):
     level = 1
