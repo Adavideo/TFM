@@ -15,10 +15,8 @@ class Document(models.Model):
 
     def __str__(self):
         text = "Document "+ str(self.id) + " - "
-        if self.is_news:
-            text += "type news, "
-        else:
-            text += "type comment, "
+        if self.is_news: text += "type news, "
+        else: text += "type comment, "
         text += "content: "+ self.content
         return text
 
@@ -73,12 +71,9 @@ class Tree(models.Model):
 
     def __str__(self):
         text = "Tree "+ self.name + " - documents: "
-        if news:
-            text += "news"
-        if news and comments:
-            text += " and"
-        if comments:
-            text += "comments"
+        if news: text += "news"
+        if news and comments: text += " and"
+        if comments: text += "comments"
         return text
 
 
@@ -124,7 +119,8 @@ class Cluster(models.Model):
         return children
 
     def __str__(self):
-        text = "Cluster - tree "+ self.tree.name+", level " + str(self.level) + ", num cluster "+str(self.number)
+        text = "Cluster - tree "+ self.tree.name
+        text += ", level " + str(self.level) + ", num cluster "+str(self.number)
         return text
 
 
@@ -135,3 +131,4 @@ class ClusterDocument(models.Model):
     def __str__(self):
         text = str(self.cluster)+" - "+str(self.document)
         return text
+        
