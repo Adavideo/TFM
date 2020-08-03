@@ -17,10 +17,12 @@ example_documents = ['#4 Cuéntame tu,  a mi no me consta.', '!Brutal! {lol}',
  'Pantomima Full - Gatos.\nhttps://youtu.be/8kbXfAuvdxA',
  '#13 explícale que es la que hace que las empresas privadas no suban precios']
 
+example_date = get_date('2020-05-29 11:00:25')
+
 example_news = {
         "number": 3297522,
         "author": 189575,
-        "date": get_date('2020-05-29 11:00:25'),
+        "date": example_date,
         "uri": 'valencia',
         "title": 'La Audiencia de València',
         "content": 'La Audiencia de València\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'

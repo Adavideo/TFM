@@ -1,13 +1,15 @@
 import csv, io
 from datetime import datetime
-from topics_identifier.models import Document
+from topics_identifier.models import Document, Thread
+from timeline.models import Thread
 
 # PROCESS DATA
 
 def store_document(info, file_type):
     is_news = (file_type == "news")
     doc, created = Document.objects.get_or_create(content=info["content"], is_news=is_news, date=info["date"], author=info["author"])
-    if created: doc.save()
+    if created:
+        doc.assign_thread(info)
 
 def clean_text(text):
     quotes = "&quot;"
@@ -42,7 +44,7 @@ def process_comment(column):
 def process_csv_line(column, file_type):
     if file_type == "incorrect":
         return "File type "+ str(file_type) + " not recognised"
-        
+
     if file_type == "news":
         info = process_news(column)
     elif file_type == "comments":
