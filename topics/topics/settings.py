@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'topics_identifier.apps.TopicsIdentifierConfig',
+    'csv_import.apps.CsvImportConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,9 +1,8 @@
 from django.test import TestCase
 from datetime import datetime
-from .examples_csv import *
-from .examples import example_documents
-from topics_identifier.csv_importer import *
-from .validations_csv import validate_document, validate_processed_line
+from .examples import *
+from .validations import validate_document, validate_processed_line
+from .csv_importer import *
 
 news = example_processed_news
 comment = example_processed_comment
@@ -81,4 +80,3 @@ class CSVImporterTests(TestCase):
         header = comments_header
         result = get_file_type(header)
         self.assertEqual(result, "comments")
-        

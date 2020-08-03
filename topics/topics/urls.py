@@ -19,4 +19,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('topics_identifier/', include('topics_identifier.urls')),
+    path('import_csv/', include('csv_import.urls'))
 ]

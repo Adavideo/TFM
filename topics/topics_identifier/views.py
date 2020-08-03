@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .forms import *
-from .csv_importer import process_csv
 from .TreeGenerator import TreeGenerator, tree_already_exist
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
@@ -9,17 +8,6 @@ from .models import Cluster, Tree
 def index_view(request):
     template = "topics_identifier/home.html"
     context = {}
-    return render(request, template, context)
-
-def import_files_view(request):
-    template = "topics_identifier/import_csv.html"
-    form = ImportCSVForm()
-    context = {'form': form }
-    if request.method == "POST":
-        file = request.FILES['file']
-        registers = process_csv(file)
-        context["registers"] = registers[:100]
-        context["num_registers"] = len(registers)
     return render(request, template, context)
 
 def generate_tree_view(request):

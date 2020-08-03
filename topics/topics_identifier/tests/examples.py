@@ -1,4 +1,4 @@
-from .dates import get_date
+from csv_import.dates import get_date
 
 # STOP WORDS
 
