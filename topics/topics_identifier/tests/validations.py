@@ -1,5 +1,5 @@
 from topics_identifier.models import Cluster
-from .examples import example_tree
+from .examples import example_tree, example_news
 from .mocks import select_example_documents
 
 
@@ -11,6 +11,8 @@ def validate_documents(test, documents, documents_info):
     doc_index = 0
     for doc in documents:
         test.assertEqual(doc.content, documents_info[doc_index])
+        test.assertEqual(doc.author, example_news["author"])
+        test.assertEqual(doc.date, example_news["date"])
         doc_index +=1
 
 # Compares a list of strings with the example documents

@@ -1,14 +1,14 @@
 from django.test import TestCase
 from topics_identifier.models import Document, Cluster, Tree
 from .examples import example_documents, example_tree
-from .mocks import mock_cluster, mock_tree, mock_documents
+from .mocks import mock_cluster, mock_tree, mock_documents, mock_document
 from .validations import validate_cluster, validate_tree, validate_clusters_list
 
 class DocumentTests(TestCase):
 
     def test_create_document_news(self):
         content = example_documents[2]
-        doc = Document(content=content, is_news=True)
+        doc = mock_document(content=content, is_news=True)
         doc.save()
         self.assertEqual(doc.content, example_documents[2])
         self.assertIs(doc.is_news, True)
@@ -16,7 +16,7 @@ class DocumentTests(TestCase):
 
     def test_create_document_comment(self):
         content = example_documents[0]
-        doc = Document(content=content, is_news=False)
+        doc = mock_document(content=content, is_news=False)
         doc.save()
         self.assertEqual(doc.content, example_documents[0])
         self.assertIs(doc.is_news, False)

@@ -1,52 +1,46 @@
 from django.test import TestCase
+from datetime import datetime
 from .examples_csv import *
 from .examples import example_documents
 from topics_identifier.csv_importer import *
+from .validations_csv import validate_document, validate_processed_line
+
+news = example_processed_news
+comment = example_processed_comment
 
 
 class CSVProcessDataTests(TestCase):
 
     def test_store_document_news(self):
-        text = example_documents[0]
-        file_type = "news"
-        store_document(text, file_type)
-        doc = Document.objects.get(content=text)
-        self.assertEqual(doc.content, text)
-        self.assertEqual(doc.is_news, True)
+        store_document(news, file_type="news")
+        doc = Document.objects.get(content=news["content"])
+        validate_document(self, doc, news, is_news=True)
 
     def test_store_document_comment(self):
-        text = example_documents[0]
-        file_type = "comments"
-        store_document(text, file_type)
-        doc = Document.objects.get(content=text)
-        self.assertEqual(doc.content, text)
-        self.assertEqual(doc.is_news, False)
+        store_document(comment, file_type="comments")
+        doc = Document.objects.get(content=comment["content"])
+        validate_document(self, doc, comment, is_news=False)
 
     # Try to store the same document twice
     def test_store_document_twice(self):
-        text = example_documents[0]
-        file_type = "news"
-        store_document(text, file_type)
-        store_document(text, file_type)
-        doc_search = Document.objects.filter(content=text)
+        store_document(news, file_type="news")
+        store_document(news, file_type="news")
+        doc_search = Document.objects.filter(content=news["content"])
         self.assertIs(len(doc_search), 1)
 
     def test_process_news(self):
-        column = news_example1
-        result = process_news(column)
-        self.assertEqual(result["title"], news_title1)
-        self.assertEqual(result["content"], news_content1)
+        result = process_news(news_example1)
+        validate_processed_line(self, result, news, is_news=True)
 
     def test_process_news_with_quotes(self):
         column = news_example_with_quotes
         result = process_news(column)
-        self.assertEqual(result["title"], news_title_with_quotes)
-        self.assertEqual(result["content"], news_content_with_quotes)
+        validate_processed_line(self, result, processed_news_with_quotes, is_news=True)
 
     def test_process_comment(self):
         column = comment_example1
         result = process_comment(column)
-        self.assertEqual(result["content"], comment_content1)
+        validate_processed_line(self, result, comment, is_news=False)
 
     def test_process_comment_with_quotes(self):
         column = comment_example_with_quotes
@@ -54,23 +48,16 @@ class CSVProcessDataTests(TestCase):
         self.assertEqual(result["content"], comment_content_with_quotes)
 
     def test_process_csv_line_news(self):
-        file_type = "news"
-        column = news_example1
-        result = process_csv_line(column, file_type)
-        self.assertEqual(result["title"], news_title1)
-        self.assertEqual(result["content"], news_content1)
-        text = news_example1[5] + "\n" + news_example1[6]
-        doc = Document.objects.get(content=text)
-        self.assertEqual(doc.content, text)
+        result = process_csv_line(news_example1, file_type="news")
+        validate_processed_line(self, result, news, is_news=True)
+        doc = Document.objects.get(content=news["content"])
+        validate_document(self, doc, result, is_news=True)
 
     def test_process_csv_line_comment(self):
-        file_type = "comments"
-        column = comment_example1
-        result = process_csv_line(column, file_type)
-        self.assertEqual(result["content"], comment_content1)
-        text = comment_example1[4]
-        doc = Document.objects.get(content=text)
-        self.assertEqual(doc.content, text)
+        result = process_csv_line(comment_example1, file_type="comments")
+        validate_processed_line(self, result, comment, is_news=False)
+        doc = Document.objects.get(content=result["content"])
+        validate_document(self, doc, result, is_news=False)
 
     def test_show_progress(self):
         progress = show_progress(num_register=2, total=10)
@@ -94,3 +81,4 @@ class CSVImporterTests(TestCase):
         header = comments_header
         result = get_file_type(header)
         self.assertEqual(result, "comments")
+        

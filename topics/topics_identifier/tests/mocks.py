@@ -2,7 +2,7 @@ from sklearn.datasets.base import Bunch
 from topics_identifier.models import Cluster, Document, Tree
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
-from .examples import example_documents, tree_name, example_tree, example_stop_words
+from .examples import example_documents, tree_name, example_tree, example_stop_words, example_news
 
 # Simulate that half the documents are news and the other half are comments
 def select_example_documents(document_types, documents=example_documents):
@@ -18,17 +18,20 @@ def select_example_documents(document_types, documents=example_documents):
         # If we want comments documents, returns the second half of the list
         return documents[half:]
 
+def mock_document(content, is_news):
+    doc, created = Document.objects.get_or_create(content=content, is_news=is_news, date=example_news["date"], author=example_news["author"])
+    if created: doc.save()
+    return doc
+
 def mock_documents():
     # Mock half the documents as news
     news_documents = select_example_documents(document_types="news")
     for content in news_documents:
-        doc, created = Document.objects.get_or_create(content=content, is_news=True)
-        doc.save()
+        mock_document(content, is_news=True)
     # Mock half the documents as comments
     comments_documents = select_example_documents(document_types="comments")
     for content in comments_documents:
-        doc, created = Document.objects.get_or_create(content=content, is_news=False)
-        doc.save()
+        mock_document(content, is_news=False)
 
 def mock_empty_tree(document_types="both"):
     if not Document.objects.all():

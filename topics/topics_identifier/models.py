@@ -1,5 +1,28 @@
 from django.db import models
 
+
+class Thread(models.Model):
+    number = models.IntegerField()
+    uri = models.CharField(max_length=250)
+    title = models.CharField(max_length=250)
+
+class Document(models.Model):
+    content = models.CharField(max_length=41000, unique=True) # max length news 40921, comments 19996
+    is_news = models.BooleanField(null=False)
+    date = models.DateTimeField()
+    author = models.IntegerField()
+    thread = models.ForeignKey(Thread, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        text = "Document "+ str(self.id) + " - "
+        if self.is_news:
+            text += "type news, "
+        else:
+            text += "type comment, "
+        text += "content: "+ self.content
+        return text
+
+
 class Tree(models.Model):
     name = models.CharField(max_length=25, unique=True)
     news = models.BooleanField(default=False)
@@ -56,20 +79,6 @@ class Tree(models.Model):
             text += " and"
         if comments:
             text += "comments"
-        return text
-
-
-class Document(models.Model):
-    content = models.CharField(max_length=41000, unique=True) # max length news 40921, comments 19996
-    is_news = models.BooleanField(null=False)
-
-    def __str__(self):
-        text = "Document "+ str(self.id) + " - "
-        if self.is_news:
-            text += "type news, "
-        else:
-            text += "type comment, "
-        text += "content: "+ self.content
         return text
 
 
