@@ -2,8 +2,9 @@ from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
 from topics_identifier.TreeGenerator import TreeGenerator, get_stop_words, short_document_types
 from .examples import example_tree, example_stop_words, example_documents_clusters, tree_name
-from .mocks import mock_documents, mock_tree_generator, mock_empty_tree
-from .validations import *
+from .mocks import mock_tree_generator, mock_empty_tree
+from csv_import.mocks import mock_documents
+from .validations import validate_clusters_list, validate_tree_level, validate_tree_document_types, validate_clusters_terms, validate_clusters_reference_documents
 
 
 class TreeGeneratorTests(TestCase):

@@ -1,35 +1,7 @@
 from topics_identifier.models import Cluster
-from .examples import example_tree, example_news
-from .mocks import select_example_documents
-
-
-# DOCUMENTS VALIDATION
-
-# Compares the content of the document with the example documents
-def validate_documents(test, documents, documents_info):
-    test.assertEqual(len(documents), len(documents_info))
-    doc_index = 0
-    for doc in documents:
-        test.assertEqual(doc.content, documents_info[doc_index])
-        test.assertEqual(doc.author, example_news["author"])
-        test.assertEqual(doc.date, example_news["date"])
-        doc_index +=1
-
-# Compares a list of strings with the example documents
-def validate_documents_content(test, documents_content, documents_info, document_types="both"):
-    # Selects example documents to compare with them. They can be news, comments or both.
-    selected_documents = select_example_documents(document_types, documents_info)
-    test.assertEqual(len(documents_content), len(selected_documents))
-    doc_index = 0
-    for doc_content in documents_content:
-        test.assertEqual(doc_content, selected_documents[doc_index])
-        doc_index +=1
-
-def validate_reference_documents(test, reference_documents, example_clusters):
-    example_reference_documents = []
-    for cluster in example_clusters:
-        example_reference_documents.append(cluster["reference_doc"])
-    validate_documents_content(test, reference_documents, example_reference_documents)
+from .examples import example_tree
+from csv_import.validations import validate_documents
+from csv_import.mocks import select_example_documents
 
 
 # CLUSTERS VALIDATION
@@ -49,6 +21,22 @@ def validate_clusters_list(test, clusters_list, example_clusters, with_documents
     for cluster in clusters_list:
         validate_cluster(test, cluster, example_clusters[index], with_documents)
         index += 1
+
+# Compares a list of strings with the example documents
+def validate_documents_content(test, documents_content, documents_info, document_types="both"):
+    # Selects example documents to compare with them. They can be news, comments or both.
+    selected_documents = select_example_documents(document_types, documents_info)
+    test.assertEqual(len(documents_content), len(selected_documents))
+    doc_index = 0
+    for doc_content in documents_content:
+        test.assertEqual(doc_content, selected_documents[doc_index])
+        doc_index +=1
+
+def validate_reference_documents(test, reference_documents, example_clusters):
+    example_reference_documents = []
+    for cluster in example_clusters:
+        example_reference_documents.append(cluster["reference_doc"])
+    validate_documents_content(test, reference_documents, example_reference_documents)
 
 
 # TREES VALIDATION

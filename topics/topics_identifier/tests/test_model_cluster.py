@@ -1,9 +1,9 @@
 from django.test import TestCase
 from topics_identifier.models import Document, Cluster, Tree
 from .examples import example_documents, example_tree
-from .mocks import mock_cluster, mock_tree, mock_documents
+from .mocks import mock_cluster, mock_tree
 from .validations import validate_cluster, validate_tree, validate_clusters_list
-
+from csv_import.mocks import mock_documents
 
 class ClusterTests(TestCase):
 

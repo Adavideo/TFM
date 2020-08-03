@@ -1,7 +1,6 @@
 import csv, io
 from datetime import datetime
-from topics_identifier.models import Document, Thread
-from timeline.models import Thread
+from timeline.models import Document, Thread
 
 # PROCESS DATA
 

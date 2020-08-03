@@ -1,8 +1,9 @@
 from django.test import TestCase
 from datetime import datetime
-from .examples import *
-from .validations import validate_document, validate_processed_line
+from .examples_csv import *
+from .validations import validate_document_with_thread, validate_processed_line
 from .csv_importer import *
+from timeline.models import Document
 
 news = example_processed_news
 comment = example_processed_comment
@@ -13,12 +14,12 @@ class CSVProcessDataTests(TestCase):
     def test_store_document_news(self):
         store_document(news, file_type="news")
         doc = Document.objects.get(content=news["content"])
-        validate_document(self, doc, news, is_news=True)
+        validate_document_with_thread(self, doc, news, is_news=True)
 
     def test_store_document_comment(self):
         store_document(comment, file_type="comments")
         doc = Document.objects.get(content=comment["content"])
-        validate_document(self, doc, comment, is_news=False)
+        validate_document_with_thread(self, doc, comment, is_news=False)
 
     # Try to store the same document twice
     def test_store_document_twice(self):
@@ -50,13 +51,13 @@ class CSVProcessDataTests(TestCase):
         result = process_csv_line(news_example1, file_type="news")
         validate_processed_line(self, result, news, is_news=True)
         doc = Document.objects.get(content=news["content"])
-        validate_document(self, doc, result, is_news=True)
+        validate_document_with_thread(self, doc, result, is_news=True)
 
     def test_process_csv_line_comment(self):
         result = process_csv_line(comment_example1, file_type="comments")
         validate_processed_line(self, result, comment, is_news=False)
         doc = Document.objects.get(content=result["content"])
-        validate_document(self, doc, result, is_news=False)
+        validate_document_with_thread(self, doc, result, is_news=False)
 
     def test_show_progress(self):
         progress = show_progress(num_register=2, total=10)

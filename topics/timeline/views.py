@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from topics_identifier.models import Document
-from .models import Thread
+from .models import Thread, Document
 
 def timeline_view(request):
     template = "timeline.html"

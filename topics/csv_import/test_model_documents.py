@@ -1,8 +1,8 @@
 from django.test import TestCase
-from topics_identifier.models import Document
-from .examples import example_documents, example_date
+from .example_documents import example_documents, example_date
 from .mocks import mock_document
-from timeline.tests import validate_thread
+from .validations import validate_thread
+from timeline.models import Document
 
 
 class DocumentTests(TestCase):

@@ -1,7 +1,8 @@
 from django.test import TestCase
 from topics_identifier.datasets_manager import generate_dataset, select_documents_level0
 from .examples import example_documents, example_tree
-from .mocks import mock_documents, mock_tree
+from .mocks import mock_tree
+from csv_import.mocks import mock_documents
 from .validations import validate_documents_content
 
 
