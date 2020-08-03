@@ -1,8 +1,4 @@
-def validate_thread(test, thread, expected, is_news):
-    test.assertEqual(thread.number, expected["thread_number"])
-    if is_news:
-        test.assertEqual(thread.title, expected["title"])
-        test.assertEqual(thread.uri, expected["uri"])
+from timeline.tests import validate_thread
 
 def validate_document(test, doc, expected, is_news):
     test.assertEqual(doc.content, expected["content"])

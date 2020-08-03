@@ -2,6 +2,13 @@ from django.test import TestCase
 from .models import Thread
 
 
+def validate_thread(test, thread, expected, is_news):
+    test.assertEqual(thread.number, expected["thread_number"])
+    if is_news:
+        test.assertEqual(thread.title, expected["title"])
+        test.assertEqual(thread.uri, expected["uri"])
+
+
 class TheadTests(TestCase):
 
     def test_create_thread(self):

@@ -3,7 +3,7 @@ from topics_identifier.models import Document, Cluster, Tree
 from .examples import example_documents, example_tree, example_date
 from .mocks import mock_cluster, mock_tree, mock_documents, mock_document
 from .validations import validate_cluster, validate_tree, validate_clusters_list
-from csv_import.validations import validate_thread
+from timeline.tests import validate_thread
 
 class DocumentTests(TestCase):
 
