@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
 from .examples import example_tree, example_documents_clusters
 from .mocks import mock_tree, mock_documents, mock_empty_tree, mock_clusters_information
-from .validations import *
+from .validations import validate_cluster, validate_clusters_list, validate_reference_documents, validate_tree_document_types
 
 
 class TreeTests(TestCase):
