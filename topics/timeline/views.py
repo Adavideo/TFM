@@ -16,5 +16,6 @@ def threads_list_view(request):
 def thread_view(request, thread_id):
     template = "thread.html"
     thread = Thread.objects.get(id=thread_id)
-    context = { "thread": thread }
+    comments_list = thread.comments()
+    context = { "thread": thread, "comments_list": comments_list }
     return render(request, template, context)

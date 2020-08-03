@@ -11,6 +11,10 @@ class Thread(models.Model):
         self.uri = uri
         self.save()
 
+    def comments(self):
+        comments = Document.objects.filter(is_news=False, thread=self)
+        return comments
+
     def __str__(self):
         text = "Thread number "+ str(self.number)
         if self.title:
