@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Renta basica</h2><br>
+
+  <table border=1 >
+    <thead>
+      <th width=15%>Date</th>
+      <th>Author</th>
+      <th>Type</th>
+      <th>Thread</th>
+      <th width=40%>Content</th>
+    </thead>
+    {% for document in list %}
+      <h4>
+          {% include "document.html" %}
+      </h4><br>
+    {% endfor %}
+  </table>
+
+{% endblock %}
