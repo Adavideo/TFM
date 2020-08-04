@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Threads without news: {{ number }}</h3>
+    <hr>
+
+    {% for thread in threads_without_news %}
+      <a href="{% url 'thread' thread.id %}">
+        Thread {{ thread.number }}
+      </a> |
+    {% endfor %}
+
+
+{% endblock %}
