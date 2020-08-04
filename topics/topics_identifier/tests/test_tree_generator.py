@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
-from topics_identifier.TreeGenerator import TreeGenerator, get_stop_words, short_document_types
+from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
 from .examples import example_tree, example_stop_words, example_documents_clusters, tree_name
 from .mocks import mock_tree_generator, mock_empty_tree
 from csv_import.mocks import mock_documents
@@ -8,10 +8,6 @@ from .validations import validate_clusters_list, validate_tree_level, validate_t
 
 
 class TreeGeneratorTests(TestCase):
-
-    def test_get_stop_words(self):
-        stop_words = get_stop_words()
-        self.assertEqual(stop_words, example_stop_words)
 
     def test_short_document_types_both(self):
         news, comments = short_document_types(document_types="both")

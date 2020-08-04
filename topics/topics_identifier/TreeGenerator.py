@@ -2,17 +2,8 @@ import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import generate_dataset
-from .file_paths import stop_words_filename
+from .stop_words import get_stop_words
 
-
-def get_stop_words():
-    stop_words = []
-    file = open(stop_words_filename, 'r')
-    words_from_file = file.read().split("\n")
-    file.close()
-    for word in words_from_file:
-        stop_words.append(word)
-    return stop_words
 
 def short_document_types(document_types):
     if document_types == "both":
