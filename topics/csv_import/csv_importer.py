@@ -4,10 +4,21 @@ from timeline.models import Document, Thread
 
 # PROCESS DATA
 
+def save_duplicated_document(info):
+    filename = "duplicates.txt"
+    out_file = open(filename, 'a')
+    print("Duplicated document:")
+    print(info)
+    out_file.write(str(info)+"\n")
+    out_file.close()
+
 def store_document(info, file_type):
     is_news = (file_type == "news")
-    doc, created = Document.objects.get_or_create(content=info["content"], is_news=is_news, date=info["date"], author=info["author"])
-    if created:
+    doc_search = Document.objects.filter(content=info["content"])
+    if doc_search:
+        save_duplicated_document(info)
+    else:
+        doc = Document(content=info["content"], is_news=is_news, date=info["date"], author=info["author"])
         doc.assign_thread(info)
 
 def clean_text(text):
