@@ -13,12 +13,16 @@ def select_documents_level0(news, comments):
         documents.append(doc.content)
     return documents
 
-def generate_dataset(level, tree):
+def generate_dataset(documents):
+    dataset = Bunch()
+    dataset['data'] = documents
+    return dataset
+
+def get_dataset(tree, level=0):
     if level == 0:
         documents = select_documents_level0(tree.news, tree.comments)
     else:
         # Gets the reference documents of the inferior level
         documents = tree.get_reference_documents(level-1)
-    dataset = Bunch()
-    dataset['data'] = documents
+    dataset = generate_dataset(documents)
     return dataset

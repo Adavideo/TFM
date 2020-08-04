@@ -1,7 +1,7 @@
 import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
-from .datasets_manager import generate_dataset
+from .datasets_manager import get_dataset
 from .stop_words import get_stop_words
 
 
@@ -40,7 +40,7 @@ class TreeGenerator:
 
     def cluster_level(self, level):
         print("\nGenerating level "+ str(level)+" clusters")
-        dataset = generate_dataset(level, self.tree)
+        dataset = get_dataset(self.tree, level)
         clusters_generator = ClustersGenerator(dataset, self.stop_words)
         clusters_information = clusters_generator.cluster_data()
         documents_clusters = clusters_generator.get_documents_clusters()
