@@ -50,7 +50,9 @@ def tree_view(request, tree_id):
         context["search_string"] = search_string
         context["search_results"] = cluster_search(tree, search_string)
     else:
-        context["clusters"] = tree.get_clusters_of_level(1)
+        clusters = tree.get_clusters_of_level(1)
+        if not clusters: clusters = tree.get_clusters_of_level(0)
+        context["clusters"] = clusters
     return render(request, template, context)
 
 def trees_index_view(request):
