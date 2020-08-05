@@ -20,6 +20,14 @@ class Thread(models.Model):
         comments = Document.objects.filter(is_news=False, thread=self).order_by("date")
         return comments
 
+    def documents_content(self):
+        content = []
+        news_content = self.news().content
+        content.append(news_content)
+        for comment in self.comments():
+            content.append(comment.content)
+        return content
+
     def __str__(self):
         text = "Thread number "+ str(self.number)
         if self.title:

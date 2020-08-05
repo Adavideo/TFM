@@ -59,3 +59,13 @@ class TheadTests(TestCase):
         comments = thread.comments()
         self.assertEqual(len(comments), 5)
         self.assertEqual(comments[1].thread, thread)
+
+    def test_documents_content(self):
+        thread = mock_thread(thread_number=1, with_documents=True)
+        content_list = thread.documents_content()
+        expected_content = example_threads[0]["documents_content"]
+        self.assertEqual(len(content_list), len(expected_content))
+        self.assertEqual(content_list[0], expected_content[0])
+        self.assertEqual(content_list[1], expected_content[1])
+        self.assertEqual(content_list[2], expected_content[2])
+        validate_documents_content(self, content_list, expected_content)
