@@ -1,11 +1,13 @@
 import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
+from .stop_words import get_stop_words
 
 
 class ClustersGenerator:
 
-    def __init__(self, dataset, stop_words):
+    def __init__(self, dataset, stop_words=None):
+        if not stop_words: stop_words = get_stop_words()
         self.stop_words = stop_words
         self.dataset = dataset
 
