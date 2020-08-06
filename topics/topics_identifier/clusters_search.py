@@ -1,5 +1,5 @@
 from .models import Cluster
-from topics_identifier.clusters_navigation import compose_cluster_information
+from .clusters_navigation import compose_cluster_information
 
 
 def get_terms_from_string(terms_string):
