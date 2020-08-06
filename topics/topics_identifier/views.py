@@ -30,7 +30,7 @@ def generate_tree_view(request):
         # Prepare the information to show on the web page
         level1_clusters = tree.get_clusters_of_level(level)
         context["num_clusters"] = len(level1_clusters)
-        context["clusters"] = level1_clusters
+        context["clusters_list"] = level1_clusters
         context["tree_name"] = tree_name
     return render(request, template, context)
 
@@ -53,7 +53,7 @@ def tree_view(request, tree_id):
     else:
         clusters = tree.get_clusters_of_level(1)
         if not clusters: clusters = tree.get_clusters_of_level(0)
-        context["clusters"] = clusters
+        context["clusters_list"] = clusters
     return render(request, template, context)
 
 def trees_index_view(request):

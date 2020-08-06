@@ -24,12 +24,7 @@
 
     {% else %}
       <hr>
-
-      {% for cluster in clusters %}
-          {% include "topics_identifier/cluster.html" %}
-          <hr>
-      {% endfor %}
-
-  {% endif %}
+      {% include "topics_identifier/clusters_list.html" %}
+    {% endif %}
 
 {% endblock %}

@@ -12,17 +12,11 @@
 
 <hr>
 
-{% if clusters %}
+{% if clusters_list %}
   <h2>Generating tree: {{ tree_name }}</h2>
-    {{ num_clusters }} clusters
-
-  {% for cluster in clusters %}
-    <hr><h3>Cluster {{ cluster.number }}</h3><br>
-    <b>Terms:</b>
-      {{ cluster.terms }}
-    <br><br>
-    <b>Reference document: </b>{{ cluster.reference_document.content }}<br><br>
-  {% endfor %}
+  {{ num_clusters }} clusters
+  <hr>
+  {% include "topics_identifier/clusters_list.html" %}
 {% endif %}
 
 {% endblock %}
