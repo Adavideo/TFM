@@ -1,6 +1,7 @@
 from django.test import TestCase
-from .models import Thread, Document
-from csv_import.mocks import mock_documents
+from timeline.models import Thread
+from .mocks_threads import mock_thread
+from .example_threads import example_threads
 
 
 def validate_thread(test, thread, expected, is_news):
@@ -9,23 +10,14 @@ def validate_thread(test, thread, expected, is_news):
         test.assertEqual(thread.title, expected["title"])
         test.assertEqual(thread.uri, expected["uri"])
 
-def mock_thread(thread_number, with_documents=False):
-    thread = Thread(number=thread_number)
-    thread.save()
-    if with_documents:
-        mock_documents()
-        # Assign news
-        news = Document.objects.filter(is_news=True)[0]
-        thread_info = { "thread_number":thread_number, "title":"", "uri":""}
-        news.assign_thread(thread_info)
-        # Assign comments
-        comments_list = Document.objects.filter(is_news=False)
-        for comment in comments_list:
-            comment.assign_thread(thread_info)
-    return thread
+def validate_documents_content(test, documents_content, expected_content):
+    num_of_documents = len(documents_content)
+    test.assertEqual(num_of_documents, len(expected_content))
+    for i in range(0, num_of_documents):
+        test.assertEqual(documents_content[i], expected_content[i])
 
 
-class TheadTests(TestCase):
+class ThreadTests(TestCase):
 
     def test_create_thread(self):
         thread = mock_thread(thread_number=1)
@@ -34,10 +26,11 @@ class TheadTests(TestCase):
 
     def test_update_thread(self):
         thread = mock_thread(thread_number=1)
-        thread.update(title="Title", uri="blabla")
-        self.assertIs(thread.title, "Title")
-        self.assertIs(thread.uri, "blabla")
-        self.assertEqual(str(thread), "Thread number 1 - title: Title")
+        title = example_threads[1]["title"]
+        uri = example_threads[1]["uri"]
+        thread.update(title=title, uri=uri)
+        validate_thread(self, thread, example_threads[1], is_news=True)
+        self.assertEqual(str(thread), "Thread number 1 - title: "+title)
 
     def test_news_with_no_news(self):
         thread = mock_thread(thread_number=1, with_documents=False)
@@ -45,7 +38,7 @@ class TheadTests(TestCase):
         self.assertEqual(news, None)
 
     def test_news(self):
-        thread = thread = mock_thread(thread_number=1, with_documents=True)
+        thread = mock_thread(thread_number=1, with_documents=True)
         news = thread.news()
         self.assertEqual(news.thread, thread)
 
@@ -62,10 +55,6 @@ class TheadTests(TestCase):
 
     def test_documents_content(self):
         thread = mock_thread(thread_number=1, with_documents=True)
-        content_list = thread.documents_content()
+        documents_content = thread.documents_content()
         expected_content = example_threads[0]["documents_content"]
-        self.assertEqual(len(content_list), len(expected_content))
-        self.assertEqual(content_list[0], expected_content[0])
-        self.assertEqual(content_list[1], expected_content[1])
-        self.assertEqual(content_list[2], expected_content[2])
-        validate_documents_content(self, content_list, expected_content)
+        validate_documents_content(self, documents_content, expected_content)

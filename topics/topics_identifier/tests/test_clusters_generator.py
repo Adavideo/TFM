@@ -1,7 +1,7 @@
 from django.test import TestCase
-from .examples import example_tree, example_documents_clusters
-from .mocks import mock_cluster_generator
-from .validations import validate_clusters_terms, validate_clusters_reference_documents
+from .example_trees import example_tree, example_documents_clusters
+from .mock_generators import mock_cluster_generator
+from .validations_generators import validate_clusters_terms, validate_clusters_reference_documents
 
 
 class ClustersGeneratorTests(TestCase):

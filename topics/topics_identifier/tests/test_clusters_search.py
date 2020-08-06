@@ -1,7 +1,18 @@
 from django.test import TestCase
+from topics_identifier.models import Cluster
 from topics_identifier.clusters_search import cluster_search, terms_match, get_terms_from_string
-from .mocks import mock_tree
-from .validations import validate_search_result
+from .example_trees import example_tree
+from .mock_trees import mock_tree
+from .validations_clusters import validate_cluster
+
+
+def validate_search_result(test, clusters_list, level, number):
+    cluster = clusters_list[level]["cluster"]
+    test.assertEqual(type(cluster), type(Cluster()))
+    test.assertEqual(cluster.level, level)
+    test.assertEqual(cluster.number, number)
+    example_cluster = example_tree[level]["clusters"][number]
+    validate_cluster(test, cluster, example_cluster, with_documents=False)
 
 
 class ClustersSearchTests(TestCase):

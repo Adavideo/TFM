@@ -1,10 +1,11 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
-from .examples import example_tree, example_documents_clusters
-from .mocks import mock_tree,  mock_empty_tree, mock_clusters_information
-from csv_import.mocks import mock_documents
-from .validations import validate_cluster, validate_clusters_list, validate_reference_documents, validate_tree_document_types
-
+from .example_trees import example_tree, example_documents_clusters
+from .mock_trees import mock_tree, mock_empty_tree
+from .mock_clusters import mock_clusters_information
+from .mocks import mock_documents
+from .validations_clusters import validate_cluster, validate_clusters_list, validate_reference_documents
+from .validations_trees import validate_tree, validate_tree_document_types
 
 class TreeTests(TestCase):
 
@@ -101,3 +102,13 @@ class TreeTests(TestCase):
         tree.add_documents_to_clusters(level, example_documents_clusters[level])
         clusters_list = tree.get_clusters_of_level(level)
         validate_clusters_list(self, clusters_list, example_clusters, with_documents=True)
+
+    def test_children_level1_clusters_not_linked(self):
+        max_level = 1
+        tree = mock_tree(max_level, linked=False)
+        validate_tree(self, tree, max_level)
+
+    def test_children_level1_with_linked_clusters(self):
+        max_level = 1
+        tree = mock_tree(max_level, linked=True)
+        validate_tree(self, tree, max_level)

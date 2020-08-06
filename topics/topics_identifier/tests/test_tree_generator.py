@@ -1,10 +1,14 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
 from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
-from .examples import example_tree, example_stop_words, example_documents_clusters, tree_name
-from .mocks import mock_tree_generator, mock_empty_tree
-from csv_import.mocks import mock_documents
-from .validations import validate_clusters_list, validate_tree_level, validate_tree_document_types, validate_clusters_terms, validate_clusters_reference_documents
+from .example_trees import example_tree, tree_name, example_documents_clusters
+from .example_stop_words import example_stop_words
+from .mock_trees import mock_empty_tree
+from .mock_generators import mock_tree_generator
+from .mocks import mock_documents
+from .validations_clusters import validate_clusters_list
+from .validations_trees import validate_tree_level, validate_tree_document_types
+from .validations_generators import validate_clusters_terms, validate_clusters_reference_documents
 
 
 class TreeGeneratorTests(TestCase):

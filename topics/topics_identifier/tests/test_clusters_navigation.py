@@ -1,7 +1,8 @@
 from django.test import TestCase
 from topics_identifier.clusters_navigation import compose_clusters_list, compose_cluster_information
-from .mocks import mock_tree, mock_cluster
-from .validations import validate_clusters_information
+from .mock_clusters import mock_cluster
+from .mock_trees import mock_tree
+from .validations_clusters import validate_clusters_information
 
 
 class ClustersNavigationTests(TestCase):

@@ -1,27 +1,23 @@
 from django.test import TestCase
-from .example_documents import example_documents, example_date
-from .mocks import mock_document
-from .validations import validate_thread
+from .example_documents import example_date, news_content, comments_content
+from .mock_documents import mock_document, mock_news, mock_comments
+from .test_model_thread import validate_thread
 from timeline.models import Document
 
 
 class DocumentTests(TestCase):
 
     def test_create_document_news(self):
-        content = example_documents[2]
-        doc = mock_document(content=content, is_news=True)
-        doc.save()
-        self.assertEqual(doc.content, example_documents[2])
+        doc = mock_news(number=0)
+        self.assertEqual(doc.content, news_content[0])
         self.assertIs(doc.is_news, True)
-        self.assertEqual(str(doc), "Document 1 - type news, content: "+ example_documents[2])
+        self.assertEqual(str(doc), "Document 1 - type news, content: "+ news_content[0])
 
     def test_create_document_comment(self):
-        content = example_documents[0]
-        doc = mock_document(content=content, is_news=False)
-        doc.save()
-        self.assertEqual(doc.content, example_documents[0])
-        self.assertIs(doc.is_news, False)
-        self.assertEqual(str(doc), "Document 1 - type comment, content: "+ example_documents[0])
+        comments = mock_comments()
+        self.assertEqual(comments[0].content, comments_content[0])
+        self.assertIs(comments[0].is_news, False)
+        self.assertEqual(str(comments[0]), "Document 1 - type comment, content: "+ comments_content[0])
 
     def test_assign_thread_comment(self):
         info = { "thread_number": 10 }

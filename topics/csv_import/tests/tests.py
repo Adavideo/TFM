@@ -1,9 +1,7 @@
 from django.test import TestCase
-from datetime import datetime
 from .examples_csv import *
 from .validations import validate_document_with_thread, validate_processed_line
-from .csv_importer import *
-from timeline.models import Document
+from csv_import.csv_importer import *
 
 news = example_processed_news
 comment = example_processed_comment
