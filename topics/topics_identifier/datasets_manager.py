@@ -26,3 +26,11 @@ def get_dataset(tree, level=0):
         documents = tree.get_reference_documents(level-1)
     dataset = generate_dataset(documents)
     return dataset
+
+def generate_dataset_from_threads(threads_list):
+    documents = []
+    for thread in threads_list:
+        thread_documents = thread.documents_content()
+        documents.extend(thread_documents)
+    dataset = generate_dataset(documents)
+    return dataset
