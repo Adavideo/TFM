@@ -1,6 +1,6 @@
 from django.test import TestCase
-from topics_identifier.stop_words import get_stop_words
-from .examples import example_stop_words
+from topics_identifier.stop_words.stop_words import get_stop_words
+from .example_stop_words import example_stop_words
 
 class StopWordsTests(TestCase):
 

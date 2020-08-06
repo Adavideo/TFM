@@ -1,4 +1,4 @@
-stop_words_filename = "topics_identifier/stop_words_spanish.txt"
+stop_words_filename = "topics_identifier/stop_words/stop_words_spanish.txt"
 
 def get_stop_words():
     stop_words = []

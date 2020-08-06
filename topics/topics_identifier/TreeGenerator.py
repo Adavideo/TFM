@@ -2,7 +2,7 @@ import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
-from .stop_words import get_stop_words
+from .stop_words.stop_words import get_stop_words
 
 
 def short_document_types(document_types):
