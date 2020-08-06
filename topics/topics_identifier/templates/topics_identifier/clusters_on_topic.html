@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Topic: {{ topic }}</h2>
+  <hr>
+
+  <h2>Clusters</h2>
+    {% for cluster in clusters_list %}
+        {% include "topics_identifier/cluster.html" %}
+        <hr>
+    {% endfor %}
+
+
+{% endblock %}

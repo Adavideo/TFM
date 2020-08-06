@@ -4,12 +4,13 @@ from .TreeGenerator import TreeGenerator, tree_already_exist
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
-from .renta_basica import get_documents
+from .topics_manager import cluster_for_topic
 
-def renta_basica_view(request):
-    template = "topics_identifier/renta_basica.html"
-    news_texts = get_documents()
-    context = { "list": news_texts }
+
+def cluster_topic_view(request, topic):
+    template = "topics_identifier/clusters_on_topic.html"
+    clusters_list = cluster_for_topic(topic)
+    context = { "topic": topic, "clusters_list": clusters_list }
     return render(request, template, context)
 
 def generate_tree_view(request):
