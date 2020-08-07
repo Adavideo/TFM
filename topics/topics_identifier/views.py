@@ -17,10 +17,15 @@ def assign_topic_from_file_view(request):
         context["threads_list"] = threads_list
     return render(request, template, context)
 
-def cluster_topic_view(request, topic):
+def cluster_topic_view(request):
     template = "topics_identifier/clusters_on_topic.html"
-    clusters_list = cluster_for_topic(topic_name=topic)
-    context = { "topic": topic, "clusters_list": clusters_list }
+    form = ClusterTopicForm(request.POST)
+    context = { "form": form }
+    if request.method == "POST":
+        topic_id = request.POST["topic"]
+        topic = Topic.objects.get(id=topic_id)
+        context["topic"] = topic.name
+        context["clusters_list"] = cluster_for_topic(topic)
     return render(request, template, context)
 
 def generate_tree_view(request):

@@ -26,15 +26,7 @@ def get_dataset_for_topic(topic):
     dataset = generate_dataset_from_threads(topic_threads)
     return dataset
 
-def find_topic(topic_name):
-    topic_search = Topic.objects.filter(name=topic_name)
-    if topic_search:
-        topic = topic_search[0]
-    return topic
-
-def cluster_for_topic(topic_name):
-    topic = find_topic(topic_name)
-    if not topic: return []
+def cluster_for_topic(topic):
     dataset = get_dataset_for_topic(topic)
     clusters_information, documents_clusters = generate_clusters_for_topic(dataset)
     tree = generate_tree_for_topic(topic.name, clusters_information, documents_clusters)

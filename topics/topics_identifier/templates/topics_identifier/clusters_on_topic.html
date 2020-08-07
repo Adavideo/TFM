@@ -2,10 +2,22 @@
 
 {% block content %}
 
-  <h2>Topic: {{ topic }}</h2>
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Cluster">
+  </form>
+
   <hr>
 
-  <h2>Clusters</h2>
-    {% include "topics_identifier/clusters_list.html" %}
+  {% if topic %}
+      <h2>Topic: {{ topic }}</h2>
+      <hr>
+
+      {% if clusters_list %}
+        <h2>Clusters</h2>
+          {% include "topics_identifier/clusters_list.html" %}
+      {% endif %}
+  {% endif %}
 
 {% endblock %}

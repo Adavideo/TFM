@@ -1,4 +1,5 @@
 from django import forms
+from .models import Topic
 
 def get_documents_options():
     document_types = ["news", "comments", "both"]
@@ -7,6 +8,15 @@ def get_documents_options():
         options.append((type, type))
     return options
 
+def get_topics_options():
+    topics_list = Topic.objects.all()
+    if not topics_list:
+        options = [("","")]
+    else:
+        options = []
+        for topic in topics_list:
+            options.append((topic.id, topic))
+    return options
 
 class ImportCSVForm(forms.Form):
     file = forms.FileField()
@@ -20,3 +30,6 @@ class ClusterSeachForm(forms.Form):
 
 class AssignTopicFromFileForm(forms.Form):
     topic_name = forms.CharField(max_length=100)
+
+class ClusterTopicForm(forms.Form):
+    topic = forms.ChoiceField(choices=get_topics_options())
