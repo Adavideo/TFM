@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {{ message }}<br><br>
+
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Assign topic">
+  </form>
+
+  <hr>
+
+  {% include "threads_list.html" %}
+
+{% endblock %}

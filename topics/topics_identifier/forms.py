@@ -17,3 +17,6 @@ class TreeForm(forms.Form):
 
 class ClusterSeachForm(forms.Form):
     search_terms = forms.CharField(max_length=100)
+
+class AssignTopicFromFileForm(forms.Form):
+    topic_name = forms.CharField(max_length=100)
