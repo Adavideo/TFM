@@ -9,7 +9,7 @@ from .topics_manager import cluster_for_topic
 
 def cluster_topic_view(request, topic):
     template = "topics_identifier/clusters_on_topic.html"
-    clusters_list = cluster_for_topic(topic)
+    clusters_list = cluster_for_topic(topic_name=topic)
     context = { "topic": topic, "clusters_list": clusters_list }
     return render(request, template, context)
 

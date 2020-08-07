@@ -1,5 +1,5 @@
 from django.db import models
-from timeline.models import Document
+from timeline.models import Document, Topic
 
 
 class Tree(models.Model):

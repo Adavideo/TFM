@@ -28,6 +28,9 @@ class Thread(models.Model):
             content.append(comment.content)
         return content
 
+    def assign_topic(self, topic):
+        thread_topic, created = ThreadTopic.objects.get_or_create(thread=self, topic=topic)
+
     def __str__(self):
         text = "Thread number "+ str(self.number)
         if self.title:
@@ -60,6 +63,13 @@ class Document(models.Model):
 
 class Topic(models.Model):
     name = models.CharField(max_length=100, unique=True)
+
+    def get_threads(self):
+        topic_threads_list = ThreadTopic.objects.filter(topic=self)
+        threads = []
+        for topic_thread in topic_threads_list:
+            threads.append(topic_thread.thread)
+        return threads
 
     def __str__(self):
         return self.name
