@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Thread, Document
 
-# Register your models here.
+admin.site.register(Thread)
+admin.site.register(Document)
