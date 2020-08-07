@@ -56,3 +56,19 @@ class Document(models.Model):
         else: text += "type comment, "
         text += "content: "+ self.content
         return text
+
+
+class Topic(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ThreadTopic(models.Model):
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    def __str__(self):
+        text = str(self.thread)+ " - topic: " + self.topic.name
+        return text
