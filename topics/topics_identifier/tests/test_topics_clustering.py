@@ -26,6 +26,12 @@ class TopicsTests(TestCase):
         clusters_information, documents_clusters = generate_clusters_for_topic(dataset)
         clusters_list = generate_tree_for_topic(topic.name, clusters_information, documents_clusters)
 
+    def test_generate_tree_for_topic_twice(self):
+        dataset = mock_dataset_from_topics(topic)
+        clusters_information, documents_clusters = generate_clusters_for_topic(dataset)
+        generate_tree_for_topic(topic.name, clusters_information, documents_clusters)
+        generate_tree_for_topic(topic.name, clusters_information, documents_clusters)
+
     def test_cluster_for_topic(self):
         mock_dataset_from_topics(topic)
         clusters_list = cluster_for_topic(topic)

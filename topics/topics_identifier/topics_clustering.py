@@ -20,8 +20,8 @@ def generate_clusters_for_topic(dataset):
     return clusters_information, documents_clusters
 
 def generate_tree_for_topic(topic_name, clusters_information, documents_clusters):
-    tree = Tree(name=topic_name, news=True, comments=True)
-    tree.save()
+    tree, created = Tree.objects.get_or_create(name=topic_name, news=True, comments=True)
+    if created: tree.save()
     tree.add_clusters(level=0, clusters_information=clusters_information)
     tree.add_documents_to_clusters(level=0, documents_clusters_list=documents_clusters)
     return tree
