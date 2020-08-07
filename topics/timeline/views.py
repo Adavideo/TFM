@@ -9,7 +9,7 @@ def timeline_view(request):
     return render(request, template, context)
 
 def threads_list_view(request):
-    template = "threads_list.html"
+    template = "threads_list_page.html"
     all_threads = Thread.objects.all()
     context = { "threads_list": all_threads}
     return render(request, template, context)
