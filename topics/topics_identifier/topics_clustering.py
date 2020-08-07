@@ -3,12 +3,12 @@ from .datasets_manager import generate_dataset_from_threads
 from .ClustersGenerator import ClustersGenerator
 
 
-def generate_tree_for_topic(topic_name, clusters_information, documents_clusters):
-    tree = Tree(name=topic_name, news=True, comments=True)
-    tree.save()
-    tree.add_clusters(level=0, clusters_information=clusters_information)
-    tree.add_documents_to_clusters(level=0, documents_clusters_list=documents_clusters)
-    return tree
+def get_dataset_for_topic(topic):
+    print("Getting threads for topic: " + topic.name)
+    topic_threads = topic.get_threads()
+    print("Generating dataset")
+    dataset = generate_dataset_from_threads(topic_threads)
+    return dataset
 
 def generate_clusters_for_topic(dataset):
     clusters_generator = ClustersGenerator(dataset)
@@ -19,12 +19,12 @@ def generate_clusters_for_topic(dataset):
     documents_clusters = clusters_generator.get_documents_clusters()
     return clusters_information, documents_clusters
 
-def get_dataset_for_topic(topic):
-    print("Getting threads for topic: " + topic.name)
-    topic_threads = topic.get_threads()
-    print("Generating dataset")
-    dataset = generate_dataset_from_threads(topic_threads)
-    return dataset
+def generate_tree_for_topic(topic_name, clusters_information, documents_clusters):
+    tree = Tree(name=topic_name, news=True, comments=True)
+    tree.save()
+    tree.add_clusters(level=0, clusters_information=clusters_information)
+    tree.add_documents_to_clusters(level=0, documents_clusters_list=documents_clusters)
+    return tree
 
 def cluster_for_topic(topic):
     dataset = get_dataset_for_topic(topic)

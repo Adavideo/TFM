@@ -1,6 +1,8 @@
+from topics_identifier.models import Topic
+
 # Examples of the result when clustering for the topic "prueba"
 
-topic = "prueba"
+topic = Topic(name="prueba")
 
 example_terms = [
     ['importa', 'único', 'museos', 'bibliotecas', 'menos', 'casas', 'encuentros', 'familiares', 'visitas', 'vital', 'ertes', 'residencias', 'colegios', 'terrazas', 'obsesión', 'alucino', 'mínimo', 'ingreso'],

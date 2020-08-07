@@ -1,7 +1,7 @@
 from sklearn.datasets.base import Bunch
 from .examples import comments_content
-from .mocks import mock_thread
-from topics_identifier.topics_manager import get_dataset_for_topic
+from .mocks import mock_thread, mock_threads_with_topic
+from topics_identifier.topics_clustering import get_dataset_for_topic
 
 
 def mock_dataset():
@@ -10,7 +10,6 @@ def mock_dataset():
     return dataset
 
 def mock_dataset_from_topics(topic):
-    mock_thread(thread_number=0, with_documents=True, news_number=0)
-    mock_thread(thread_number=1, with_documents=True, news_number=1)
+    threads = mock_threads_with_topic(topic)
     dataset = get_dataset_for_topic(topic)
     return dataset

@@ -2,13 +2,8 @@ from django.test import TestCase
 from timeline.models import Thread
 from .mocks_threads import mock_thread
 from .example_threads import example_threads
+from .validations_threads import validate_thread
 
-
-def validate_thread(test, thread, expected, is_news):
-    test.assertEqual(thread.number, expected["thread_number"])
-    if is_news:
-        test.assertEqual(thread.title, expected["title"])
-        test.assertEqual(thread.uri, expected["uri"])
 
 def validate_documents_content(test, documents_content, expected_content):
     num_of_documents = len(documents_content)
