@@ -52,9 +52,9 @@ class Tree(models.Model):
 
     def __str__(self):
         text = "Tree "+ self.name + " - documents: "
-        if news: text += "news"
-        if news and comments: text += " and"
-        if comments: text += "comments"
+        if self.news: text += "news"
+        if self.news and self.comments: text += " and "
+        if self.comments: text += "comments"
         return text
 
 
