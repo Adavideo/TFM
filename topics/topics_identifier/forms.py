@@ -18,8 +18,6 @@ def get_topics_options():
             options.append((topic.id, topic))
     return options
 
-class ImportCSVForm(forms.Form):
-    file = forms.FileField()
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)
