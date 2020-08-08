@@ -2,8 +2,6 @@
 
 {% block content %}
 
-  {{ message }}<br><br>
-
   <form action="" method="post">
       {% csrf_token %}
       {{ form.as_p }}
