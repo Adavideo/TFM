@@ -3,9 +3,8 @@ from .models import Thread, Document, Topic
 from .threads_manager import check_threads_without_news
 
 def timeline_view(request):
-    template = "timeline.html"
-    all_documents = Document.objects.all().order_by("date")
-    context = { "documents_list": all_documents}
+    template = "timeline_home.html"
+    context = { }
     return render(request, template, context)
 
 def threads_list_view(request):

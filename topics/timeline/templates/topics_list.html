@@ -5,10 +5,12 @@
   <h3>Topics</h3>
   <hr>
 
+Select a topic to see the related threads:<br><br>
+
   {% for topic in topics_list %}
-    <a href="{% url 'topic_threads' topic.id %}">
+    <h4><a href="{% url 'topic_threads' topic.id %}">
       {{ topic.name }}
-    </a><br><br>
+    </a></h4><br><br>
   {% endfor %}
 
 {% endblock %}

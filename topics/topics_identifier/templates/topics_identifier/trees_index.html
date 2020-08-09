@@ -2,9 +2,12 @@
 
 {% block content %}
 
-
-  <h2>Clusters trees</h2><br>
-
+<center><h2>Topics identifier</<h2></center>
+  <h3><p style="text-align:center;">
+    <a href="{% url 'generate_tree' %}">Generate clusters tree</a> |
+    Show trees </p></h3>
+<hr>
+<br>
   {% for tree in trees_list %}
     <h4>
       <a href="{% url 'tree' tree.id %}">

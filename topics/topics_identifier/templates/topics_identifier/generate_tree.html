@@ -2,7 +2,15 @@
 
 {% block content %}
 
-{{ message }}<br><br>
+<center><h2>Topics identifier</<h2></center>
+  <h3><p style="text-align:center;">
+    Generate clusters tree |
+    <a href="{% url 'trees_index' %}">Show trees</a>
+  </p></h3>
+
+<hr>
+
+{% if message %}{{ message }}<br><br>{% endif %}
 
 <form action="" method="post">
     {% csrf_token %}
