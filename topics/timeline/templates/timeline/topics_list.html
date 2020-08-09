@@ -2,10 +2,15 @@
 
 {% block content %}
 
-  <h3>Topics</h3>
+<center><h2>Timeline</<h2></center>
+  <h3><p style="text-align:center;">
+    <a href="{% url 'topics_list' %}">Threads by topic</a> |
+    <a href="{% url 'threads_list' %}">All threads</a>
+  </p></h3>
   <hr>
 
-Select a topic to see the related threads:<br><br>
+<h4>Select a topic to see the related threads:</h4>
+<br>
 
   {% for topic in topics_list %}
     <h4><a href="{% url 'topic_threads' topic.id %}">

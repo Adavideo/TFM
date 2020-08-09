@@ -17,7 +17,7 @@ def topic_threads_view(request, topic_id):
     template = "timeline/threads_list_page.html"
     topic = Topic.objects.get(id=topic_id)
     threads_list = topic.get_threads()
-    context = { "threads_list": threads_list }
+    context = { "threads_list": threads_list, "topic": topic.name }
     return render(request, template, context)
 
 def thread_view(request, thread_id):
