@@ -11,8 +11,7 @@
 
 <h4>Comments:</h4>
   {% for document in comments_list %}
-    {{ document.date }} - author: {{ document.author }}<br>
-    {{ document.content }}<br><br>
+      {% include "timeline/document.html" %}
   {% endfor %}
 
 {% endblock %}

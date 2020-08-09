@@ -1,9 +1,0 @@
-
-    <tr>
-      <td>{{ document.date }}</td>
-      <td>{{ document.author }}</td>
-      <td>{% if document.is_news %}news{% else %}comment{% endif %}</td>
-      <td>{% if document.thread.uri %}{{ document.thread.uri }}{% else %}
-          {{ document.thread.number }}{% endif %}</td>
-      <td>{{ document.content }}</td>
-    </tr>
