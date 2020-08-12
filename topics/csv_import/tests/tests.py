@@ -2,6 +2,7 @@ from django.test import TestCase
 from .examples_csv import *
 from .validations import validate_document_with_thread, validate_processed_line
 from csv_import.csv_importer import *
+from timeline.models import Thread
 
 news = example_processed_news
 comment = example_processed_comment
@@ -13,6 +14,18 @@ class CSVProcessDataTests(TestCase):
         store_document(news, file_type="news")
         doc = Document.objects.get(content=news["content"])
         validate_document_with_thread(self, doc, news, is_news=True)
+
+    def test_store_document_adding_news_for_a_thread_that_already_exist(self):
+        store_document(comment, file_type="comments")
+        thread_number = comment["thread_number"]
+        thread = Thread.objects.get(number=thread_number)
+        self.assertEqual(thread.title, None)
+        self.assertEqual(thread.uri, None)
+        news["thread_number"] = thread_number
+        store_document(news, file_type="news")
+        thread = Thread.objects.get(number=thread_number)
+        self.assertEqual(thread.title, news["title"])
+        self.assertEqual(thread.uri, news["uri"])
 
     def test_store_document_comment(self):
         store_document(comment, file_type="comments")
