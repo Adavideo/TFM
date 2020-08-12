@@ -12,10 +12,15 @@ def save_duplicated_document(info):
     out_file.write(str(info)+"\n")
     out_file.close()
 
+def document_exist(info):
+    doc_search = Document.objects.filter(content=info["content"])
+    if doc_search: return True
+    else: return False
+
 def store_document(info, file_type):
     is_news = (file_type == "news")
     doc_search = Document.objects.filter(content=info["content"])
-    if doc_search:
+    if document_exist(info):
         save_duplicated_document(info)
     else:
         doc = Document(content=info["content"], is_news=is_news, date=info["date"], author=info["author"])
