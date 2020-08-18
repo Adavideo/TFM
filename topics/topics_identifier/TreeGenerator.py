@@ -3,6 +3,7 @@ from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
 from .stop_words.stop_words import get_stop_words
+from .sklearn_models_manager import store_model
 
 
 def short_document_types(document_types):
@@ -38,11 +39,17 @@ class TreeGenerator:
             self.max_level = max_level
             self.stop_words = get_stop_words()
 
+    def get_model_name(self, level):
+        name = self.tree.name + "_level" + str(level)
+        return name
+
     def cluster_level(self, level):
         print("\nGenerating level "+ str(level)+" clusters")
         dataset = get_dataset(self.tree, level)
         clusters_generator = ClustersGenerator(dataset, self.stop_words)
         clusters_information = clusters_generator.cluster_data()
+        model_name = self.get_model_name(level)
+        store_model(clusters_generator.model, model_name)
         documents_clusters = clusters_generator.get_documents_clusters()
         return clusters_information, documents_clusters
 
