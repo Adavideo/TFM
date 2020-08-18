@@ -12,3 +12,9 @@ def mock_cluster_generator():
 
 def mock_tree_generator(max_level, document_types="both"):
     return TreeGenerator(tree_name, document_types, max_level)
+
+def mock_affinity_propagation_model():
+    generator = mock_cluster_generator()
+    generator.process_data()
+    model = generator.train_model()
+    return model

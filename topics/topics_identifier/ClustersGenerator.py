@@ -2,6 +2,7 @@ import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .stop_words.stop_words import get_stop_words
+from .sklearn_models_manager import store_model, load_model
 
 
 class ClustersGenerator:
@@ -23,6 +24,7 @@ class ClustersGenerator:
         print(str(datetime.datetime.now().time())+" - Training the model")
         self.model = AffinityPropagation()
         self.model.fit(self.vectorized_documents)
+        return self.model
 
     def get_cluster_terms(self, cluster_center):
         cluster_terms = []
