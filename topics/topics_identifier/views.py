@@ -1,11 +1,27 @@
 from django.shortcuts import render
 from .forms import *
 from .TreeGenerator import TreeGenerator, tree_already_exist
+from .ModelGenerator import ModelGenerator, load_model
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
+
+def home_view(request):
+    template = "topics_identifier/topics_identifier_home.html"
+    context = {}
+    return render(request, template, context)
+
+def generate_model_view(request):
+    template = "topics_identifier/generate_model.html"
+    form = ModelsForm(request.POST)
+    context = { "form": form }
+    if request.method == "POST":
+        model_name = request.POST["model_name"]
+        context["model_name"] = model_name
+        document_types = request.POST["document_types"]
+    return render(request, template, context)
 
 def assign_topic_from_file_view(request):
     template = "topics_identifier/assign_topic_from_file.html"

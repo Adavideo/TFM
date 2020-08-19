@@ -23,6 +23,9 @@ def get_topics_options():
             options.append((topic.id, topic))
     return options
 
+class ModelsForm(forms.Form):
+    model_name = forms.CharField(max_length=25)
+    document_types = forms.ChoiceField(choices=get_documents_options())
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)

@@ -2,29 +2,23 @@
 
 {% block content %}
 
-<center><h2>Topics identifier</<h2></center>
-  <h3><p style="text-align:center;">
-    Generate clusters tree |
-    <a href="{% url 'trees_index' %}">Show trees</a>
-  </p></h3>
+  {% include "topics_identifier/topics_identifier_menu.html" %}
 
-<hr>
+  {% if message %}{{ message }}<br><br>{% endif %}
+  
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Cluster">
+  </form>
 
-{% if message %}{{ message }}<br><br>{% endif %}
-
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Cluster">
-</form>
-
-<hr>
-
-{% if clusters_list %}
-  <h2>Generating tree: {{ tree_name }}</h2>
-  {{ num_clusters }} clusters
   <hr>
-  {% include "topics_identifier/clusters_list.html" %}
-{% endif %}
+
+  {% if clusters_list %}
+    <h2>Generating tree: {{ tree_name }}</h2>
+    {{ num_clusters }} clusters
+    <hr>
+    {% include "topics_identifier/clusters_list.html" %}
+  {% endif %}
 
 {% endblock %}

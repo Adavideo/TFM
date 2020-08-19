@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Generate models">
+  </form>
+
+<hr>
+
+
+  {% if model_filename %}
+    <h2>Generated model: {{ model_name }}</h2>
+    Filename: {{ model_filename }}
+  {% endif %}
+
+{% endblock %}
