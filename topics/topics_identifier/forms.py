@@ -9,7 +9,12 @@ def get_documents_options():
     return options
 
 def get_topics_options():
-    topics_list = Topic.objects.all()
+    try:
+        topics_list = Topic.objects.all()
+        len(topics_list)
+    except:
+        topics_list = None
+
     if not topics_list:
         options = [("","")]
     else:
