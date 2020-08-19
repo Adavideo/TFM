@@ -2,12 +2,12 @@ from sklearn.datasets.base import Bunch
 from .models import Document
 
 
-def select_documents_level0(news, comments):
+def select_documents_level0(with_news, with_comments):
     documents = []
-    if news and comments:
+    if with_news and with_comments:
         documents_list = Document.objects.all()
     else:
-        documents_list = Document.objects.filter(is_news=news)
+        documents_list = Document.objects.filter(is_news=with_news)
 
     for doc in documents_list:
         documents.append(doc.content)

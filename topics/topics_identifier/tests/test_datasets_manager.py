@@ -20,14 +20,14 @@ class DatasetManagerTests(TestCase):
         mock_news(number=1)
         mock_comments()
         expected_content = [ news_content[0], news_content[1] ]
-        documents_content = select_documents_level0(news=True, comments=False)
+        documents_content = select_documents_level0(with_news=True, with_comments=False)
         validate_documents_content(self, documents_content, expected_content)
 
     def test_select_documents_level0_comments(self):
         mock_news(number=0)
         mock_news(number=1)
         mock_comments()
-        documents_content = select_documents_level0(news=False, comments=True)
+        documents_content = select_documents_level0(with_news=False, with_comments=True)
         validate_documents_content(self, documents_content, comments_content)
 
     def test_select_documents_level0_both(self):
@@ -36,7 +36,7 @@ class DatasetManagerTests(TestCase):
         mock_comments()
         expected_content = [ news_content[0], news_content[1] ]
         expected_content.extend(comments_content)
-        documents_content = select_documents_level0(news=True, comments=True)
+        documents_content = select_documents_level0(with_news=True, with_comments=True)
         validate_documents_content(self, documents_content, expected_content)
 
     def test_generate_dataset(self):
