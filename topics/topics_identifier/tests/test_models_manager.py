@@ -10,7 +10,12 @@ class ModelsManagerTests(TestCase):
         filename = get_filename(name)
         self.assertEqual(filename, "models/sklearn/test.joblib")
 
-    def test_store_and_load_model(self):
+    def test_load_model(self):
+        name = "test_model_level0"
+        model = load_model(name)
+        self.assertEqual(type(model), type(AffinityPropagation()))
+
+    def test_store_model(self):
         name = "test_delete_me"
         model1 = mock_affinity_propagation_model()
         store_model(model1, name)
