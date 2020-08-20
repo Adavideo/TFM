@@ -4,19 +4,8 @@ from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
 from .stop_words.stop_words import get_stop_words
 from .models_manager import store_model
+from .util import short_document_types
 
-
-def short_document_types(document_types):
-    if document_types == "both":
-        news = True
-        comments = True
-    elif document_types == "news":
-        news = True
-        comments = False
-    else:
-        news = False
-        comments = True
-    return news, comments
 
 def tree_already_exist(tree_name):
     tree_search = Tree.objects.filter(name=tree_name)

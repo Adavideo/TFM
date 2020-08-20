@@ -2,7 +2,7 @@ from .example_trees import example_tree, tree_name, news_content, comments_conte
 from .mock_clusters import mock_cluster
 from .mocks import mock_documents
 from topics_identifier.models import Tree, Document
-from topics_identifier.TreeGenerator import short_document_types
+from topics_identifier.util import short_document_types
 
 
 def mock_empty_tree(document_types="both"):

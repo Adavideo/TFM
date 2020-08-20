@@ -1,7 +1,7 @@
 from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from topics_identifier.models import Cluster, Tree
-from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
+from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.models_manager import load_model
 from .example_trees import example_tree, tree_name, example_documents_clusters
 from .example_stop_words import example_stop_words
@@ -14,21 +14,6 @@ from .validations_generators import validate_clusters_terms, validate_clusters_r
 
 
 class TreeGeneratorTests(TestCase):
-
-    def test_short_document_types_both(self):
-        news, comments = short_document_types(document_types="both")
-        self.assertEqual(news, True)
-        self.assertEqual(comments, True)
-
-    def test_short_document_types_news(self):
-        news, comments = short_document_types(document_types="news")
-        self.assertEqual(news, True)
-        self.assertEqual(comments, False)
-
-    def test_short_document_types_comments(self):
-        news, comments = short_document_types(document_types="comments")
-        self.assertEqual(news, False)
-        self.assertEqual(comments, True)
 
     def test_create_tree_generator(self):
         document_types = "both"
