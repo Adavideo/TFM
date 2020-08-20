@@ -1,7 +1,7 @@
 from .models import Tree, Topic
 from .datasets_manager import generate_dataset_from_threads
 from .ClustersGenerator import ClustersGenerator
-from .models_manager import load_model
+from .models_manager import load_model_and_terms
 
 def get_dataset_for_topic(topic):
     print("Getting threads for topic: " + topic.name)
@@ -10,8 +10,8 @@ def get_dataset_for_topic(topic):
     dataset = generate_dataset_from_threads(topic_threads)
     return dataset
 
-def generate_clusters_for_topic(model, dataset):
-    clusters_generator = ClustersGenerator(model, dataset)
+def generate_clusters_for_topic(model, dataset, terms):
+    clusters_generator = ClustersGenerator(model, dataset, terms)
     print("Clustering documents")
     clusters_information = clusters_generator.cluster_data()
     num_clusters = len(clusters_information["terms"])
@@ -28,8 +28,8 @@ def generate_tree_for_topic(topic_name, clusters_information, documents_clusters
 
 def cluster_for_topic(topic, model_name):
     dataset = get_dataset_for_topic(topic)
-    model = load_model(model_name, level=0)
-    clusters_information, documents_clusters = generate_clusters_for_topic(model, dataset)
+    model, terms = load_model_and_terms(model_name, level=0)
+    clusters_information, documents_clusters = generate_clusters_for_topic(model, dataset, terms)
     tree = generate_tree_for_topic(topic.name, clusters_information, documents_clusters)
     clusters_list = tree.get_clusters_of_level(level=0)
     return clusters_list

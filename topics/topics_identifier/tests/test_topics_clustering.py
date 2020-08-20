@@ -10,7 +10,7 @@ from .test_datasets_manager import validate_dataset
 def mock_clusters_for_topic():
     dataset = mock_dataset_from_topics(topic)
     model = mock_model()
-    clusters_information, documents_clusters = generate_clusters_for_topic(model, dataset)
+    clusters_information, documents_clusters = generate_clusters_for_topic(model, dataset, example_terms)
     return clusters_information, documents_clusters
 
 
