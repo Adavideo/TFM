@@ -29,6 +29,7 @@ class ModelsForm(forms.Form):
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)
+    model_name = forms.CharField(max_length=25)
     document_types = forms.ChoiceField(choices=get_documents_options())
 
 class ClusterSeachForm(forms.Form):

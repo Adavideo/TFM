@@ -21,13 +21,6 @@ class TreeGeneratorTests(TestCase):
         generator = TreeGenerator(tree_name="", document_types=document_types, max_level=max_level)
         validate_tree_document_types(self, generator.tree, document_types)
 
-    def test_create_tree_generator_with_tree_name_that_already_exist(self):
-        max_level = 1
-        tree = Tree(name=tree_name, news=False, comments=True)
-        tree.save()
-        generator = TreeGenerator(tree_name=tree_name, document_types="news", max_level=max_level)
-        self.assertEqual(generator.tree, None)
-
     def test_cluster_level_0(self):
         level = 0
         mock_documents()

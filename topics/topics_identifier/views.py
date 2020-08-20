@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from .forms import *
-from .TreeGenerator import TreeGenerator, tree_already_exist
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
 from .models_manager import generate_and_store_model, select_documents
+from .tree_manager import generate_tree
 
 def home_view(request):
     template = "topics_identifier/topics_identifier_home.html"
@@ -54,18 +54,17 @@ def generate_tree_view(request):
     context = { "form": form }
     if request.method == "POST":
         tree_name = request.POST["tree_name"]
-        if tree_already_exist(tree_name):
-            context["message"] = "Tree name already in use. Pick a different one."
-            return render(request, template, context)
+        model_name = request.POST["model_name"]
         document_types = request.POST["document_types"]
-        # Cluster the documents in two levels and store them in a cluster tree
-        generator = TreeGenerator(tree_name, document_types=document_types, max_level=level)
-        tree = generator.generate_tree()
-        # Prepare the information to show on the web page
-        level1_clusters = tree.get_clusters_of_level(level)
-        context["num_clusters"] = len(level1_clusters)
-        context["clusters_list"] = level1_clusters
-        context["tree_name"] = tree_name
+        documents_options = { "types": document_types }
+        results = generate_tree(tree_name, model_name, documents_options)
+        if results["tree_exists"] == True:
+            context["message"] = "Tree name already in use. Pick a different one."
+        else:
+            context["tree_name"] = tree_name
+            clusters = results["clusters"]
+            context["num_clusters"] = len(clusters)
+            context["clusters_list"] = clusters
     return render(request, template, context)
 
 def cluster_view(request, cluster_id):

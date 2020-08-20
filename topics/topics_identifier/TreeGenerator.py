@@ -7,26 +7,14 @@ from .models_manager import store_model
 from .util import short_document_types
 
 
-def tree_already_exist(tree_name):
-    tree_search = Tree.objects.filter(name=tree_name)
-    if tree_search:
-        return True
-    else:
-        return False
-
 class TreeGenerator:
 
     def __init__(self, tree_name, document_types, max_level=1):
-        # Avoids trying to create a tree with a name that is already taken
-        if tree_already_exist(tree_name):
-            self.tree = None
-            return None
-        else:
-            news, comments = short_document_types(document_types)
-            self.tree = Tree(name=tree_name, news=news, comments=comments)
-            self.tree.save()
-            self.max_level = max_level
-            self.stop_words = get_stop_words()
+        news, comments = short_document_types(document_types)
+        self.tree = Tree(name=tree_name, news=news, comments=comments)
+        self.tree.save()
+        self.max_level = max_level
+        self.stop_words = get_stop_words()
 
     def cluster_level(self, level):
         print("\nGenerating level "+ str(level)+" clusters")
