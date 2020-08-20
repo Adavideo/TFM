@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .forms import *
 from .TreeGenerator import TreeGenerator, tree_already_exist
-from .ModelGenerator import ModelGenerator, load_model
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
