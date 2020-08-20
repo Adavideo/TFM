@@ -56,14 +56,11 @@ def select_documents(document_types):
     documents = ensure_documents_limit(documents)
     return documents
 
-def generate_model(documents):
+def generate_and_store_model(model_name, documents):
+    level = 0
     model_generator = ModelGenerator(documents)
     model = model_generator.generate_model()
-    return model
-
-def generate_and_store_model(model_name, documents):
-    model = generate_model(documents)
-    model_filename = store_model(model, name=model_name, level=0)
+    model_filename = store_model(model, model_name, level)
     terms = model_generator.get_all_terms()
     store_terms(terms, model_name, level)
     return model_filename
