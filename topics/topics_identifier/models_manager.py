@@ -10,15 +10,36 @@ def get_filename(name, level):
     filename = path + name + "_level" + str(level) + ".joblib"
     return filename
 
+def get_terms_filename(name, level):
+    terms_name = name + "_terms"
+    filename = get_filename(terms_name, level)
+    return filename
+
 def store_model(model, name, level):
     filename = get_filename(name, level)
     dump(model, filename)
+    return filename
+
+def store_terms(terms, name, level):
+    filename = get_terms_filename(name, level)
+    dump(terms, filename)
     return filename
 
 def load_model(name, level):
     filename = get_filename(name, level)
     model = load(filename)
     return model
+
+def load_terms(name, level):
+    filename = get_terms_filename(name, level)
+    terms = load(filename)
+    return terms
+
+def load_model_and_terms(name, level):
+    model = load_model(name, level)
+    terms = load_terms(name, level)
+    return model, terms
+
 
 def ensure_documents_limit(documents):
     # Cutting to the maximum number of documents, to not overload the aviable memory.
@@ -43,4 +64,6 @@ def generate_model(documents):
 def generate_and_store_model(model_name, documents):
     model = generate_model(documents)
     model_filename = store_model(model, name=model_name, level=0)
+    terms = model_generator.get_all_terms()
+    store_terms(terms, model_name, level)
     return model_filename
