@@ -2,7 +2,7 @@ from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from topics_identifier.models import Cluster, Tree
 from topics_identifier.TreeGenerator import TreeGenerator, short_document_types
-from topics_identifier.sklearn_models_manager import load_model
+from topics_identifier.models_manager import load_model
 from .example_trees import example_tree, tree_name, example_documents_clusters
 from .example_stop_words import example_stop_words
 from .mock_trees import mock_empty_tree

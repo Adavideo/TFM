@@ -3,7 +3,7 @@ from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
 from .stop_words.stop_words import get_stop_words
-from .sklearn_models_manager import store_model
+from .models_manager import store_model
 
 
 def short_document_types(document_types):

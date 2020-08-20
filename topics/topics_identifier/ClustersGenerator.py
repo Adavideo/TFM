@@ -2,7 +2,7 @@ import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from .stop_words.stop_words import get_stop_words
-from .sklearn_models_manager import store_model, load_model
+from .models_manager import store_model, load_model
 
 
 class ClustersGenerator:

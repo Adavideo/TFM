@@ -1,9 +1,9 @@
 from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from .mock_generators import mock_affinity_propagation_model
-from topics_identifier.sklearn_models_manager import get_filename, store_model, load_model
+from topics_identifier.models_manager import get_filename, store_model, load_model
 
-class StopWordsTests(TestCase):
+class ModelsManagerTests(TestCase):
 
     def test_get_filename(self):
         name = "test"
