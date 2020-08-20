@@ -6,7 +6,8 @@ from .models import Cluster, Tree
 from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
 from .models_manager import generate_and_store_model, select_documents
-from .tree_manager import generate_tree
+from .TreeGenerator import TreeGenerator
+
 
 def home_view(request):
     template = "topics_identifier/topics_identifier_home.html"
@@ -57,12 +58,12 @@ def generate_tree_view(request):
         model_name = request.POST["model_name"]
         document_types = request.POST["document_types"]
         documents_options = { "types": document_types }
-        results = generate_tree(tree_name, model_name, documents_options)
-        if results["tree_exists"] == True:
+        tree_generator = TreeGenerator(tree_name, model_name, documents_options)
+        if tree_generator.tree_already_exist:
             context["message"] = "Tree name already in use. Pick a different one."
         else:
             context["tree_name"] = tree_name
-            clusters = results["clusters"]
+            clusters = tree_generator.generate_tree()
             context["num_clusters"] = len(clusters)
             context["clusters_list"] = clusters
     return render(request, template, context)

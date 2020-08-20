@@ -1,39 +1,47 @@
-import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
-from .stop_words.stop_words import get_stop_words
-from .models_manager import store_model
 from .util import short_document_types
+from .models_manager import load_model
+
+
+def tree_already_exist(tree_name):
+    tree_search = Tree.objects.filter(name=tree_name)
+    if tree_search: return True
+    else: return False
 
 
 class TreeGenerator:
 
-    def __init__(self, tree_name, document_types, max_level=1):
-        news, comments = short_document_types(document_types)
-        self.tree = Tree(name=tree_name, news=news, comments=comments)
-        self.tree.save()
+    def __init__(self, tree_name, model_name, documents_options, max_level=1):
+        created = self.create_empty_tree(tree_name, documents_options["types"])
+        if not created: return None
+        self.model_name = model_name
         self.max_level = max_level
-        self.stop_words = get_stop_words()
 
-    def cluster_level(self, level):
-        print("\nGenerating level "+ str(level)+" clusters")
+    def create_empty_tree(self, tree_name, document_types):
+        # Avoids trying to create a tree with a name that is already taken
+        if tree_already_exist(tree_name):
+            self.tree_already_exist = True
+            return None
+        else:
+            self.tree_already_exist = False
+            news, comments = short_document_types(document_types)
+            self.tree = Tree(name=tree_name, news=news, comments=comments)
+            self.tree.save()
+            return self.tree
+
+    def level_iteration(self, level):
         dataset = get_dataset(self.tree, level)
-        clusters_generator = ClustersGenerator(dataset, self.stop_words)
+        model = load_model(self.model_name, level)
+        clusters_generator = ClustersGenerator(dataset)
         clusters_information = clusters_generator.cluster_data()
-        documents_clusters = clusters_generator.get_documents_clusters()
-        return clusters_information, documents_clusters
-
-    def store_information(self, level, clusters_information, documents_clusters):
-        if clusters_information:
-            self.tree.add_clusters(level, clusters_information)
-        if documents_clusters:
-            print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
-            self.tree.add_documents_to_clusters(level, documents_clusters)
+        self.tree.add_clusters(level, clusters_information)
 
     def generate_tree(self):
+        # Iterate through the tree levels
         for level in range(0, self.max_level+1):
-            clusters_information, documents_clusters = self.cluster_level(level)
-            self.store_information(level, clusters_information, documents_clusters)
-        print(str(datetime.datetime.now().time())+" - Clustering completed")
-        return self.tree
+            self.level_iteration(level)
+        # Returns the clusters from the top level of the tree
+        clusters = self.tree.get_clusters_of_level(self.max_level)
+        return clusters
