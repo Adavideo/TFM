@@ -47,7 +47,7 @@ class TreeGeneratorTests(TestCase):
         level = 1
         tree_generator = mock_tree_generator(max_level=level)
         name = tree_generator.get_model_name(level)
-        self.assertEqual(name, tree_name+"_level"+str(level))
+        self.assertEqual(name, tree_name)
 
     def test_cluster_level_0(self):
         level = 0
@@ -74,25 +74,29 @@ class TreeGeneratorTests(TestCase):
         self.assertEqual(documents_clusters1, example_documents_clusters[level])
 
     def test_cluster_level_0_stores_the_model(self):
+        # Initialize
         level = 0
         mock_documents()
         tree_generator = mock_tree_generator(max_level=level)
+        # Execute
         tree_generator.cluster_level(level)
-        model_name = tree_generator.get_model_name(level)
-        model = load_model(model_name)
         # Verify
+        model_name = tree_generator.get_model_name(level)
+        model = load_model(model_name, level)
         self.assertEqual(type(model), type(AffinityPropagation()))
 
     def test_cluster_level_1_stores_the_model(self):
+        # Initialize
         level = 1
         mock_documents()
         tree_generator = mock_tree_generator(max_level=level)
         clusters_information0, documents_clusters0 = tree_generator.cluster_level(level-1)
         tree_generator.store_information(level-1, clusters_information0, documents_clusters0)
+        # Execute
         tree_generator.cluster_level(level)
-        model_name = tree_generator.get_model_name(level)
-        model = load_model(model_name)
         # Verify
+        model_name = tree_generator.get_model_name(level)
+        model = load_model(model_name, level)
         self.assertEqual(type(model), type(AffinityPropagation()))
 
     def test_store_information(self):

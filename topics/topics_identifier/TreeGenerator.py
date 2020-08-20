@@ -40,7 +40,7 @@ class TreeGenerator:
             self.stop_words = get_stop_words()
 
     def get_model_name(self, level):
-        name = self.tree.name + "_level" + str(level)
+        name =  self.tree.name
         return name
 
     def cluster_level(self, level):
@@ -49,7 +49,7 @@ class TreeGenerator:
         clusters_generator = ClustersGenerator(dataset, self.stop_words)
         clusters_information = clusters_generator.cluster_data()
         model_name = self.get_model_name(level)
-        store_model(clusters_generator.model, model_name)
+        store_model(clusters_generator.model, model_name, level)
         documents_clusters = clusters_generator.get_documents_clusters()
         return clusters_information, documents_clusters
 
