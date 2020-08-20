@@ -45,7 +45,9 @@ def cluster_topic_view(request):
         topic_id = request.POST["topic"]
         topic = Topic.objects.get(id=topic_id)
         context["topic"] = topic.name
-        context["clusters_list"] = cluster_for_topic(topic)
+        model_name = request.POST["model_name"]
+        context["model_name"] = model_name
+        context["clusters_list"] = cluster_for_topic(topic, model_name)
     return render(request, template, context)
 
 def generate_tree_view(request):

@@ -40,3 +40,4 @@ class AssignTopicFromFileForm(forms.Form):
 
 class ClusterTopicForm(forms.Form):
     topic = forms.ChoiceField(choices=get_topics_options())
+    model_name = forms.CharField(max_length=25)
