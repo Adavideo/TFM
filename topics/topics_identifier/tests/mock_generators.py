@@ -1,15 +1,15 @@
-from .example_stop_words import example_stop_words
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.models_manager import load_model
 from .mock_datasets import mock_dataset
 from .example_trees import tree_name
-from .examples import test_model_name
+from .examples import test_model_name, example_terms
 
 
 def mock_cluster_generator():
     dataset = mock_dataset()
-    generator = ClustersGenerator(dataset, example_stop_words)
+    model = mock_affinity_propagation_model()
+    generator = ClustersGenerator(model, dataset, example_terms)
     return generator
 
 def mock_tree_generator(max_level, document_types="both"):

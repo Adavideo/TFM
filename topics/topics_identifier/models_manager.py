@@ -4,7 +4,7 @@ from .datasets_manager import select_documents_level0
 from .util import short_document_types
 
 path = "models/sklearn/"
-documents_limit = 10000
+documents_limit = 1000
 
 def get_filename(name, level):
     filename = path + name + "_level" + str(level) + ".joblib"
@@ -27,13 +27,19 @@ def store_terms(terms, name, level):
 
 def load_model(name, level):
     filename = get_filename(name, level)
-    model = load(filename)
-    return model
+    try:
+        model = load(filename)
+        return model
+    except:
+        return None
 
 def load_terms(name, level):
     filename = get_terms_filename(name, level)
-    terms = load(filename)
-    return terms
+    try:
+        terms = load(filename)
+        return terms
+    except:
+        return None
 
 def load_model_and_terms(name, level):
     model = load_model(name, level)

@@ -12,6 +12,7 @@ class ModelGenerator:
     # Process the documents with the vectorizer.
     def process_documents(self, documents=[]):
         if not documents: documents = self.documents
+        print("Procesing "+str(len(documents))+" documents")
         self.vectorized_documents = self.vectorizer.fit_transform(documents)
         return self.vectorized_documents
 
@@ -20,6 +21,7 @@ class ModelGenerator:
         return all_terms
 
     def train_model(self):
+        print("Training model")
         model = AffinityPropagation()
         model.fit(self.vectorized_documents)
         return model

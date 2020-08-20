@@ -4,7 +4,7 @@ from topics_identifier.models import Topic
 
 topic = Topic(name="prueba")
 
-example_terms = [
+example_topics_cluster_terms = [
     ['importa', 'único', 'museos', 'bibliotecas', 'menos', 'casas', 'encuentros', 'familiares', 'visitas', 'vital', 'ertes', 'residencias', 'colegios', 'terrazas', 'obsesión', 'alucino', 'mínimo', 'ingreso'],
     ['parlamento', 'falta', 'hace', 'prohíba', 'penalice', 'mismo', 'ahora', 'sacado', 'ley', 'boe', 'publicaciones', 'alarma', 'allá'],
     ['currar', 'ir', 'guardo', '310']

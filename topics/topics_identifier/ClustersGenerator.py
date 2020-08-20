@@ -1,30 +1,14 @@
 import datetime
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .stop_words.stop_words import get_stop_words
-from .models_manager import store_model, load_model
 
 
 class ClustersGenerator:
 
-    def __init__(self, dataset, stop_words=None):
-        if not stop_words: stop_words = get_stop_words()
-        self.stop_words = stop_words
+    def __init__(self, model, dataset, terms):
         self.dataset = dataset
-
-    # Process the documents with the vectorizer.
-    def process_data(self):
-        print(str(datetime.datetime.now().time())+" - Pre-processing documents")
-        vectorizer = TfidfVectorizer(stop_words=self.stop_words)
-        self.vectorized_documents = vectorizer.fit_transform(self.dataset.data)
-        # Get the terms extracted from the documents (to be used later to show the results)
-        self.terms = vectorizer.get_feature_names()
-
-    def train_model(self):
-        print(str(datetime.datetime.now().time())+" - Training the model")
-        self.model = AffinityPropagation()
-        self.model.fit(self.vectorized_documents)
-        return self.model
+        self.model = model
+        self.terms = terms
 
     def get_cluster_terms(self, cluster_center):
         cluster_terms = []
@@ -55,19 +39,9 @@ class ClustersGenerator:
         clusters_information = { "terms": clusters_terms, "reference_documents": reference_documents }
         return clusters_information
 
-    def cluster_data(self):
-        if not self.dataset.data:
-            return []
-        self.process_data()
-        self.train_model()
-        clusters_information = self.get_clusters_information()
-        return clusters_information
-
-    def get_documents_clusters(self):
-        if not self.dataset.data:
-            return []
+    def get_documents_clusters(self, vectorized_documents):
         print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
-        predicted_clusters = self.model.predict(self.vectorized_documents)
+        predicted_clusters = self.model.predict(vectorized_documents)
         all_documents = self.dataset.data
         documents_clusters = []
         document_index = 0
