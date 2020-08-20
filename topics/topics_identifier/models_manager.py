@@ -4,6 +4,7 @@ from .datasets_manager import select_documents_level0
 from .util import short_document_types
 
 path = "models/sklearn/"
+documents_limit = 10000
 
 def get_filename(name, level):
     filename = path + name + "_level" + str(level) + ".joblib"
@@ -19,9 +20,19 @@ def load_model(name, level):
     model = load(filename)
     return model
 
+def ensure_documents_limit(documents):
+    # Cutting to the maximum number of documents, to not overload the aviable memory.
+    num_documents = len(documents)
+    print("Documents selected: "+str(num_documents))
+    if num_documents > documents_limit:
+        print("Adjusting to limit of "+str(documents_limit)+" documents")
+        documents = documents[:documents_limit]
+    return documents
+
 def select_documents(document_types):
     with_news, with_comments = short_document_types(document_types)
     documents = select_documents_level0(with_news, with_comments)
+    documents = ensure_documents_limit(documents)
     return documents
 
 def generate_model(documents):
