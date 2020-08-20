@@ -13,6 +13,7 @@ class ModelGenerator:
     def process_documents(self, documents=[]):
         if not documents: documents = self.documents
         self.vectorized_documents = self.vectorizer.fit_transform(documents)
+        return self.vectorized_documents
 
     def get_all_terms(self):
         all_terms = self.vectorizer.get_feature_names()
