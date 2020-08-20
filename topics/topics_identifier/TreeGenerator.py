@@ -28,17 +28,11 @@ class TreeGenerator:
             self.max_level = max_level
             self.stop_words = get_stop_words()
 
-    def get_model_name(self, level):
-        name =  self.tree.name
-        return name
-
     def cluster_level(self, level):
         print("\nGenerating level "+ str(level)+" clusters")
         dataset = get_dataset(self.tree, level)
         clusters_generator = ClustersGenerator(dataset, self.stop_words)
         clusters_information = clusters_generator.cluster_data()
-        model_name = self.get_model_name(level)
-        store_model(clusters_generator.model, model_name, level)
         documents_clusters = clusters_generator.get_documents_clusters()
         return clusters_information, documents_clusters
 
