@@ -3,8 +3,8 @@ import datetime
 
 class ClustersGenerator:
 
-    def __init__(self, model, vectorizer, dataset):
-        self.original_documents = dataset.data
+    def __init__(self, model, vectorizer, documents):
+        self.original_documents = documents
         self.model = model
         self.vectorizer = vectorizer
         self.terms = self.vectorizer.get_feature_names()

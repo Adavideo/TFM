@@ -39,7 +39,7 @@ class TreeGenerator:
         dataset = get_dataset(self.tree, level)
         model, vectorizer = load_model_and_vectorizer(self.model_name, level)
         if model and vectorizer:
-            clusters_generator = ClustersGenerator(model, vectorizer, dataset)
+            clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
             clusters_information = clusters_generator.get_clusters_information()
             self.tree.add_clusters(level, clusters_information)
             self.add_documents_to_clusters(clusters_generator, dataset.data, level)
