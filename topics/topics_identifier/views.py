@@ -7,8 +7,8 @@ from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
 from .ModelsManager import ModelsManager
 from .TreeGenerator import TreeGenerator
+from .config import default_document_limit
 
-default_document_limit = 10000
 
 def home_view(request):
     template = "topics_identifier/topics_identifier_home.html"
@@ -25,7 +25,7 @@ def generate_model_view(request):
         document_types = request.POST["document_types"]
         models_manager = ModelsManager(name=model_name, documents_limit=default_document_limit)
         documents = models_manager.select_documents(document_types)
-        model_filename = models_manager.generate_and_store_models(model_name, documents, max_level=0)
+        model_filename = models_manager.generate_and_store_models(documents, max_level=0)
         context["model_filename"] = model_filename
     return render(request, template, context)
 
