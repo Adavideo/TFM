@@ -5,9 +5,10 @@ from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
-from .models_manager import generate_and_store_models, select_documents
+from .ModelsManager import ModelsManager
 from .TreeGenerator import TreeGenerator
 
+default_document_limit = 10000
 
 def home_view(request):
     template = "topics_identifier/topics_identifier_home.html"
@@ -22,8 +23,9 @@ def generate_model_view(request):
         model_name = request.POST["model_name"]
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
-        documents = select_documents(document_types)
-        model_filename = generate_and_store_models(model_name, documents, max_level=0)
+        models_manager = ModelsManager(name=model_name, documents_limit=default_document_limit)
+        documents = models_manager.select_documents(document_types)
+        model_filename = models_manager.generate_and_store_models(model_name, documents, max_level=0)
         context["model_filename"] = model_filename
     return render(request, template, context)
 
@@ -59,7 +61,7 @@ def generate_tree_view(request):
         tree_name = request.POST["tree_name"]
         model_name = request.POST["model_name"]
         document_types = request.POST["document_types"]
-        documents_options = { "types": document_types }
+        documents_options = { "types": document_types, "limit": default_document_limit }
         tree_generator = TreeGenerator(tree_name, model_name, documents_options)
         if tree_generator.tree_already_exist:
             context["message"] = "Tree name already in use. Pick a different one."

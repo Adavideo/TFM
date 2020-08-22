@@ -2,7 +2,7 @@ from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
 from .util import short_document_types
-from .models_manager import load_model_and_vectorizer
+from .ModelsManager import ModelsManager
 
 
 def tree_already_exist(tree_name):
@@ -18,6 +18,7 @@ class TreeGenerator:
         if not created: return None
         self.model_name = model_name
         self.max_level = max_level
+        self.models_manager = ModelsManager(name=model_name, documents_limit=documents_options["limit"])
 
     def create_empty_tree(self, tree_name, document_types):
         # Avoids trying to create a tree with a name that is already taken
@@ -37,7 +38,8 @@ class TreeGenerator:
 
     def level_iteration(self, level):
         dataset = get_dataset(self.tree, level)
-        model, vectorizer = load_model_and_vectorizer(self.model_name, level)
+        model = self.models_manager.load_model(level)
+        vectorizer = self.models_manager.load_vectorizer(level)
         if model and vectorizer:
             clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
             clusters_information = clusters_generator.get_clusters_information()
