@@ -1,8 +1,6 @@
 from joblib import dump, load
 from .ModelGenerator import ModelGenerator
 from .ClustersGenerator import ClustersGenerator
-from .datasets_manager import select_documents_level0
-from .util import short_document_types
 from .paths import sklearn_models_path
 
 
@@ -62,12 +60,6 @@ class ModelsManager:
             documents = documents[:self.documents_limit]
         return documents
 
-    def select_documents(self, document_types):
-        with_news, with_comments = short_document_types(document_types)
-        documents = select_documents_level0(with_news, with_comments)
-        documents = self.ensure_documents_limit(documents)
-        return documents
-
     def get_next_level_documents(self, model, vectorizer, documents):
         clusters_generator = ClustersGenerator(model, vectorizer, documents)
         clusters_information = clusters_generator.get_clusters_information()
@@ -78,7 +70,6 @@ class ModelsManager:
         self.models_filenames.append(model_filename)
         vectorizer_filename = self.store_vectorizer(vectorizer, level)
         self.vectorizers_filenames.append(vectorizer_filename)
-        #self.documents_all_levels.append(documents)
 
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()

@@ -45,12 +45,6 @@ class ModelsManagerTests(TestCase):
         manager3.store_vectorizer(vectorizer, level)
         validate_vectorizer_stored(self, model_name, level)
 
-    def test_select_documents(self):
-        document_types = "both"
-        mock_documents()
-        documents = manager.select_documents(document_types)
-        self.assertEqual(documents, example_documents)
-
     def test_generate_and_store_model_level0(self):
         level = 0
         model_name = "delete_me_2"
