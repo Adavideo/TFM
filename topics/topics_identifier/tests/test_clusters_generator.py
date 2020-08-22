@@ -33,12 +33,10 @@ class ClustersGeneratorTests(TestCase):
         validate_clusters_terms(self, clusters_information["terms"], level=0)
         validate_clusters_reference_documents(self, clusters_information["reference_documents"], level=0)
 
-    def test_get_documents_clusters(self):
+    def test_predict_documents_clusters(self):
         # Initialize
         cluster_generator = mock_cluster_generator()
-        model_generator = ModelGenerator(example_documents)
-        vectorized_documents = model_generator.process_documents()
         # Execute
-        documents_clusters = cluster_generator.get_documents_clusters(vectorized_documents)
+        documents_clusters = cluster_generator.predict_documents_clusters(documents=example_documents)
         # Validate
         self.assertEqual(documents_clusters, example_documents_clusters[0])

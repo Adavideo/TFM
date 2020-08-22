@@ -1,14 +1,13 @@
 import datetime
-from sklearn.cluster import AffinityPropagation
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class ClustersGenerator:
 
-    def __init__(self, model, dataset, terms):
-        self.dataset = dataset
+    def __init__(self, model, vectorizer, dataset):
+        self.original_documents = dataset.data
         self.model = model
-        self.terms = terms
+        self.vectorizer = vectorizer
+        self.terms = self.vectorizer.get_feature_names()
 
     def get_cluster_terms(self, cluster_center):
         cluster_terms = []
@@ -26,9 +25,8 @@ class ClustersGenerator:
 
     def get_clusters_reference_documents(self):
         reference_documents_list = []
-        documents = self.dataset.data
         for document_index in self.model.cluster_centers_indices_:
-            reference_document = documents[document_index]
+            reference_document = self.original_documents[document_index]
             reference_documents_list.append(reference_document)
         return reference_documents_list
 
@@ -39,14 +37,14 @@ class ClustersGenerator:
         clusters_information = { "terms": clusters_terms, "reference_documents": reference_documents }
         return clusters_information
 
-    def get_documents_clusters(self, vectorized_documents):
+    def predict_documents_clusters(self, documents):
         print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
+        vectorized_documents = self.vectorizer.transform(documents)
         predicted_clusters = self.model.predict(vectorized_documents)
-        all_documents = self.dataset.data
         documents_clusters = []
         document_index = 0
         for cluster_number in predicted_clusters:
-            doc = all_documents[document_index]
+            doc = documents[document_index]
             documents_clusters.append( { "document": doc, "cluster_number": cluster_number })
             document_index += 1
         return documents_clusters

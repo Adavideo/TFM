@@ -3,7 +3,7 @@ from timeline.tests.example_threads import all_threads_content, example_threads
 
 example_documents = comments_content
 
-test_model_name = "test_model"
+test_model_name = "test"
 
 example_doc_options = { "types":"both" }
 

@@ -23,7 +23,8 @@ class TreeGeneratorTests(TestCase):
     def test_generate_tree(self):
         mock_documents()
         generator = TreeGenerator(tree_name, test_model_name, example_doc_options)
-        clusters = generator.generate_tree()
-        self.assertEqual(len(clusters), 2)
-        self.assertEqual(str(clusters[0]), "Cluster - tree test_comments10, level 1, num cluster 0")
-        self.assertEqual(str(clusters[1]), "Cluster - tree test_comments10, level 1, num cluster 1")
+        clusters_level1 = generator.generate_tree()
+        clusters_level0 = generator.tree.get_clusters_of_level(level=0)
+        self.assertEqual(len(clusters_level0), 4)
+        self.assertEqual(str(clusters_level0[0]), "Cluster - tree test_comments10, level 0, num cluster 0")
+        self.assertEqual(str(clusters_level0[1]), "Cluster - tree test_comments10, level 0, num cluster 1")

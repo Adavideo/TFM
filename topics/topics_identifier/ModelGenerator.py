@@ -10,15 +10,10 @@ class ModelGenerator:
         self.vectorizer = TfidfVectorizer(stop_words=get_stop_words())
 
     # Process the documents with the vectorizer.
-    def process_documents(self, documents=[]):
-        if not documents: documents = self.documents
-        print("Procesing "+str(len(documents))+" documents")
-        self.vectorized_documents = self.vectorizer.fit_transform(documents)
+    def process_documents(self):
+        print("Procesing "+str(len(self.documents))+" documents")
+        self.vectorized_documents = self.vectorizer.fit_transform(self.documents)
         return self.vectorized_documents
-
-    def get_all_terms(self):
-        all_terms = self.vectorizer.get_feature_names()
-        return all_terms
 
     def train_model(self):
         print("Training model")
@@ -28,6 +23,5 @@ class ModelGenerator:
 
     def generate_model(self):
         self.process_documents()
-        self.all_terms = self.get_all_terms()
         model = self.train_model()
         return model

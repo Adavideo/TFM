@@ -2,7 +2,7 @@ from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
 from .util import short_document_types
-from .models_manager import load_model_and_terms
+from .models_manager import load_model_and_vectorizer
 
 
 def tree_already_exist(tree_name):
@@ -31,13 +31,18 @@ class TreeGenerator:
             self.tree.save()
             return self.tree
 
+    def add_documents_to_clusters(self, clusters_generator, documents, level):
+        documents_clusters = clusters_generator.predict_documents_clusters(documents)
+        self.tree.add_documents_to_clusters(level, documents_clusters)
+
     def level_iteration(self, level):
         dataset = get_dataset(self.tree, level)
-        model, terms = load_model_and_terms(self.model_name, level)
-        if model and terms:
-            clusters_generator = ClustersGenerator(model, dataset, terms)
+        model, vectorizer = load_model_and_vectorizer(self.model_name, level)
+        if model and vectorizer:
+            clusters_generator = ClustersGenerator(model, vectorizer, dataset)
             clusters_information = clusters_generator.get_clusters_information()
             self.tree.add_clusters(level, clusters_information)
+            self.add_documents_to_clusters(clusters_generator, dataset.data, level)
 
     def generate_tree(self):
         # Iterate through the tree levels
