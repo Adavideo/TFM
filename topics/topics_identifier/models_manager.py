@@ -1,5 +1,6 @@
 from joblib import dump, load
 from .ModelGenerator import ModelGenerator
+from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import select_documents_level0
 from .util import short_document_types
 from .paths import sklearn_models_path
@@ -60,9 +61,19 @@ def select_documents(document_types):
     documents = ensure_documents_limit(documents)
     return documents
 
-def generate_and_store_model(model_name, documents, level=0):
-    model_generator = ModelGenerator(documents)
-    model = model_generator.generate_model()
-    model_filename = store_model(model, model_name, level)
-    store_vectorizer(model_generator.vectorizer, model_name, level)
+def get_next_level_documents(model, vectorizer, documents):
+    clusters_generator = ClustersGenerator(model, vectorizer, documents)
+    clusters_information = clusters_generator.get_clusters_information()
+    return clusters_information["reference_documents"]
+
+def generate_and_store_models(model_name, documents, max_level):
+    for level in range(0, max_level+1):
+        model_generator = ModelGenerator(documents)
+        model = model_generator.generate_model()
+        model_filename = store_model(model, model_name, level)
+        vectorizer = model_generator.vectorizer
+        store_vectorizer(vectorizer, model_name, level)
+        if level < max_level+1:
+            documents = get_next_level_documents(model, vectorizer, documents)
+
     return model_filename

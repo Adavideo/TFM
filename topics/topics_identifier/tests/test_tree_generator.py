@@ -28,3 +28,6 @@ class TreeGeneratorTests(TestCase):
         self.assertEqual(len(clusters_level0), 4)
         self.assertEqual(str(clusters_level0[0]), "Cluster - tree test_comments10, level 0, num cluster 0")
         self.assertEqual(str(clusters_level0[1]), "Cluster - tree test_comments10, level 0, num cluster 1")
+        self.assertEqual(len(clusters_level1), 2)
+        self.assertEqual(str(clusters_level1[0]), "Cluster - tree test_comments10, level 1, num cluster 0")
+        self.assertEqual(str(clusters_level1[1]), "Cluster - tree test_comments10, level 1, num cluster 1")

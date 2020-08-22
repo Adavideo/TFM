@@ -5,7 +5,7 @@ from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
-from .models_manager import generate_and_store_model, select_documents
+from .models_manager import generate_and_store_models, select_documents
 from .TreeGenerator import TreeGenerator
 
 
@@ -23,7 +23,7 @@ def generate_model_view(request):
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
         documents = select_documents(document_types)
-        model_filename = generate_and_store_model(model_name, documents)
+        model_filename = generate_and_store_models(model_name, documents, max_level=0)
         context["model_filename"] = model_filename
     return render(request, template, context)
 

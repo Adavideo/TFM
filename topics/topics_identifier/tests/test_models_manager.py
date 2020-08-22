@@ -51,7 +51,18 @@ class ModelsManagerTests(TestCase):
         documents = select_documents(document_types)
         self.assertEqual(documents, example_documents)
 
-    def test_generate_and_store_model(self):
+    def test_generate_and_store_model_level0(self):
+        level = 0
         model_name = "delete_me_2"
-        model_filename = generate_and_store_model(model_name, example_documents)
+        model_filename = generate_and_store_models(model_name, example_documents, level)
         self.assertEqual(model_filename, "models/sklearn/delete_me_2_model_level0.joblib")
+        validate_model_stored(self, model_name, level)
+        validate_vectorizer_stored(self, model_name, level)
+
+    def test_generate_and_store_model_level1(self):
+        level = 1
+        model_name = "delete_me_2"
+        model_filename = generate_and_store_models(model_name, example_documents, level)
+        self.assertEqual(model_filename, "models/sklearn/delete_me_2_model_level1.joblib")
+        validate_model_stored(self, model_name, level)
+        validate_vectorizer_stored(self, model_name, level)
