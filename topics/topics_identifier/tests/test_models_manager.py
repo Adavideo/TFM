@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from topics_identifier.models_manager import *
 from .mocks import mock_documents
 from .mock_generators import mock_model
+from .validations_models import *
 from .examples import example_documents, test_model_name, example_terms
 
 
@@ -35,16 +36,14 @@ class ModelsManagerTests(TestCase):
         level = 0
         model1 = mock_model()
         store_model(model1, store_name, level)
-        model2 = load_model(store_name, level)
-        self.assertEqual(type(model2), type(AffinityPropagation()))
+        validate_model_stored(self, store_name, level)
 
     def test_store_vectorizer(self):
         store_name = "delete_me"
         level = 0
         vectorizer1 = load_vectorizer(test_model_name, level)
         store_vectorizer(vectorizer1, store_name, level)
-        vectorizer2 = load_vectorizer(store_name, level)
-        self.assertEqual(type(vectorizer2), type(TfidfVectorizer()))
+        validate_vectorizer_stored(self, store_name, level)
 
     def test_select_documents(self):
         document_types = "both"
