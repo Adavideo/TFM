@@ -6,15 +6,13 @@ from .paths import sklearn_models_path
 
 class ModelsManager:
 
-    def __init__(self, name, documents_limit):
+    def __init__(self, name):
         self.name = name
-        self.documents_limit = documents_limit
         self.initialize_levels_information()
 
     def initialize_levels_information(self):
         self.models_filenames = []
         self.vectorizers_filenames = []
-        #self.documents_all_levels = []
 
     def get_model_filename(self, level):
         filename = sklearn_models_path + self.name + "_model_level" + str(level) + ".joblib"
@@ -49,16 +47,6 @@ class ModelsManager:
             return vectorizer
         except:
             return None
-
-
-    def ensure_documents_limit(self, documents):
-        # Cutting to the maximum number of documents, to not overload the aviable memory.
-        num_documents = len(documents)
-        print("Documents selected: "+str(num_documents))
-        if num_documents > self.documents_limit:
-            print("Adjusting to limit of "+str(self.documents_limit)+" documents")
-            documents = documents[:self.documents_limit]
-        return documents
 
     def get_next_level_documents(self, model, vectorizer, documents):
         clusters_generator = ClustersGenerator(model, vectorizer, documents)

@@ -7,7 +7,7 @@ from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
 from .ModelsManager import ModelsManager
 from .TreeGenerator import TreeGenerator
-from .config import default_document_limit
+from .documents_selector import select_documents
 
 
 def home_view(request):
@@ -23,9 +23,11 @@ def generate_model_view(request):
         model_name = request.POST["model_name"]
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
-        models_manager = ModelsManager(name=model_name, documents_limit=default_document_limit)
-        documents = models_manager.select_documents(document_types)
-        model_filename = models_manager.generate_and_store_models(documents, max_level=0)
+        documents_options = { "types": document_types}
+        max_level=0
+        documents = select_documents(documents_options)
+        models_manager = ModelsManager(name=model_name)
+        model_filename = models_manager.generate_and_store_models(documents, max_level)
         context["model_filename"] = model_filename
     return render(request, template, context)
 
@@ -61,8 +63,8 @@ def generate_tree_view(request):
         tree_name = request.POST["tree_name"]
         model_name = request.POST["model_name"]
         document_types = request.POST["document_types"]
-        documents_options = { "types": document_types, "limit": default_document_limit }
-        tree_generator = TreeGenerator(tree_name, model_name, documents_options)
+        documents_options = { "types": document_types }
+        tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
         if tree_generator.tree_already_exist:
             context["message"] = "Tree name already in use. Pick a different one."
         else:

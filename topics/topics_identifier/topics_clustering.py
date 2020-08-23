@@ -15,7 +15,7 @@ def get_dataset_for_topic(topic):
 
 def store_model_for_topic(topic_name, model, vectorizer):
     level = 0
-    models_manager = ModelsManager(name=topic_name, documents_limit=default_document_limit)
+    models_manager = ModelsManager(name=topic_name)
     models_manager.store_model(model, level)
     models_manager.store_vectorizer(vectorizer, level)
 
@@ -62,7 +62,7 @@ def get_model_and_terms(model_name, documents, model_generator):
 def cluster_for_topic(topic, model_name):
     dataset = get_dataset_for_topic(topic)
     model_generator = ModelGenerator(dataset.data)
-    models_manager = ModelsManager(name=model_name, documents_limit=default_document_limit)
+    models_manager = ModelsManager(name=model_name)
     model = models_manager.load_model(level=0)
     vectorizer = models_manager.load_vectorizer(level=0)
     clusters_information = generate_clusters_for_topic(model, dataset, vectorizer)
