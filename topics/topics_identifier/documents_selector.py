@@ -24,10 +24,7 @@ def ensure_documents_limit(documents, limit=default_document_limit):
     return documents
 
 def check_document_types(documents_options):
-    if not documents_options:
-        document_types = "both"
-    else:
-        document_types = documents_options["types"]
+    document_types = documents_options["types"]
     print("Selecting "+documents_options["types"]+" type of documents")
     with_news, with_comments = short_document_types(documents_options["types"])
     return with_news, with_comments
