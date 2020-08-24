@@ -1,8 +1,10 @@
 from django.test import TestCase
 from topics_identifier.TreeGenerator import TreeGenerator
 from .mocks import mock_documents
-from .example_trees import tree_name
-from .examples import test_model_name, example_doc_options
+from .mock_trees import mock_tree
+from .example_trees import tree_name, example_tree
+from .examples import test_model_name, example_doc_options, example_documents
+from .validations import validate_dataset
 from .validations_trees import validate_tree_document_types
 
 
@@ -19,6 +21,22 @@ class TreeGeneratorTests(TestCase):
         generator = TreeGenerator("", test_model_name, example_doc_options)
         tree = generator.create_empty_tree(tree_name, example_doc_options["types"])
         self.assertEqual(tree.name, tree_name)
+
+    def test_get_dataset_level0(self):
+        level = 0
+        generator = TreeGenerator("", test_model_name, example_doc_options)
+        mock_documents()
+        dataset = generator.get_dataset(level)
+        validate_dataset(self, dataset, example_documents)
+
+    def test_get_dataset_level1(self):
+        level = 1
+        generator = TreeGenerator("", test_model_name, example_doc_options)
+        mock_documents()
+        generator.level_iteration(level=0)
+        dataset = generator.get_dataset(level)
+        documents_level1 = example_tree[1]["documents"]
+        validate_dataset(self, dataset, documents_level1)
 
     def test_generate_tree(self):
         mock_documents()

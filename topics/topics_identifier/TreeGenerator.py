@@ -1,8 +1,8 @@
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
-from .datasets_manager import get_dataset
 from .ModelsManager import ModelsManager
-from .documents_selector import short_document_types
+from .datasets_manager import generate_dataset
+from .documents_selector import short_document_types, select_documents
 
 
 def tree_already_exist(tree_name):
@@ -37,9 +37,18 @@ class TreeGenerator:
         documents_clusters = clusters_generator.predict_documents_clusters(documents)
         self.tree.add_documents_to_clusters(level, documents_clusters)
 
+    def get_dataset(self, level):
+        if level==0:
+            documents = select_documents(self.documents_options)
+        else:
+            # Gets the reference documents from the inferior level
+            documents = self.tree.get_reference_documents(level-1)
+        dataset = generate_dataset(documents)
+        return dataset
+
     def level_iteration(self, level):
         print("Generating clusters for level "+str(level))
-        dataset = get_dataset(self.tree, level, self.documents_options)
+        dataset = self.get_dataset(level)
         model = self.models_manager.load_model(level)
         vectorizer = self.models_manager.load_vectorizer(level)
         if model and vectorizer:
