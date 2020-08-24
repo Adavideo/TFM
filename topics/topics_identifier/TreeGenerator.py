@@ -1,8 +1,8 @@
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .datasets_manager import get_dataset
-from .util import short_document_types
 from .ModelsManager import ModelsManager
+from .documents_selector import short_document_types
 
 
 def tree_already_exist(tree_name):

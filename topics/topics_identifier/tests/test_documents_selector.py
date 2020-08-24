@@ -13,6 +13,21 @@ def expected_content_all():
 
 class DocumentsSelectorTests(TestCase):
 
+    def test_short_document_types_both(self):
+        news, comments = short_document_types(document_types="both")
+        self.assertEqual(news, True)
+        self.assertEqual(comments, True)
+
+    def test_short_document_types_news(self):
+        news, comments = short_document_types(document_types="news")
+        self.assertEqual(news, True)
+        self.assertEqual(comments, False)
+
+    def test_short_document_types_comments(self):
+        news, comments = short_document_types(document_types="comments")
+        self.assertEqual(news, False)
+        self.assertEqual(comments, True)
+
     def test_select_documents_from_database_news(self):
         documents_options = { "types": "news"}
         mock_news_and_comments()

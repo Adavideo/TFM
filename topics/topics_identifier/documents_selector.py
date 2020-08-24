@@ -1,7 +1,18 @@
 from .models import Document
-from .util import short_document_types
 from .config import default_document_limit
 
+
+def short_document_types(document_types):
+    if document_types == "both":
+        news = True
+        comments = True
+    elif document_types == "news":
+        news = True
+        comments = False
+    else:
+        news = False
+        comments = True
+    return news, comments
 
 def ensure_documents_limit(documents, limit=default_document_limit):
     # Cutting to the maximum number of documents, to not overload the aviable memory.
