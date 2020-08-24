@@ -19,7 +19,7 @@ class TreeGeneratorTests(TestCase):
 
     def test_create_empty_tree(self):
         generator = TreeGenerator("", test_model_name, example_doc_options)
-        tree = generator.create_empty_tree(tree_name, example_doc_options["types"])
+        tree = generator.create_empty_tree(tree_name)
         self.assertEqual(tree.name, tree_name)
 
     def test_get_dataset_level0(self):
