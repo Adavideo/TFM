@@ -41,14 +41,18 @@ class Tree(models.Model):
                 child_cluster.parent = parent
                 child_cluster.save()
 
-    def add_documents_to_clusters(self, level, documents_clusters_list):
-        for doc_cluster in documents_clusters_list:
-            cluster_number = doc_cluster["cluster_number"]
+    def add_documents_to_cluster(self, level, cluster_number, cluster_documents):
+        for document_content in cluster_documents:
             cluster = self.get_cluster(cluster_number, level)
-            document = doc_cluster["document"]
-            cluster.add_document(content=document)
+            cluster.add_document(content=document_content)
         if level > 0:
             self.link_children_to_parents(level)
+
+    def add_documents_to_several_clusters(self, level, clusters_list):
+        num_cluster = 0
+        for cluster in clusters_list:
+            self.add_documents_to_cluster(level, num_cluster, cluster["documents"])
+            num_cluster += 1
 
     def __str__(self):
         text = "Tree "+ self.name + " - documents: "
