@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.ModelGenerator import ModelGenerator
-from .example_trees import example_documents_clusters
+from .example_trees import example_tree
 from .examples import example_documents
 from .mock_generators import mock_cluster_generator
 from .validations_generators import validate_clusters_terms, validate_clusters_reference_documents

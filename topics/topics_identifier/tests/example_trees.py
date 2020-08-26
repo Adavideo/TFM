@@ -94,26 +94,3 @@ tree_level1 = {
 }
 
 example_tree = [tree_level0, tree_level1]
-
-# DOCUMENTS CLUSTERS
-
-documents_clusters_level0 = [
-    {'document': comments_content[0], 'cluster_number': 0},
-    {'document': comments_content[1], 'cluster_number': 0},
-    {'document': comments_content[2], 'cluster_number': 3},
-    {'document': comments_content[3], 'cluster_number': 0},
-    {'document': comments_content[4], 'cluster_number': 3},
-    {'document': comments_content[5], 'cluster_number': 2},
-    {'document': comments_content[6], 'cluster_number': 1},
-    {'document': comments_content[7], 'cluster_number': 2},
-    {'document': comments_content[8], 'cluster_number': 0},
-    {'document': comments_content[9], 'cluster_number': 3}]
-
-documents_clusters_level1 = [
-    {'document': cluster0_level1["documents"][0], 'cluster_number': 0},
-    {'document': cluster0_level1["documents"][1], 'cluster_number': 0},
-    {'document': cluster1_level1["documents"][0], 'cluster_number': 1},
-    {'document': cluster1_level1["documents"][1], 'cluster_number': 1}]
-
-
-example_documents_clusters = [ documents_clusters_level0, documents_clusters_level1 ]
