@@ -3,7 +3,7 @@ from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ModelsManager import ModelsManager
 from .mock_datasets import mock_dataset
 from .example_trees import tree_name
-from .examples import test_model_name, example_terms, example_documents
+from .examples import test_model_name, example_terms, example_documents, example_doc_options
 
 
 def mock_models_manager(name=test_model_name):
@@ -29,5 +29,5 @@ def mock_cluster_generator():
     generator = ClustersGenerator(model, vectorizer, example_documents)
     return generator
 
-def mock_tree_generator(max_level, document_types="both"):
-    return TreeGenerator(tree_name, document_types, max_level)
+def mock_tree_generator(max_level=0, document_options=example_doc_options):
+    return TreeGenerator(tree_name, test_model_name, document_options, max_level)

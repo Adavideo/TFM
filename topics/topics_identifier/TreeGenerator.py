@@ -33,10 +33,6 @@ class TreeGenerator:
             self.tree.save()
             return self.tree
 
-    def add_documents_to_clusters(self, clusters_generator, documents, level):
-        documents_clusters = clusters_generator.predict_documents_clusters(documents)
-        self.tree.add_documents_to_clusters(level, documents_clusters)
-
     def get_dataset(self, level):
         if level==0:
             documents = select_documents(self.documents_options)
@@ -46,16 +42,39 @@ class TreeGenerator:
         dataset = generate_dataset(documents)
         return dataset
 
+    def generate_level_clusters(self, clusters_generator, level):
+        clusters_information = clusters_generator.get_clusters_information()
+        self.tree.add_clusters(level, clusters_information)
+
+    def add_documents_to_clusters(self, clusters_generator, documents, level):
+        documents_clusters = clusters_generator.predict_documents_clusters(documents)
+        self.tree.add_documents_to_clusters(level, documents_clusters)
+
+    def get_loading_files_errors(self, model, vectorizer, level):
+        error = ""
+        if not model:
+            error += "model"
+        if not model and not vectorizer:
+            error += " and "
+        if not vectorizer:
+            error += "vectorizer"
+        if not model or not vectorizer:
+            error += " not loaded for level "+str(level)
+        return error
+
     def level_iteration(self, level):
         print("Generating clusters for level "+str(level))
         dataset = self.get_dataset(level)
         model = self.models_manager.load_model(level)
         vectorizer = self.models_manager.load_vectorizer(level)
-        if model and vectorizer:
+        try:
             clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
-            clusters_information = clusters_generator.get_clusters_information()
-            self.tree.add_clusters(level, clusters_information)
+            self.generate_level_clusters(clusters_generator, level)
             self.add_documents_to_clusters(clusters_generator, dataset.data, level)
+        except:
+            error = self.get_loading_files_errors(model, vectorizer, level)
+            print("\n\n"+error+"\n")
+            return error
 
     def generate_tree(self):
         print("Generating clusters tree")
