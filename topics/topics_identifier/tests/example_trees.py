@@ -3,6 +3,10 @@ from .examples import news_content, comments_content, example_terms
 
 tree_name = "test_comments10"
 
+example_predicted_clusters_level0 = [0, 0, 3, 0, 3, 2, 1, 2, 0, 3]
+example_predicted_clusters_level1 = [0, 0, 1, 1]
+example_predicted_clusters = [ example_predicted_clusters_level0, example_predicted_clusters_level1 ]
+
 # TREE LEVEL 0
 
 cluster0_level0 = {
@@ -52,7 +56,7 @@ level0_terms = example_terms
 tree_level0 = {
     "terms": level0_terms,
     "documents": comments_content,
-    "predicted_clusters": [0, 0, 3, 0, 3, 2, 1, 2, 0, 3],
+    "predicted_clusters": example_predicted_clusters_level0,
     "clusters": [ cluster0_level0, cluster1_level0, cluster2_level0, cluster3_level0 ],
 }
 
@@ -90,7 +94,7 @@ tree_level1 = {
         "#13 explícale que es la que hace que las empresas privadas no suban precios"
         ],
     "clusters": [ cluster0_level1, cluster1_level1 ],
-    "predicted_clusters": [0, 0, 1, 1],
+    "predicted_clusters": example_predicted_clusters_level1,
 }
 
 example_tree = [tree_level0, tree_level1]

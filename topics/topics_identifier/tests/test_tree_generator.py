@@ -50,6 +50,18 @@ class TreeGeneratorTests(TestCase):
         clusters_level0 = tree_generator.tree.get_clusters_of_level(level)
         validate_clusters_list(self, clusters_level0, example_tree[level]["clusters"], with_documents=False)
 
+    def test_add_documents_to_clusters_level0(self):
+        mock_documents()
+        level = 0
+        #tree_generator = TreeGenerator(tree_name, test_model_name, example_doc_options, max_level=1)
+        tree_generator = mock_tree_generator(max_level=1)
+        clusters_generator = mock_cluster_generator()
+        documents_clusters = clusters_generator.predict_clusters_documents(documents=example_documents)
+        #tree_generator.add_documents_to_clusters(clusters_generator, documents=documents_clusters, level=level)
+        #tree_generator.add_documents_to_clusters(clusters_generator, documents=mock_documents_clusters, level=level)
+        #clusters_level0 = tree.get_clusters_of_level(level=0)
+        #validate_clusters_list(self, clusters_level0, example_tree[0]["clusters"], with_documents=True)
+
     def test_get_loading_files_errors_both(self):
         tree_generator = mock_tree_generator(max_level=0)
         error = tree_generator.get_loading_files_errors(model=None, vectorizer=None, level=0)

@@ -47,8 +47,8 @@ class TreeGenerator:
         self.tree.add_clusters(level, clusters_information)
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
-        documents_clusters = clusters_generator.predict_documents_clusters(documents)
-        self.tree.add_documents_to_clusters(level, documents_clusters)
+        clusters_documents = clusters_generator.predict_clusters_documents(documents)
+        self.tree.add_documents_to_several_clusters(level, clusters_documents)
 
     def get_loading_files_errors(self, model, vectorizer, level):
         error = ""

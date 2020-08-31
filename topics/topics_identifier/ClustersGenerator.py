@@ -8,6 +8,14 @@ class ClustersGenerator:
         self.model = model
         self.vectorizer = vectorizer
         self.terms = self.vectorizer.get_feature_names()
+        self.number_of_clusters = self.calculate_number_of_clusters()
+
+    def calculate_number_of_clusters(self):
+        number_of_clusters = 0
+        clusters_centers = self.model.cluster_centers_
+        for cluster in clusters_centers:
+            number_of_clusters += 1
+        return number_of_clusters
 
     def get_cluster_terms(self, cluster_center):
         cluster_terms = []
@@ -37,14 +45,20 @@ class ClustersGenerator:
         clusters_information = { "terms": clusters_terms, "reference_documents": reference_documents }
         return clusters_information
 
-    def predict_documents_clusters(self, documents):
-        print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
-        vectorized_documents = self.vectorizer.transform(documents)
-        predicted_clusters = self.model.predict(vectorized_documents)
-        documents_clusters = []
+    def get_documents_grouped_by_cluster(self, documents, predicted_clusters):
+        # Create an empty array for each cluster
+        documents_by_cluster = [ [] for i in range(self.number_of_clusters) ]
+        # Add documents to the clusters arrays
         document_index = 0
         for cluster_number in predicted_clusters:
             doc = documents[document_index]
-            documents_clusters.append( { "document": doc, "cluster_number": cluster_number })
+            documents_by_cluster[cluster_number].append(doc)
             document_index += 1
-        return documents_clusters
+        return documents_by_cluster
+
+    def predict_clusters_documents(self, documents):
+        print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
+        vectorized_documents = self.vectorizer.transform(documents)
+        predicted_clusters = self.model.predict(vectorized_documents)
+        clusters_documents = self.get_documents_grouped_by_cluster(documents, predicted_clusters)
+        return clusters_documents
