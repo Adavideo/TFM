@@ -10,22 +10,22 @@ def mock_models_manager(name=test_model_name):
     models_manager = ModelsManager(name=name)
     return models_manager
 
-def mock_affinity_propagation_model():
+def mock_affinity_propagation_model(level=0):
     manager = mock_models_manager()
-    model = manager.load_model(level=0)
+    model = manager.load_model(level)
     return model
 
-def mock_model():
-    return mock_affinity_propagation_model()
+def mock_model(level=0):
+    return mock_affinity_propagation_model(level)
 
-def mock_vectorizer():
+def mock_vectorizer(level=0):
     manager = mock_models_manager()
-    vectorizer = manager.load_vectorizer(level=0)
+    vectorizer = manager.load_vectorizer(level)
     return vectorizer
 
-def mock_cluster_generator():
-    model = mock_affinity_propagation_model()
-    vectorizer = mock_vectorizer()
+def mock_cluster_generator(level=0):
+    model = mock_affinity_propagation_model(level)
+    vectorizer = mock_vectorizer(level)
     generator = ClustersGenerator(model, vectorizer, example_documents)
     return generator
 
