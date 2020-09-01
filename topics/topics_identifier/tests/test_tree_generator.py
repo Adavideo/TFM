@@ -1,5 +1,5 @@
 from django.test import TestCase
-from topics_identifier.TreeGenerator import TreeGenerator
+from topics_identifier.TreeGenerator import TreeGenerator, get_loading_files_errors
 from .mocks import mock_documents
 from .mock_trees import mock_tree
 from .mock_generators import mock_tree_generator, mock_cluster_generator
@@ -9,6 +9,29 @@ from .validations import validate_dataset
 from .validations_trees import validate_tree_document_types
 from .validations_clusters import validate_clusters_list
 from .validations_documents import validate_documents
+
+
+class TreeGeneratorErrors(TestCase):
+
+    def test_get_loading_files_errors_both(self):
+        tree_generator = mock_tree_generator(max_level=0)
+        error = get_loading_files_errors(model=None, vectorizer=None, level=0)
+        self.assertEqual(error, "model and vectorizer not loaded for level 0")
+
+    def test_get_loading_files_errors_model(self):
+        tree_generator = mock_tree_generator(max_level=0)
+        error = get_loading_files_errors(model=None, vectorizer=True, level=0)
+        self.assertEqual(error, "model not loaded for level 0")
+
+    def test_get_loading_files_errors_vectorizer(self):
+        tree_generator = mock_tree_generator(max_level=0)
+        error = get_loading_files_errors(model=True, vectorizer=None, level=0)
+        self.assertEqual(error, "vectorizer not loaded for level 0")
+
+    def test_get_loading_files_errors_none(self):
+        tree_generator = mock_tree_generator(max_level=0)
+        error = get_loading_files_errors(model=True, vectorizer=True, level=0)
+        self.assertEqual(error, "")
 
 
 class TreeGeneratorTests(TestCase):
@@ -66,26 +89,6 @@ class TreeGeneratorTests(TestCase):
         for i in range(len(clusters_level0)):
             cluster_documents = clusters_level0[i].documents()
             validate_documents(self, cluster_documents, example_clusters[i]["documents"])
-
-    def test_get_loading_files_errors_both(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = tree_generator.get_loading_files_errors(model=None, vectorizer=None, level=0)
-        self.assertEqual(error, "model and vectorizer not loaded for level 0")
-
-    def test_get_loading_files_errors_model(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = tree_generator.get_loading_files_errors(model=None, vectorizer=True, level=0)
-        self.assertEqual(error, "model not loaded for level 0")
-
-    def test_get_loading_files_errors_vectorizer(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = tree_generator.get_loading_files_errors(model=True, vectorizer=None, level=0)
-        self.assertEqual(error, "vectorizer not loaded for level 0")
-
-    def test_get_loading_files_errors_none(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = tree_generator.get_loading_files_errors(model=True, vectorizer=True, level=0)
-        self.assertEqual(error, "")
 
     def test_generate_tree(self):
         mock_documents()

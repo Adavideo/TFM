@@ -10,6 +10,18 @@ def tree_already_exist(tree_name):
     if tree_search: return True
     else: return False
 
+def get_loading_files_errors(model, vectorizer, level):
+    error = ""
+    if not model:
+        error += "model"
+    if not model and not vectorizer:
+        error += " and "
+    if not vectorizer:
+        error += "vectorizer"
+    if not model or not vectorizer:
+        error += " not loaded for level "+str(level)
+    return error
+
 
 class TreeGenerator:
 
@@ -52,18 +64,6 @@ class TreeGenerator:
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
         self.tree.add_documents_to_several_clusters(level, clusters_documents)
 
-    def get_loading_files_errors(self, model, vectorizer, level):
-        error = ""
-        if not model:
-            error += "model"
-        if not model and not vectorizer:
-            error += " and "
-        if not vectorizer:
-            error += "vectorizer"
-        if not model or not vectorizer:
-            error += " not loaded for level "+str(level)
-        return error
-
     def level_iteration(self, level):
         print("Generating clusters for level "+str(level))
         dataset = self.get_dataset(level)
@@ -74,7 +74,7 @@ class TreeGenerator:
             self.generate_level_clusters(clusters_generator, level)
             self.add_documents_to_clusters(clusters_generator, dataset.data, level)
         except:
-            error = self.get_loading_files_errors(model, vectorizer, level)
+            error = get_loading_files_errors(model, vectorizer, level)
             print("\n\n"+error+"\n")
             return error
 
