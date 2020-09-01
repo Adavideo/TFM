@@ -6,7 +6,7 @@ from .mock_generators import mock_tree_generator, mock_cluster_generator
 from .example_trees import tree_name, example_tree
 from .examples import test_model_name, example_doc_options, example_documents
 from .validations import validate_dataset
-from .validations_trees import validate_tree_document_types
+from .validations_trees import validate_tree_document_types, validate_tree
 from .validations_clusters import validate_clusters_list
 from .validations_documents import validate_documents
 
@@ -105,6 +105,20 @@ class TreeGeneratorTests(TestCase):
         for i in range(len(clusters_list)):
             cluster_documents = clusters_list[i].documents()
             validate_documents(self, cluster_documents, example_clusters[i]["documents"])
+
+    def test_level_iteration_level0(self):
+        level = 0
+        tree_generator = mock_tree_generator()
+        tree_generator.level_iteration(level)
+        validate_tree(self, tree_generator.tree, max_level=level, document_types="both")
+
+    def test_level_iteration_level1(self):
+        level = 1
+        mock_documents()
+        tree_generator = mock_tree_generator()
+        tree_generator.level_iteration(level-1)
+        tree_generator.level_iteration(level)
+        validate_tree(self, tree_generator.tree, max_level=level, document_types="both")
 
     def test_generate_tree(self):
         mock_documents()
