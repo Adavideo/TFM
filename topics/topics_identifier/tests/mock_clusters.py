@@ -1,4 +1,3 @@
-#from sklearn.datasets.base import Bunch
 from .example_trees import example_tree, tree_name
 from .mocks import mock_documents
 from topics_identifier.models import Cluster, Document, Tree
@@ -24,6 +23,16 @@ def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False):
         for doc in cluster_info["documents"]:
             cluster.add_document(doc)
     return cluster
+
+def mock_clusters_without_tree(level):
+    clusters_list = []
+    example_clusters_info = example_tree[level]["clusters"]
+    cluster_index = 0
+    for cluster_info in example_clusters_info:
+        cluster = Cluster(number=cluster_index, terms=cluster_info["terms"])
+        clusters_list.append(cluster)
+        cluster_index += 1
+    return clusters_list
 
 def mock_clusters_information(level):
     clusters_list = example_tree[level]["clusters"]

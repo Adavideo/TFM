@@ -1,4 +1,5 @@
 import datetime
+from .models import Cluster, Document
 
 
 class ClustersGenerator:
@@ -31,19 +32,22 @@ class ClustersGenerator:
             all_clusters_terms.append(cluster_terms)
         return all_clusters_terms
 
-    def get_clusters_reference_documents(self):
-        reference_documents_list = []
-        for document_index in self.model.cluster_centers_indices_:
-            reference_document = self.original_documents[document_index]
-            reference_documents_list.append(reference_document)
-        return reference_documents_list
-
-    def get_clusters_information(self):
-        print(str(datetime.datetime.now().time())+" - Obtaining clusters information")
+    def get_clusters(self):
+        print(str(datetime.datetime.now().time())+" - Obtaining clusters")
         clusters_terms = self.get_all_clusters_terms()
-        reference_documents = self.get_clusters_reference_documents()
-        clusters_information = { "terms": clusters_terms, "reference_documents": reference_documents }
-        return clusters_information
+        clusters_list = []
+        for cluster_index in range(self.number_of_clusters):
+            cluster = Cluster(number=cluster_index)
+            cluster.terms = clusters_terms[cluster_index]
+            clusters_list.append(cluster)
+        return clusters_list
+
+    def get_clusters_reference_documents(self):
+        reference_documents = []
+        for document_index in self.model.cluster_centers_indices_:
+            document_content = self.original_documents[document_index]
+            reference_documents.append(document_content)
+        return reference_documents
 
     def get_documents_grouped_by_cluster(self, documents, predicted_clusters):
         # Create an empty array for each cluster

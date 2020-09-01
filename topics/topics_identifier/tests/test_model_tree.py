@@ -1,8 +1,8 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
-from .example_trees import example_tree
+from .example_trees import example_tree, clusters_documents
 from .mock_trees import mock_tree, mock_empty_tree
-from .mock_clusters import mock_clusters_information
+from .mock_clusters import mock_clusters_without_tree
 from .mocks import mock_documents
 from .validations_clusters import validate_cluster, validate_clusters_list, validate_reference_documents
 from .validations_trees import validate_tree, validate_tree_document_types
@@ -67,15 +67,16 @@ class TreeTests(TestCase):
     def test_add_clusters(self):
         # Initialize
         level = 0
-        example_clusters = example_tree[level]["clusters"]
         mock_documents()
         tree = mock_empty_tree()
-        clusters_info = mock_clusters_information(level)
+        mocked_clusters_list = mock_clusters_without_tree(level)
         # Execute
-        tree.add_clusters(level, clusters_info)
+        tree.add_clusters(level, mocked_clusters_list)
         # Validate
+        example_clusters = example_tree[level]["clusters"]
         clusters_list = tree.get_clusters_of_level(level)
-        validate_clusters_list(self, clusters_list, example_clusters, with_documents=False)
+        for i in range(len(clusters_list)):
+            self.assertEqual(clusters_list[i].terms, example_clusters[i]["terms"])
 
     def test_link_children_to_parents(self):
         level = 1
@@ -112,25 +113,24 @@ class TreeTests(TestCase):
     def test_add_documents_to_several_clusters_level0(self):
         # Initialize
         level = 0
-        example_clusters = example_tree[level]["clusters"]
         tree = mock_tree(max_level=level, linked=False, with_documents=False)
         # Execute
-        tree.add_documents_to_several_clusters(level, example_clusters)
+        tree.add_documents_to_several_clusters(level, clusters_documents[level])
         # Validate
         clusters_list = tree.get_clusters_of_level(level)
+        example_clusters = example_tree[level]["clusters"]
         validate_clusters_list(self, clusters_list, example_clusters, with_documents=True)
 
     def test_add_documents_to_several_clusters_level1(self):
         # Initialize
         level = 1
-        example_clusters0 = example_tree[level-1]["clusters"]
-        example_clusters1 = example_tree[level]["clusters"]
         tree = mock_tree(max_level=level, linked=True, with_documents=False)
-        tree.add_documents_to_several_clusters(level=0, clusters_list=example_clusters0)
+        tree.add_documents_to_several_clusters(level=0, clusters_list=clusters_documents[level-1])
         # Execute
-        tree.add_documents_to_several_clusters(level, example_clusters1)
+        tree.add_documents_to_several_clusters(level, clusters_list=clusters_documents[level])
         # Validate
         clusters_list = tree.get_clusters_of_level(level)
+        example_clusters1 = example_tree[level]["clusters"]
         validate_clusters_list(self, clusters_list, example_clusters1, with_documents=True)
 
     def test_children_level1_clusters_not_linked(self):

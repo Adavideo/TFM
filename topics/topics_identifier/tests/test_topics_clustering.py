@@ -1,25 +1,12 @@
 from django.test import TestCase
-from topics_identifier.topics_clustering import *
+from topics_identifier.topics_clustering import create_and_store_model_for_topic, get_dataset_for_topic, get_clusters_generator, generate_tree_for_topic, cluster_for_topic
+from topics_identifier.models import Topic
 from .mocks import mock_threads_with_topic
 from .mock_datasets import mock_dataset_from_topics
-from .mock_generators import mock_model, mock_vectorizer, mock_models_manager
-from .examples import all_threads_content, example_terms
-from .example_topics import topic, topic_model_name, example_reference_documents, example_topics_cluster_terms
+from .examples import all_threads_content
+from .example_topics import topic, topic_model_name, example_reference_documents
 from .test_datasets_manager import validate_dataset
 from .validations_models import validate_model_stored, validate_vectorizer_stored
-
-from topics_identifier.ModelsManager import ModelsManager
-from topics_identifier.ModelGenerator import ModelGenerator
-
-
-def mock_clusters_for_topic():
-    level = 0
-    models_manager = mock_models_manager(name=topic_model_name)
-    dataset = mock_dataset_from_topics(topic)
-    model = models_manager.load_model(level)
-    vectorizer = models_manager.load_vectorizer(level)
-    clusters_information = generate_clusters_for_topic(model, dataset, vectorizer)
-    return clusters_information
 
 
 class TopicsTests(TestCase):
@@ -41,20 +28,10 @@ class TopicsTests(TestCase):
         dataset = get_dataset_for_topic(topic)
         validate_dataset(self, dataset, all_threads_content)
 
-    def test_generate_clusters_for_topic(self):
-        clusters_information = mock_clusters_for_topic()
-        self.assertEqual(len(clusters_information), 2)
-        self.assertEqual(clusters_information["terms"], example_topics_cluster_terms)
-        self.assertEqual(clusters_information["reference_documents"], example_reference_documents)
-
     def test_generate_tree_for_topic(self):
-        clusters_information = mock_clusters_for_topic()
-        clusters_list = generate_tree_for_topic(topic.name, clusters_information)
-
-    def test_generate_tree_for_topic_twice(self):
-        clusters_information = mock_clusters_for_topic()
-        generate_tree_for_topic(topic.name, clusters_information)
-        generate_tree_for_topic(topic.name, clusters_information)
+        mock_dataset_from_topics(topic)
+        clusters_generator = get_clusters_generator(topic, topic_model_name)
+        tree_generator = generate_tree_for_topic(topic.name, topic_model_name, clusters_generator)
 
     def test_cluster_for_topic(self):
         mock_dataset_from_topics(topic)

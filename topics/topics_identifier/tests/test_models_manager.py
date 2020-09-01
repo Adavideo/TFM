@@ -57,6 +57,7 @@ class ModelsManagerTests(TestCase):
     def test_generate_and_store_model_level1(self):
         level = 1
         model_name = "delete_me_2"
+        mock_documents()
         manager4 = mock_models_manager(name=model_name)
         model_filename = manager4.generate_and_store_models(example_documents, level)
         self.assertEqual(model_filename, "models/sklearn/delete_me_2_model_level1.joblib")

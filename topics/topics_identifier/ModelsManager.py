@@ -50,8 +50,8 @@ class ModelsManager:
 
     def get_next_level_documents(self, model, vectorizer, documents):
         clusters_generator = ClustersGenerator(model, vectorizer, documents)
-        clusters_information = clusters_generator.get_clusters_information()
-        return clusters_information["reference_documents"]
+        reference_documents = clusters_generator.get_clusters_reference_documents()
+        return reference_documents
 
     def store_level_information(self, model, vectorizer, level):
         model_filename = self.store_model(model, level)
@@ -61,7 +61,7 @@ class ModelsManager:
 
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()
-        for level in range(0, max_level+1):
+        for level in range(max_level+1):
             model_generator = ModelGenerator(documents)
             model = model_generator.generate_model()
             vectorizer = model_generator.vectorizer

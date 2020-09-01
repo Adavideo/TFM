@@ -43,8 +43,10 @@ class TreeGenerator:
         return dataset
 
     def generate_level_clusters(self, clusters_generator, level):
-        clusters_information = clusters_generator.get_clusters_information()
-        self.tree.add_clusters(level, clusters_information)
+        clusters = clusters_generator.get_clusters()
+        self.tree.add_clusters(level, clusters)
+        reference_documents = clusters_generator.get_clusters_reference_documents()
+        self.tree.add_reference_documents(level, reference_documents)
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)

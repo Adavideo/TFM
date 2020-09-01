@@ -2,9 +2,9 @@ from django.test import TestCase
 from .example_trees import example_tree, example_predicted_clusters
 from .examples import example_documents, example_terms
 from .mock_generators import mock_cluster_generator
-from .validations_generators import validate_clusters_terms, validate_clusters_reference_documents
+from .validations_generators import validate_clusters_reference_documents
 from .validations_models import model_type, vectoricer_type
-from .validations_clusters import validate_clusters_documents
+from .validations_clusters import validate_clusters_documents, validate_clusters_terms, validate_clusters_without_tree
 
 
 class ClustersGeneratorTests(TestCase):
@@ -29,17 +29,16 @@ class ClustersGeneratorTests(TestCase):
         clusters_terms = cluster_generator.get_all_clusters_terms()
         validate_clusters_terms(self, clusters_terms, level=0)
 
+    def test_get_clusters(self):
+        level = 0
+        generator = mock_cluster_generator()
+        clusters_list = generator.get_clusters()
+        validate_clusters_without_tree(self, clusters_list, level)
+
     def test_get_clusters_reference_documents(self):
         cluster_generator = mock_cluster_generator()
         reference_documents_list = cluster_generator.get_clusters_reference_documents()
         validate_clusters_reference_documents(self, reference_documents_list, level=0)
-
-    def test_get_clusters_information(self):
-        level = 0
-        generator = mock_cluster_generator()
-        clusters_information = generator.get_clusters_information()
-        validate_clusters_terms(self, clusters_information["terms"], level)
-        validate_clusters_reference_documents(self, clusters_information["reference_documents"], level)
 
     def test_get_documents_grouped_by_cluster(self):
         level = 0

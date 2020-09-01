@@ -15,10 +15,16 @@ def validate_cluster(test, cluster, example_cluster, with_documents):
         validate_clusters_list(test, cluster.children(), example_cluster["children"], with_documents)
 
 def validate_clusters_list(test, clusters_list, example_clusters, with_documents):
-    index = 0
-    for cluster in clusters_list:
-        validate_cluster(test, cluster, example_clusters[index], with_documents)
-        index += 1
+    for i in range(len(clusters_list)):
+        validate_cluster(test, clusters_list[i], example_clusters[i], with_documents)
+
+def validate_clusters_without_tree(test, clusters_list, level):
+    example_clusters = example_tree[level]["clusters"]
+    for i in range(len(example_clusters)):
+        cluster = clusters_list[i]
+        expected = example_clusters[i]
+        test.assertEqual(cluster.number, expected["num_cluster"])
+        test.assertEqual(str(cluster.terms), expected["terms"])
 
 def validate_reference_documents(test, reference_documents, example_clusters):
     example_reference_documents = []
@@ -30,6 +36,11 @@ def validate_clusters_documents(test, clusters_documents, level):
     example_clusters = example_tree[level]["clusters"]
     for i in range(len(clusters_documents)):
         validate_documents_content(test, clusters_documents[i], example_clusters[i]["documents"])
+
+def validate_clusters_terms(test, clusters_terms, level):
+    example_clusters = example_tree[level]["clusters"]
+    for i in range(len(example_clusters)):
+        test.assertEqual(str(clusters_terms[i]), example_clusters[i]["terms"])
 
 
 # CLUSTERS NAVIGATION

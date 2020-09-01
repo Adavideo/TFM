@@ -8,6 +8,7 @@ from .examples import test_model_name, example_doc_options, example_documents
 from .validations import validate_dataset
 from .validations_trees import validate_tree_document_types
 from .validations_clusters import validate_clusters_list
+from .validations_documents import validate_documents
 
 
 class TreeGeneratorTests(TestCase):
@@ -51,16 +52,20 @@ class TreeGeneratorTests(TestCase):
         validate_clusters_list(self, clusters_level0, example_tree[level]["clusters"], with_documents=False)
 
     def test_add_documents_to_clusters_level0(self):
+        # Initialize
         mock_documents()
         level = 0
-        #tree_generator = TreeGenerator(tree_name, test_model_name, example_doc_options, max_level=1)
         tree_generator = mock_tree_generator(max_level=1)
         clusters_generator = mock_cluster_generator()
-        documents_clusters = clusters_generator.predict_clusters_documents(documents=example_documents)
-        #tree_generator.add_documents_to_clusters(clusters_generator, documents=documents_clusters, level=level)
-        #tree_generator.add_documents_to_clusters(clusters_generator, documents=mock_documents_clusters, level=level)
-        #clusters_level0 = tree.get_clusters_of_level(level=0)
-        #validate_clusters_list(self, clusters_level0, example_tree[0]["clusters"], with_documents=True)
+        documents = example_tree[level]["documents"]
+        # Execute
+        tree_generator.add_documents_to_clusters(clusters_generator, documents=documents, level=level)
+        # Validate
+        clusters_level0 = tree_generator.tree.get_clusters_of_level(level=0)
+        example_clusters = example_tree[0]["clusters"]
+        for i in range(len(clusters_level0)):
+            cluster_documents = clusters_level0[i].documents()
+            validate_documents(self, cluster_documents, example_clusters[i]["documents"])
 
     def test_get_loading_files_errors_both(self):
         tree_generator = mock_tree_generator(max_level=0)

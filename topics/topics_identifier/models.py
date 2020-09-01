@@ -15,6 +15,12 @@ class Tree(models.Model):
         clusters = Cluster.objects.filter(tree=self, level=level)
         return clusters
 
+    def add_clusters(self, level, clusters_list):
+        for cluster in clusters_list:
+            cluster.tree = self
+            cluster.level = level
+            cluster.save()
+
     def get_reference_documents(self, level):
         clusters_list = self.get_clusters_of_level(level)
         reference_documents = []
@@ -22,14 +28,11 @@ class Tree(models.Model):
             reference_documents.append(cluster.reference_document.content)
         return reference_documents
 
-    def add_clusters(self, level, clusters_information):
-        num_clusters = len(clusters_information["terms"])
-        for cluster_index in range(0, num_clusters):
-            cluster = self.get_cluster(cluster_index, level)
-            cluster.terms = clusters_information["terms"][cluster_index]
-            reference_document = clusters_information["reference_documents"][cluster_index]
-            cluster.assign_reference_document(content=reference_document)
-            cluster.save()
+    def add_reference_documents(self, level, reference_documents):
+        clusters = self.get_clusters_of_level(level)
+        for i in range(len(clusters)):
+            clusters[i].assign_reference_document(content=reference_documents[i])
+
 
     # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
     # Parent clusters are the ones that include the reference document of the children cluster.
@@ -49,10 +52,9 @@ class Tree(models.Model):
             self.link_children_to_parents(level)
 
     def add_documents_to_several_clusters(self, level, clusters_list):
-        num_cluster = 0
-        for cluster in clusters_list:
-            self.add_documents_to_cluster(level, num_cluster, cluster["documents"])
-            num_cluster += 1
+        for num_cluster in range(len(clusters_list)):
+            cluster_documents = clusters_list[num_cluster]
+            self.add_documents_to_cluster(level, num_cluster, cluster_documents)
 
     def __str__(self):
         text = "Tree "+ self.name + " - documents: "
@@ -71,8 +73,8 @@ class Cluster(models.Model):
     terms = models.CharField(max_length=255)
 
     def assign_reference_document(self, content):
-        doc = Document.objects.get(content=content)
-        self.reference_document = doc
+        document = Document.objects.get(content=content)
+        self.reference_document = document
         self.save()
 
     def add_document(self, content):
