@@ -65,14 +65,31 @@ class TreeGeneratorTests(TestCase):
         documents_level1 = example_tree[1]["documents"]
         validate_dataset(self, dataset, documents_level1)
 
-    def test_generate_level_clusters(self):
+    def test_generate_level_clusters_level0(self):
+        # Initialize
         mock_documents()
         level = 0
-        tree_generator = mock_tree_generator(max_level=0)
-        clusters_generator = mock_cluster_generator()
+        tree_generator = mock_tree_generator(max_level=level)
+        clusters_generator = mock_cluster_generator(level=level)
+        # Execute
         tree_generator.generate_level_clusters(clusters_generator, level)
-        clusters_level0 = tree_generator.tree.get_clusters_of_level(level)
-        validate_clusters_list(self, clusters_level0, example_tree[level]["clusters"], with_documents=False)
+        # Validate
+        clusters_list = tree_generator.tree.get_clusters_of_level(level)
+        example_clusters = example_tree[level]["clusters"]
+        validate_clusters_list(self, clusters_list, example_clusters, with_documents=False)
+
+    def test_generate_level_clusters_level1(self):
+        # Initialize
+        mock_documents()
+        level = 1
+        tree_generator = mock_tree_generator(max_level=level)
+        clusters_generator = mock_cluster_generator(level=level)
+        # Execute
+        tree_generator.generate_level_clusters(clusters_generator, level)
+        # Validate
+        clusters_list = tree_generator.tree.get_clusters_of_level(level)
+        example_clusters = example_tree[level]["clusters"]
+        validate_clusters_list(self, clusters_list, example_clusters, with_documents=False)
 
     def test_add_documents_to_clusters_level0(self):
         # Initialize

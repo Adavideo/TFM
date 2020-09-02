@@ -2,8 +2,8 @@ from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ModelsManager import ModelsManager
 from .mock_datasets import mock_dataset
-from .example_trees import tree_name
-from .examples import test_model_name, example_terms, example_documents, example_doc_options
+from .example_trees import tree_name, example_tree
+from .examples import test_model_name, example_terms, example_doc_options
 
 
 def mock_models_manager(name=test_model_name):
@@ -26,7 +26,7 @@ def mock_vectorizer(level=0):
 def mock_cluster_generator(level=0):
     model = mock_affinity_propagation_model(level)
     vectorizer = mock_vectorizer(level)
-    generator = ClustersGenerator(model, vectorizer, example_documents)
+    generator = ClustersGenerator(model, vectorizer, example_tree[level]["documents"] )
     return generator
 
 def mock_tree_generator(max_level=0, document_options=example_doc_options):
