@@ -67,8 +67,8 @@ class TreeGenerator:
     def level_iteration(self, level):
         print("Generating clusters for level "+str(level))
         dataset = self.get_dataset(level)
-        model = self.models_manager.load_model(level)
-        vectorizer = self.models_manager.load_vectorizer(level)
+        model = self.models_manager.load_object("model", level)
+        vectorizer = self.models_manager.load_object("vectorizer", level)
         try:
             clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
             self.generate_level_clusters(clusters_generator, level)

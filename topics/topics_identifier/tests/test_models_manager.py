@@ -10,24 +10,24 @@ from .examples import example_documents, test_model_name
 
 class ModelsManagerTests(TestCase):
 
-    def test_get_model_filename(self):
+    def test_get_filename_model(self):
         manager = mock_models_manager(name="test")
-        filename = manager.get_model_filename( level=0)
+        filename = manager.get_filename("model", level=0)
         self.assertEqual(filename, "models/sklearn/test_model_level0.joblib")
 
-    def test_get_vectorizer_filename(self):
+    def test_get_filename_vectorizer(self):
         manager = mock_models_manager(name="test")
-        filename = manager.get_vectorizer_filename(level=0)
+        filename = manager.get_filename("vectorizer", level=0)
         self.assertEqual(filename, "models/sklearn/test_vectorizer_level0.joblib")
 
     def test_load_model(self):
         manager = mock_models_manager()
-        model = manager.load_model(level=0)
+        model = manager.load_object("model", level=0)
         self.assertEqual(type(model), type(AffinityPropagation()))
 
     def test_load_vectorizer(self):
         manager = mock_models_manager()
-        vectorizer = manager.load_vectorizer(level=0)
+        vectorizer = manager.load_object("vectorizer", level=0)
         self.assertEqual(type(vectorizer), type(TfidfVectorizer()))
 
     def test_store_model(self):
@@ -35,18 +35,18 @@ class ModelsManagerTests(TestCase):
         level = 0
         model = mock_model()
         manager = mock_models_manager(name=model_name)
-        manager.store_model(model, level)
+        manager.store_object(model, "model", level)
         validate_model_stored(self, model_name, level)
 
     def test_store_vectorizer(self):
         # Initialize
         manager1 = mock_models_manager()
         level = 0
-        vectorizer = manager1.load_vectorizer(level)
+        vectorizer = manager1.load_object("vectorizer", level)
         model_name = "delete_me"
         manager2 = mock_models_manager(name=model_name)
         # Execute
-        manager2.store_vectorizer(vectorizer, level)
+        manager2.store_object(vectorizer, "vectorizer", level)
         # Validate
         validate_vectorizer_stored(self, model_name, level)
 

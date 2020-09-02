@@ -18,8 +18,8 @@ def get_dataset_for_topic(topic):
 def store_model_for_topic(topic_name, model, vectorizer):
     level = 0
     models_manager = ModelsManager(name=topic_name)
-    models_manager.store_model(model, level)
-    models_manager.store_vectorizer(vectorizer, level)
+    models_manager.store_object(model, "model", level)
+    models_manager.store_object(vectorizer, "vectorizer", level)
 
 def create_and_store_model_for_topic(topic):
     dataset = get_dataset_for_topic(topic)
@@ -33,8 +33,8 @@ def create_and_store_model_for_topic(topic):
 def get_clusters_generator(topic, model_name):
     dataset = get_dataset_for_topic(topic)
     models_manager = ModelsManager(name=model_name)
-    model = models_manager.load_model(level=0)
-    vectorizer = models_manager.load_vectorizer(level=0)
+    model = models_manager.load_object("model", level=0)
+    vectorizer = models_manager.load_object("vectorizer", level=0)
     clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
     return clusters_generator
 

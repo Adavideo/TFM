@@ -12,7 +12,7 @@ def mock_models_manager(name=test_model_name):
 
 def mock_affinity_propagation_model(level=0):
     manager = mock_models_manager()
-    model = manager.load_model(level)
+    model = manager.load_object("model", level)
     return model
 
 def mock_model(level=0):
@@ -20,7 +20,7 @@ def mock_model(level=0):
 
 def mock_vectorizer(level=0):
     manager = mock_models_manager()
-    vectorizer = manager.load_vectorizer(level)
+    vectorizer = manager.load_object("vectorizer", level)
     return vectorizer
 
 def mock_cluster_generator(level=0):

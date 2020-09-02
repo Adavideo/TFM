@@ -14,37 +14,20 @@ class ModelsManager:
         self.models_filenames = []
         self.vectorizers_filenames = []
 
-    def get_model_filename(self, level):
-        filename = sklearn_models_path + self.name + "_model_level" + str(level) + ".joblib"
+    def get_filename(self, type, level):
+        filename = sklearn_models_path + self.name + "_" + type + "_level" + str(level) + ".joblib"
         return filename
 
-    def get_vectorizer_filename(self, level):
-        filename = sklearn_models_path + self.name + "_vectorizer_level" + str(level) + ".joblib"
+    def store_object(self, object, type, level):
+        filename = self.get_filename(type, level)
+        dump(object, filename)
         return filename
 
-    def store_model(self, model, level):
-        filename = self.get_model_filename(level)
-        dump(model, filename)
-        return filename
-
-    def store_vectorizer(self, vectorizer, level):
-        filename = self.get_vectorizer_filename(level)
-        dump(vectorizer, filename)
-        return filename
-
-    def load_model(self, level):
-        filename = self.get_model_filename(level)
+    def load_object(self, type, level):
+        filename = self.get_filename(type=type, level=level)
         try:
-            model = load(filename)
-            return model
-        except:
-            return None
-
-    def load_vectorizer(self, level):
-        filename = self.get_vectorizer_filename(level)
-        try:
-            vectorizer = load(filename)
-            return vectorizer
+            object = load(filename)
+            return object
         except:
             return None
 
@@ -54,9 +37,9 @@ class ModelsManager:
         return reference_documents
 
     def store_level_information(self, model, vectorizer, level):
-        model_filename = self.store_model(model, level)
+        model_filename = self.store_object(model, type="model", level=level)
         self.models_filenames.append(model_filename)
-        vectorizer_filename = self.store_vectorizer(vectorizer, level)
+        vectorizer_filename = self.store_object(vectorizer, type="vectorizer", level=level)
         self.vectorizers_filenames.append(vectorizer_filename)
 
     def generate_and_store_models(self, documents, max_level):

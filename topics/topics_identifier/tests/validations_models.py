@@ -6,10 +6,10 @@ vectoricer_type = "<class 'sklearn.feature_extraction.text.TfidfVectorizer'>"
 
 def validate_model_stored(test, model_name, level):
     manager = ModelsManager(name=model_name)
-    model = manager.load_model(level)
+    model = manager.load_object("model", level)
     test.assertEqual(str(type(model)), model_type)
 
 def validate_vectorizer_stored(test, model_name, level):
     manager = ModelsManager(name=model_name)
-    vectorizer = manager.load_vectorizer(level)
+    vectorizer = manager.load_object("vectorizer", level)
     test.assertEqual(str(type(vectorizer)), vectoricer_type)
