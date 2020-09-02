@@ -22,25 +22,29 @@ class ViewsTests(TestCase):
         page = 'trees_index'
         response = validate_page(self, page)
 
-    def test_tree_view_level0(self):
+    def test_tree_view_level0_view(self):
         page = 'tree'
         tree = mock_tree(max_level=0, linked=True, with_documents=True, document_types="both")
         response = validate_page(self, page, arguments=[tree.id])
         validate_contains_tree(self, response, tree)
 
-    def test_tree_view_level1(self):
+    def test_tree_view_level1_view(self):
         page = 'tree'
         tree = mock_tree(max_level=1, linked=True, with_documents=True, document_types="both")
         response = validate_page(self, page, arguments=[tree.id])
         validate_contains_tree(self, response, tree, max_level=1)
 
-    def test_cluster(self):
+    def test_cluster_view(self):
         page = 'cluster'
         cluster = mock_cluster(with_documents=True)
         cluster.save()
         response = validate_page(self, page, arguments=[cluster.id])
         validate_contains_cluster(self, response, cluster)
 
-    def test_cluster_topic(self):
+    def test_cluster_topic_view(self):
         page = 'cluster_topic'
+        response = validate_page(self, page)
+
+    def test_assign_topic_from_file_view(self):
+        page = 'assign_topic_from_file'
         response = validate_page(self, page)

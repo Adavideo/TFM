@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
   <form action="" method="post">
       {% csrf_token %}
       {{ form.as_p }}
@@ -10,6 +12,6 @@
 
   <hr>
 
-  {% include "threads_list.html" %}
+  {% include "timeline/threads_list.html" %}
 
 {% endblock %}
