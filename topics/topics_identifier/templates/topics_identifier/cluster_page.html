@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
   {% with cluster=cluster_info.cluster documents=cluster_info.documents children=cluster_info.children %}
     <h2>Tree: {{ cluster.tree.name }} - Level {{ cluster.level }} Cluster {{ cluster.number }} </h2><br>
     {% include "topics_identifier/cluster.html" %}
