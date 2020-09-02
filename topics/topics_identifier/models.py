@@ -72,6 +72,11 @@ class Cluster(models.Model):
     reference_document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
     terms = models.CharField(max_length=255)
 
+    def get_terms(self):
+        cleaned_terms_string = self.terms.strip("[]").replace(" ", "").replace("'","")
+        terms_list = cleaned_terms_string.split(",")
+        return terms_list
+
     def assign_reference_document(self, content):
         document = Document.objects.get(content=content)
         self.reference_document = document

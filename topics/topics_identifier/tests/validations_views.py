@@ -17,8 +17,13 @@ def validate_page(test, page, arguments=[]):
     validate_menu(test, response)
     return response
 
+def validate_terms(test, response, terms_list):
+    for term in terms_list:
+        test.assertContains(response, term)
+
 def validate_contains_cluster(test, response, cluster, with_documents=True):
     test.assertContains(response, cluster.reference_document.content)
+    validate_terms(test, response, cluster.get_terms())
     if with_documents:
         for doc in cluster.documents():
             test.assertContains(response, doc.content)
