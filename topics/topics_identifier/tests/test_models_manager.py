@@ -6,6 +6,7 @@ from .mocks import mock_documents
 from .mock_generators import mock_model, mock_models_manager
 from .validations_models import *
 from .examples import example_documents, test_model_name
+from .example_trees import example_tree
 
 
 class ModelsManagerTests(TestCase):
@@ -30,6 +31,18 @@ class ModelsManagerTests(TestCase):
         vectorizer = manager.load_object("vectorizer", level=0)
         self.assertEqual(type(vectorizer), type(TfidfVectorizer()))
 
+    def test_load_reference_documents_level0(self):
+        level = 0
+        manager = mock_models_manager()
+        reference_documents = manager.load_object("reference_documents", level)
+        validate_reference_documents(self, reference_documents, level)
+
+    def test_load_reference_documents_level0(self):
+        level = 1
+        manager = mock_models_manager()
+        reference_documents = manager.load_object("reference_documents", level)
+        validate_reference_documents(self, reference_documents, level)
+
     def test_store_model(self):
         model_name = "delete_me"
         level = 0
@@ -39,7 +52,7 @@ class ModelsManagerTests(TestCase):
         validate_model_stored(self, model_name, level)
 
     def test_store_vectorizer(self):
-        # Initialize
+
         manager1 = mock_models_manager()
         level = 0
         vectorizer = manager1.load_object("vectorizer", level)
@@ -49,6 +62,20 @@ class ModelsManagerTests(TestCase):
         manager2.store_object(vectorizer, "vectorizer", level)
         # Validate
         validate_vectorizer_stored(self, model_name, level)
+
+    def test_store_reference_documents(self):
+        # Initialize
+        model_name = "delete_me"
+        level = 0
+        manager = mock_models_manager(name=model_name)
+        model = manager.load_object("model", level)
+        vectorizer = manager.load_object("vectorizer", level)
+        documents = example_tree[level]["documents"]
+        reference_documents = manager.get_reference_documents(model, vectorizer, documents)
+        # Execute
+        manager.store_object(reference_documents, "reference_documents", level)
+        # Validate
+        validate_reference_documents_stored(self, model_name, level)
 
     def test_generate_and_store_model_level0(self):
         level = 0

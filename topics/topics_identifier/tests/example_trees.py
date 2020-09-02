@@ -123,3 +123,10 @@ tree_level1 = {
 }
 
 example_tree = [tree_level0, tree_level1]
+
+# REFERENCE DOCUMENTS
+
+example_reference_documents = [ 
+    tree_level1["documents"],
+    [ cluster0_level1["reference_doc"], cluster1_level1["reference_doc"] ]
+]

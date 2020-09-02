@@ -13,6 +13,7 @@ class ModelsManager:
     def initialize_levels_information(self):
         self.models_filenames = []
         self.vectorizers_filenames = []
+        self.reference_documents_filenames = []
 
     def get_filename(self, type, level):
         filename = sklearn_models_path + self.name + "_" + type + "_level" + str(level) + ".joblib"
@@ -31,16 +32,18 @@ class ModelsManager:
         except:
             return None
 
-    def get_next_level_documents(self, model, vectorizer, documents):
+    def get_reference_documents(self, model, vectorizer, documents):
         clusters_generator = ClustersGenerator(model, vectorizer, documents)
         reference_documents = clusters_generator.get_clusters_reference_documents()
         return reference_documents
 
-    def store_level_information(self, model, vectorizer, level):
+    def store_level_information(self, model, vectorizer, reference_documents, level):
         model_filename = self.store_object(model, type="model", level=level)
         self.models_filenames.append(model_filename)
         vectorizer_filename = self.store_object(vectorizer, type="vectorizer", level=level)
         self.vectorizers_filenames.append(vectorizer_filename)
+        reference_docs_filename = self.store_object(reference_documents, type="reference_documents", level=level)
+        self.reference_documents_filenames.append(reference_docs_filename)
 
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()
@@ -48,7 +51,7 @@ class ModelsManager:
             model_generator = ModelGenerator(documents)
             model = model_generator.generate_model()
             vectorizer = model_generator.vectorizer
-            self.store_level_information(model, vectorizer, level)
-            if level < max_level+1:
-                documents = self.get_next_level_documents(model, vectorizer, documents)
+            reference_documents = self.get_reference_documents(model, vectorizer, documents)
+            self.store_level_information(model, vectorizer, reference_documents, level)
+            documents = reference_documents
         return self.models_filenames[max_level]
