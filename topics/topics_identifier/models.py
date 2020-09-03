@@ -65,9 +65,9 @@ class Tree(models.Model):
 
 
 class Cluster(models.Model):
-    tree = models.ForeignKey(Tree, on_delete=models.CASCADE, null=False)
+    tree = models.ForeignKey(Tree, on_delete=models.CASCADE, null=True)
     number = models.IntegerField()
-    level = models.IntegerField()
+    level = models.IntegerField(null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     reference_document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
     terms = models.CharField(max_length=255)
