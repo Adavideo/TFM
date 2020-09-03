@@ -27,7 +27,7 @@ class ClusterTests(TestCase):
         cluster = mock_cluster()
         reference_document = example_documents[0]
         cluster.assign_reference_document(reference_document)
-        self.assertEqual(cluster.reference_document.content, reference_document)
+        self.assertEqual(cluster.reference_document, reference_document)
 
     # This test checks the functions cluster.add_document() and cluster.documents()
     def test_add_document(self):

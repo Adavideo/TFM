@@ -22,7 +22,7 @@ def validate_terms(test, response, terms_list):
         test.assertContains(response, term)
 
 def validate_contains_cluster(test, response, cluster, with_documents=True):
-    test.assertContains(response, cluster.reference_document.content)
+    test.assertContains(response, cluster.reference_document)
     validate_terms(test, response, cluster.get_terms())
     if with_documents:
         for doc in cluster.documents():

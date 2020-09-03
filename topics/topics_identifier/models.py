@@ -25,7 +25,7 @@ class Tree(models.Model):
         clusters_list = self.get_clusters_of_level(level)
         reference_documents = []
         for cluster in clusters_list:
-            reference_documents.append(cluster.reference_document.content)
+            reference_documents.append(cluster.reference_document)
         return reference_documents
 
     def add_reference_documents(self, level, reference_documents):
@@ -69,7 +69,7 @@ class Cluster(models.Model):
     number = models.IntegerField()
     level = models.IntegerField(null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
-    reference_document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True)
+    reference_document = models.CharField(max_length=255, null=True)
     terms = models.CharField(max_length=255)
 
     def get_terms(self):
@@ -78,8 +78,7 @@ class Cluster(models.Model):
         return terms_list
 
     def assign_reference_document(self, content):
-        document = Document.objects.get(content=content)
-        self.reference_document = document
+        self.reference_document = content
         self.save()
 
     def add_document(self, content):
@@ -96,7 +95,7 @@ class Cluster(models.Model):
     def find_children_by_reference_document(self):
         children = []
         for doc in self.documents():
-            children_search = Cluster.objects.filter(tree=self.tree, level=self.level-1, reference_document=doc)
+            children_search = Cluster.objects.filter(tree=self.tree, level=self.level-1, reference_document=doc.content)
             children.extend(children_search)
         return children
 
