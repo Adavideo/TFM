@@ -52,7 +52,6 @@ class ModelsManagerTests(TestCase):
         validate_model_stored(self, model_name, level)
 
     def test_store_vectorizer(self):
-
         manager1 = mock_models_manager()
         level = 0
         vectorizer = manager1.load_object("vectorizer", level)
@@ -65,17 +64,17 @@ class ModelsManagerTests(TestCase):
 
     def test_store_reference_documents(self):
         # Initialize
-        model_name = "delete_me"
         level = 0
-        manager = mock_models_manager(name=model_name)
-        model = manager.load_object("model", level)
-        vectorizer = manager.load_object("vectorizer", level)
+        manager_load = mock_models_manager()
+        model = manager_load.load_object("model", level)
+        vectorizer = manager_load.load_object("vectorizer", level)
         documents = example_tree[level]["documents"]
-        reference_documents = manager.get_reference_documents(model, vectorizer, documents)
+        reference_documents = manager_load.get_reference_documents(model, vectorizer, documents)
         # Execute
-        manager.store_object(reference_documents, "reference_documents", level)
+        manager_store = mock_models_manager(name="delete_me")
+        manager_store.store_object(reference_documents, "reference_documents", level)
         # Validate
-        validate_reference_documents_stored(self, model_name, level)
+        validate_reference_documents_stored(self, model_name="delete_me", level=level)
 
     def test_generate_and_store_model_level0(self):
         level = 0
