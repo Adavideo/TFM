@@ -24,6 +24,7 @@ def validate_clusters_without_tree(test, clusters_list, level):
         cluster = clusters_list[i]
         expected = example_clusters[i]
         test.assertEqual(cluster.number, expected["num_cluster"])
+        test.assertEqual(cluster.reference_document.content, expected["reference_doc"])
         test.assertEqual(str(cluster.terms), expected["terms"])
 
 def validate_reference_documents(test, reference_documents, example_clusters):

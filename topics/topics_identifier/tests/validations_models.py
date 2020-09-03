@@ -15,12 +15,11 @@ def validate_vectorizer_stored(test, model_name, level):
     vectorizer = manager.load_object("vectorizer", level)
     test.assertEqual(str(type(vectorizer)), vectoricer_type)
 
-def validate_reference_documents_stored(test, model_name, level):
+def validate_reference_documents_stored(test, model_name, level, expected):
     manager = ModelsManager(name=model_name)
     reference_documents = manager.load_object("reference_documents", level)
-    validate_reference_documents(test, reference_documents, level)
+    validate_reference_documents(test, reference_documents, level, expected)
 
-def validate_reference_documents(test, reference_documents, level):
-    expected = example_reference_documents[level]
+def validate_reference_documents(test, reference_documents, level, expected):
     test.assertEqual(len(reference_documents), len(expected))
     test.assertEqual(reference_documents, expected)

@@ -23,10 +23,9 @@ def mock_vectorizer(level=0):
     vectorizer = manager.load_object("vectorizer", level)
     return vectorizer
 
-def mock_cluster_generator(level=0):
-    model = mock_affinity_propagation_model(level)
-    vectorizer = mock_vectorizer(level)
-    generator = ClustersGenerator(model, vectorizer, example_tree[level]["documents"] )
+def mock_clusters_generator(level=0):
+    models_manager = mock_models_manager()
+    generator = ClustersGenerator(models_manager, level)
     return generator
 
 def mock_tree_generator(max_level=0, document_options=example_doc_options):

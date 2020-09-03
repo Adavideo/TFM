@@ -1,15 +1,19 @@
 import datetime
 from .models import Cluster, Document
+from .errors import loading_files_errors
 
 
 class ClustersGenerator:
 
-    def __init__(self, model, vectorizer, documents):
-        self.original_documents = documents
+    def __init__(self, models_manager, level, model=None, vectorizer=None):
+        if not model: model = models_manager.load_object("model", level)
+        if not vectorizer: vectorizer = models_manager.load_object("vectorizer", level)
+        self.level = level
         self.model = model
         self.vectorizer = vectorizer
         self.terms = self.vectorizer.get_feature_names()
         self.number_of_clusters = self.calculate_number_of_clusters()
+        self.reference_documents = models_manager.load_object("reference_documents", level)
 
     def calculate_number_of_clusters(self):
         number_of_clusters = 0
@@ -34,20 +38,27 @@ class ClustersGenerator:
 
     def get_clusters(self):
         print(str(datetime.datetime.now().time())+" - Obtaining clusters")
-        clusters_terms = self.get_all_clusters_terms()
-        clusters_list = []
-        for cluster_index in range(self.number_of_clusters):
-            cluster = Cluster(number=cluster_index)
-            cluster.terms = clusters_terms[cluster_index]
-            clusters_list.append(cluster)
-        return clusters_list
+        try:
+            clusters_terms = self.get_all_clusters_terms()
+            clusters_list = []
+            for cluster_index in range(self.number_of_clusters):
+                cluster = Cluster(number=cluster_index)
+                cluster.terms = clusters_terms[cluster_index]
+                reference_document = self.reference_documents[cluster_index]
+                cluster.assign_reference_document(reference_document)
+                clusters_list.append(cluster)
+            return clusters_list
+        except:
+            error = loading_files_errors(self.model, self.vectorizer, self.level)
+            return error
 
-    def get_clusters_reference_documents(self):
-        reference_documents = []
+
+    def get_reference_documents(self, original_documents):
+        self.reference_documents = []
         for document_index in self.model.cluster_centers_indices_:
-            document_content = self.original_documents[document_index]
-            reference_documents.append(document_content)
-        return reference_documents
+            content = original_documents[document_index]
+            self.reference_documents.append(content)
+        return self.reference_documents
 
     def get_documents_grouped_by_cluster(self, documents, predicted_clusters):
         # Create an empty array for each cluster

@@ -35,13 +35,15 @@ class ModelsManagerTests(TestCase):
         level = 0
         manager = mock_models_manager()
         reference_documents = manager.load_object("reference_documents", level)
-        validate_reference_documents(self, reference_documents, level)
+        expected = example_reference_documents[level]
+        validate_reference_documents(self, reference_documents, level, expected)
 
     def test_load_reference_documents_level1(self):
         level = 1
         manager = mock_models_manager()
         reference_documents = manager.load_object("reference_documents", level)
-        validate_reference_documents(self, reference_documents, level)
+        expected = example_reference_documents[level]
+        validate_reference_documents(self, reference_documents, level, expected)
 
     def test_store_model(self):
         model_name = "delete_me"
@@ -66,29 +68,25 @@ class ModelsManagerTests(TestCase):
         # Initialize
         level = 0
         manager_load = mock_models_manager()
-        model = manager_load.load_object("model", level)
-        vectorizer = manager_load.load_object("vectorizer", level)
-        documents = example_tree[level]["documents"]
-        reference_documents = manager_load.get_reference_documents(model, vectorizer, documents)
+        reference_documents = manager_load.load_object("reference_documents", level)
         # Execute
         manager_store = mock_models_manager(name="delete_me")
         manager_store.store_object(reference_documents, "reference_documents", level)
         # Validate
-        validate_reference_documents_stored(self, model_name="delete_me", level=level)
+        expected = example_reference_documents[level]
+        validate_reference_documents_stored(self, model_name="delete_me", level=level, expected=expected)
 
     def test_store_reference_documents_level1(self):
         # Initialize
         level = 1
         manager_load = mock_models_manager()
-        model = manager_load.load_object("model", level)
-        vectorizer = manager_load.load_object("vectorizer", level)
-        documents = example_tree[level]["documents"]
-        reference_documents = manager_load.get_reference_documents(model, vectorizer, documents)
+        reference_documents = manager_load.load_object("reference_documents", level)
         # Execute
         manager_store = mock_models_manager(name="delete_me")
         manager_store.store_object(reference_documents, "reference_documents", level)
         # Validate
-        validate_reference_documents_stored(self, model_name="delete_me", level=level)
+        expected = example_reference_documents[level]
+        validate_reference_documents_stored(self, model_name="delete_me", level=level, expected=expected)
 
     def test_generate_and_store_model_level0(self):
         level = 0

@@ -10,18 +10,6 @@ def tree_already_exist(tree_name):
     if tree_search: return True
     else: return False
 
-def get_loading_files_errors(model, vectorizer, level):
-    error = ""
-    if not model:
-        error += "model"
-    if not model and not vectorizer:
-        error += " and "
-    if not vectorizer:
-        error += "vectorizer"
-    if not model or not vectorizer:
-        error += " not loaded for level "+str(level)
-    return error
-
 
 class TreeGenerator:
 
@@ -57,8 +45,6 @@ class TreeGenerator:
     def generate_level_clusters(self, clusters_generator, level):
         clusters = clusters_generator.get_clusters()
         self.tree.add_clusters(level, clusters)
-        reference_documents = clusters_generator.get_clusters_reference_documents()
-        self.tree.add_reference_documents(level, reference_documents)
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
@@ -66,17 +52,10 @@ class TreeGenerator:
 
     def level_iteration(self, level):
         print("Generating clusters for level "+str(level))
+        clusters_generator = ClustersGenerator(self.models_manager, level)
+        self.generate_level_clusters(clusters_generator, level)
         dataset = self.get_dataset(level)
-        model = self.models_manager.load_object("model", level)
-        vectorizer = self.models_manager.load_object("vectorizer", level)
-        try:
-            clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
-            self.generate_level_clusters(clusters_generator, level)
-            self.add_documents_to_clusters(clusters_generator, dataset.data, level)
-        except:
-            error = get_loading_files_errors(model, vectorizer, level)
-            print("\n\n"+error+"\n")
-            return error
+        self.add_documents_to_clusters(clusters_generator, dataset.data, level)
 
     def generate_tree(self):
         print("Generating clusters tree")

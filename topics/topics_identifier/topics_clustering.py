@@ -6,7 +6,7 @@ from .ModelGenerator import ModelGenerator
 from .TreeGenerator import TreeGenerator
 
 
-# Create and store model and vectorizer
+# Create and store model, vectorizer and reference documents
 
 def get_dataset_for_topic(topic):
     print("Getting threads for topic: " + topic.name)
@@ -15,32 +15,34 @@ def get_dataset_for_topic(topic):
     dataset = generate_dataset_from_threads(topic_threads)
     return dataset
 
-def store_model_for_topic(topic_name, model, vectorizer):
-    level = 0
-    models_manager = ModelsManager(name=topic_name)
-    models_manager.store_object(model, "model", level)
-    models_manager.store_object(vectorizer, "vectorizer", level)
-
 def create_and_store_model_for_topic(topic):
+    level = 0
     dataset = get_dataset_for_topic(topic)
+    # Generate model and vectorizer
     model_generator = ModelGenerator(dataset.data)
     model = model_generator.generate_model()
     vectorizer = model_generator.vectorizer
-    store_model_for_topic(topic.name, model, vectorizer)
+    # Store model and vectorizer
+    models_manager = ModelsManager(name=topic.name)
+    models_manager.store_object(model, "model", level)
+    models_manager.store_object(vectorizer, "vectorizer", level)
+    # Get and store reference documents
+    clusters_generator = ClustersGenerator(models_manager, level, model=model, vectorizer=vectorizer)
+    reference_documents = clusters_generator.get_reference_documents(dataset.data)
+    models_manager.store_object(reference_documents, "reference_documents", level)
+
 
 # Generate clusters and tree
 
 def get_clusters_generator(topic, model_name):
-    dataset = get_dataset_for_topic(topic)
+    level = 0
     models_manager = ModelsManager(name=model_name)
-    model = models_manager.load_object("model", level=0)
-    vectorizer = models_manager.load_object("vectorizer", level=0)
-    clusters_generator = ClustersGenerator(model, vectorizer, dataset.data)
+    clusters_generator = ClustersGenerator(models_manager, level)
     return clusters_generator
 
-def add_documents_to_clusters(tree_generator, clusters_generator):
-    documents = clusters_generator.original_documents
-    tree_generator.add_documents_to_clusters(clusters_generator, documents, level=0)
+def add_documents_to_clusters(topic, tree_generator, clusters_generator):
+    dataset = get_dataset_for_topic(topic)
+    tree_generator.add_documents_to_clusters(clusters_generator, dataset.data, level=0)
 
 def generate_tree_for_topic(topic_name, model_name, clusters_generator):
     level = 0
@@ -55,6 +57,6 @@ def cluster_for_topic(topic, model_name):
     clusters_generator = get_clusters_generator(topic, model_name)
     print("Generating tree for topic " + topic.name)
     tree_generator = generate_tree_for_topic(topic.name, model_name, clusters_generator)
-    add_documents_to_clusters(tree_generator, clusters_generator)
+    add_documents_to_clusters(topic, tree_generator, clusters_generator)
     clusters_list = tree_generator.tree.get_clusters_of_level(level=0)
     return clusters_list

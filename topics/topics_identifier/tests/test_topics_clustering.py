@@ -6,12 +6,12 @@ from .mock_datasets import mock_dataset_from_topics
 from .examples import all_threads_content
 from .example_topics import topic, topic_model_name, example_reference_documents
 from .test_datasets_manager import validate_dataset
-from .validations_models import validate_model_stored, validate_vectorizer_stored
+from .validations_models import validate_model_stored, validate_vectorizer_stored, validate_reference_documents_stored
 
 
 class TopicsTests(TestCase):
 
-    def test_create_model_for_topic(self):
+    def test_create_and_store_model_for_topic(self):
         # Initialize
         level = 0
         topic_name = "delete_me_topic"
@@ -22,6 +22,7 @@ class TopicsTests(TestCase):
         # Validate
         validate_model_stored(self, topic_name, level)
         validate_vectorizer_stored(self, topic_name, level)
+        validate_reference_documents_stored(self, topic_name, level, expected=example_reference_documents)
 
     def test_get_dataset_for_topic(self):
         mock_threads_with_topic(topic)

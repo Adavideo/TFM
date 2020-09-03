@@ -1,37 +1,14 @@
 from django.test import TestCase
-from topics_identifier.TreeGenerator import TreeGenerator, get_loading_files_errors
+from topics_identifier.TreeGenerator import TreeGenerator
 from .mocks import mock_documents
 from .mock_trees import mock_tree
-from .mock_generators import mock_tree_generator, mock_cluster_generator
+from .mock_generators import mock_tree_generator, mock_clusters_generator
 from .example_trees import tree_name, example_tree
 from .examples import test_model_name, example_doc_options, example_documents
 from .validations import validate_dataset
 from .validations_trees import validate_tree_document_types, validate_tree
 from .validations_clusters import validate_clusters_list
 from .validations_documents import validate_documents
-
-
-class TreeGeneratorErrors(TestCase):
-
-    def test_get_loading_files_errors_both(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = get_loading_files_errors(model=None, vectorizer=None, level=0)
-        self.assertEqual(error, "model and vectorizer not loaded for level 0")
-
-    def test_get_loading_files_errors_model(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = get_loading_files_errors(model=None, vectorizer=True, level=0)
-        self.assertEqual(error, "model not loaded for level 0")
-
-    def test_get_loading_files_errors_vectorizer(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = get_loading_files_errors(model=True, vectorizer=None, level=0)
-        self.assertEqual(error, "vectorizer not loaded for level 0")
-
-    def test_get_loading_files_errors_none(self):
-        tree_generator = mock_tree_generator(max_level=0)
-        error = get_loading_files_errors(model=True, vectorizer=True, level=0)
-        self.assertEqual(error, "")
 
 
 class TreeGeneratorTests(TestCase):
@@ -70,7 +47,7 @@ class TreeGeneratorTests(TestCase):
         mock_documents()
         level = 0
         tree_generator = mock_tree_generator(max_level=level)
-        clusters_generator = mock_cluster_generator(level=level)
+        clusters_generator = mock_clusters_generator(level=level)
         # Execute
         tree_generator.generate_level_clusters(clusters_generator, level)
         # Validate
@@ -83,7 +60,7 @@ class TreeGeneratorTests(TestCase):
         mock_documents()
         level = 1
         tree_generator = mock_tree_generator(max_level=level)
-        clusters_generator = mock_cluster_generator(level=level)
+        clusters_generator = mock_clusters_generator(level=level)
         # Execute
         tree_generator.generate_level_clusters(clusters_generator, level)
         # Validate
@@ -96,7 +73,7 @@ class TreeGeneratorTests(TestCase):
         mock_documents()
         level = 0
         tree_generator = mock_tree_generator(max_level=1)
-        clusters_generator = mock_cluster_generator()
+        clusters_generator = mock_clusters_generator()
         documents = example_tree[level]["documents"]
         # Execute
         tree_generator.add_documents_to_clusters(clusters_generator, documents=documents, level=level)
@@ -112,7 +89,7 @@ class TreeGeneratorTests(TestCase):
         mock_documents()
         level = 1
         tree_generator = mock_tree_generator(max_level=level)
-        clusters_generator = mock_cluster_generator(level)
+        clusters_generator = mock_clusters_generator(level)
         documents = example_tree[level]["documents"]
         # Execute
         tree_generator.add_documents_to_clusters(clusters_generator, documents=documents, level=level)
@@ -125,6 +102,7 @@ class TreeGeneratorTests(TestCase):
 
     def test_level_iteration_level0(self):
         level = 0
+        mock_documents()
         tree_generator = mock_tree_generator()
         tree_generator.level_iteration(level)
         validate_tree(self, tree_generator.tree, max_level=level, document_types="both")

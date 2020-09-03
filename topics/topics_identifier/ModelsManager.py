@@ -32,9 +32,9 @@ class ModelsManager:
         except:
             return None
 
-    def get_reference_documents(self, model, vectorizer, documents):
-        clusters_generator = ClustersGenerator(model, vectorizer, documents)
-        reference_documents = clusters_generator.get_clusters_reference_documents()
+    def generate_reference_documents(self, model, vectorizer, documents, level):
+        clusters_generator = ClustersGenerator(self, level, model, vectorizer)
+        reference_documents = clusters_generator.get_reference_documents(documents)
         return reference_documents
 
     def store_level_information(self, model, vectorizer, reference_documents, level):
@@ -51,7 +51,7 @@ class ModelsManager:
             model_generator = ModelGenerator(documents)
             model = model_generator.generate_model()
             vectorizer = model_generator.vectorizer
-            reference_documents = self.get_reference_documents(model, vectorizer, documents)
+            reference_documents = self.generate_reference_documents(model, vectorizer, documents, level)
             self.store_level_information(model, vectorizer, reference_documents, level)
             documents = reference_documents
         return self.models_filenames[max_level]
