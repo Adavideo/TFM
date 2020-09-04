@@ -1,3 +1,4 @@
+import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .ModelsManager import ModelsManager
@@ -48,17 +49,18 @@ class TreeGenerator:
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
+        print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
         self.tree.add_documents_to_several_clusters(level, clusters_documents)
 
     def level_iteration(self, level):
-        print("Generating clusters for level "+str(level))
+        print(str(datetime.datetime.now().time())+" - Generating clusters for level "+str(level) )
         clusters_generator = ClustersGenerator(self.models_manager, level)
         self.generate_level_clusters(clusters_generator, level)
         dataset = self.get_dataset(level)
         self.add_documents_to_clusters(clusters_generator, dataset.data, level)
 
     def generate_tree(self):
-        print("Generating clusters tree")
+        print(str(datetime.datetime.now().time())+" - Generating clusters tree")
         # Iterate through the tree levels
         for level in range(0, self.max_level+1):
             self.level_iteration(level)

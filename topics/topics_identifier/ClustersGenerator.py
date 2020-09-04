@@ -13,6 +13,7 @@ class ClustersGenerator:
         self.load_clusters_information()
 
     def load_model_and_vectorizer(self, model, vectorizer):
+        print(str(datetime.datetime.now().time())+" - Loading model "+self.models_manager.name)
         if not model:
             model = self.models_manager.load_object("model", self.level)
         if not vectorizer:
@@ -75,6 +76,7 @@ class ClustersGenerator:
         return self.reference_documents
 
     def get_documents_grouped_by_cluster(self, documents, predicted_clusters):
+        print(str(datetime.datetime.now().time())+" - Ordering documents according to the predicted clusters")
         # Create an empty array for each cluster
         documents_by_cluster = [ [] for i in range(self.number_of_clusters) ]
         # Add documents to the clusters arrays
