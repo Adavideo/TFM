@@ -1,24 +1,58 @@
 from django.test import TestCase
-from .example_trees import example_tree, example_predicted_clusters, example_reference_documents
-from .examples import example_documents, example_terms
-from .mock_generators import mock_clusters_generator
+from .example_trees import example_tree, example_predicted_clusters
+from .examples import example_documents, test_model_name, example_terms
+from .mock_generators import mock_clusters_generator, mock_models_manager
 from .mocks import mock_documents
-from .validations_generators import validate_clusters_reference_documents
-from .validations_models import model_type, vectoricer_type
+from .validations_generators import *
 from .validations_clusters import validate_clusters_documents, validate_clusters_terms, validate_clusters_without_tree
+from topics_identifier.ClustersGenerator import ClustersGenerator
 
 
 class ClustersGeneratorTests(TestCase):
 
-    def test_create_clusters_generator(self):
+    def test_create_clusters_generator_loading_model_and_vectorizer_from_files(self):
         level = 0
+        models_manager = mock_models_manager(test_model_name)
+        clusters_generator = ClustersGenerator(models_manager, level)
+        validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
+
+    def test_create_clusters_generator_with_model_and_vectorizer_as_parameters(self):
+        level = 0
+        models_manager = mock_models_manager(test_model_name)
+        model = models_manager.load_object("model", level)
+        vectorizer = models_manager.load_object("vectorizer", level)
+        clusters_generator = ClustersGenerator(models_manager, level, model, vectorizer)
+        validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
+
+    def test_load_model_and_vectorizer_level0(self):
+        level=0
         clusters_generator = mock_clusters_generator(level)
-        self.assertEqual(str(type(clusters_generator.model)), model_type)
-        self.assertEqual(str(type(clusters_generator.vectorizer)), vectoricer_type)
-        self.assertEqual(clusters_generator.reference_documents, example_reference_documents[level])
-        self.assertEqual(clusters_generator.terms, example_terms)
-        num_clusters = len(example_tree[level]["clusters"])
-        self.assertEqual(clusters_generator.number_of_clusters, num_clusters)
+        clusters_generator.model = None
+        clusters_generator.vectorizer = None
+        clusters_generator.load_model_and_vectorizer(model=None, vectorizer=None)
+        validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
+
+    def test_load_model_and_vectorizer_level1(self):
+        level=1
+        clusters_generator = mock_clusters_generator(level)
+        clusters_generator.model = None
+        clusters_generator.vectorizer = None
+        clusters_generator.load_model_and_vectorizer(model=None, vectorizer=None)
+        validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
+
+    def test_load_clusters_information_level0(self):
+        level=0
+        clusters_generator = mock_clusters_generator(level)
+        error = clusters_generator.load_clusters_information()
+        self.assertEqual(error, None)
+        validate_clusters_information_in_clusters_generator(self, clusters_generator, example_tree[level])
+
+    def test_load_clusters_information_level1(self):
+        level=1
+        clusters_generator = mock_clusters_generator(level)
+        error = clusters_generator.load_clusters_information()
+        self.assertEqual(error, None)
+        validate_clusters_information_in_clusters_generator(self, clusters_generator, example_tree[level])
 
     def test_calculate_number_of_clusters(self):
         clusters_generator = mock_clusters_generator()
@@ -39,12 +73,16 @@ class ClustersGeneratorTests(TestCase):
         validate_clusters_without_tree(self, clusters_list, level)
 
     def test_generate_reference_documents(self):
+        # Initialize
         level = 0
         mock_documents()
         clusters_generator = mock_clusters_generator(level)
         documents = example_tree[level]["documents"]
+        # Execute
         reference_documents_list = clusters_generator.get_reference_documents(documents)
-        validate_clusters_reference_documents(self, reference_documents_list, level )
+        # Validate
+        expected_documents = example_tree[level]["reference_documents"]
+        validate_clusters_reference_documents(self, reference_documents_list, expected_documents)
 
     def test_get_documents_grouped_by_cluster(self):
         level = 0

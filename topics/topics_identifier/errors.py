@@ -10,5 +10,6 @@ def loading_files_errors(model, vectorizer, level):
         error += "vectorizer"
     if not model or not vectorizer:
         error += " not loaded for level "+str(level)
-    print("\n"+error+"\n")
+    if error:
+        print("\n"+error+"\n")
     return error

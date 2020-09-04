@@ -6,14 +6,27 @@ from .errors import loading_files_errors
 class ClustersGenerator:
 
     def __init__(self, models_manager, level, model=None, vectorizer=None):
-        if not model: model = models_manager.load_object("model", level)
-        if not vectorizer: vectorizer = models_manager.load_object("vectorizer", level)
         self.level = level
+        self.models_manager = models_manager
+        self.load_model_and_vectorizer(model, vectorizer)
+        self.load_clusters_information()
+
+    def load_model_and_vectorizer(self, model, vectorizer):
+        if not model:
+            model = self.models_manager.load_object("model", self.level)
+        if not vectorizer:
+            vectorizer = self.models_manager.load_object("vectorizer", self.level)
         self.model = model
         self.vectorizer = vectorizer
-        self.terms = self.vectorizer.get_feature_names()
-        self.number_of_clusters = self.calculate_number_of_clusters()
-        self.reference_documents = models_manager.load_object("reference_documents", level)
+
+    def load_clusters_information(self):
+        try:
+            self.number_of_clusters = self.calculate_number_of_clusters()
+            self.terms = self.vectorizer.get_feature_names()
+            self.reference_documents = self.models_manager.load_object("reference_documents", self.level)
+        except:
+            error = loading_files_errors(self.model, self.vectorizer, self.level)
+            return error
 
     def calculate_number_of_clusters(self):
         number_of_clusters = 0
@@ -51,7 +64,6 @@ class ClustersGenerator:
         except:
             error = loading_files_errors(self.model, self.vectorizer, self.level)
             return error
-
 
     def get_reference_documents(self, original_documents):
         self.reference_documents = []
