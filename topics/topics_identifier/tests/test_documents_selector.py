@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.documents_selector import *
 from .examples import news_content, comments_content, example_doc_options
 from .mocks import mock_news_and_comments
-from .validations_documents import validate_documents, validate_documents_content
+from .validations_documents import validate_documents
 
 
 def expected_content_all():
@@ -53,10 +53,10 @@ class DocumentsSelectorTests(TestCase):
         expected_content = expected_content_all()
         documents_list = Document.objects.all()
         documents_content = get_documents_content(documents_list)
-        validate_documents_content(self, documents_content, expected_content)
+        self.assertEqual(documents_content, expected_content)
 
     def test_select_documents(self):
         mock_news_and_comments()
         expected_content = expected_content_all()
         documents_content = select_documents(documents_options=example_doc_options, limit=100, topic=None)
-        validate_documents_content(self, documents_content, expected_content)
+        self.assertEqual(documents_content, expected_content)

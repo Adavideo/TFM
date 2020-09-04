@@ -1,4 +1,4 @@
-from .validations_documents import validate_documents, validate_documents_content
+from .validations_documents import validate_documents
 from .example_trees import example_tree
 
 
@@ -26,17 +26,6 @@ def validate_clusters_without_tree(test, clusters_list, level):
         test.assertEqual(cluster.number, expected["num_cluster"])
         test.assertEqual(cluster.reference_document, expected["reference_doc"])
         test.assertEqual(str(cluster.terms), expected["terms"])
-
-def validate_reference_documents(test, reference_documents, example_clusters):
-    example_reference_documents = []
-    for cluster in example_clusters:
-        example_reference_documents.append(cluster["reference_doc"])
-    validate_documents_content(test, reference_documents, example_reference_documents)
-
-def validate_clusters_documents(test, clusters_documents, level):
-    example_clusters = example_tree[level]["clusters"]
-    for i in range(len(clusters_documents)):
-        validate_documents_content(test, clusters_documents[i], example_clusters[i]["documents"])
 
 def validate_clusters_terms(test, clusters_terms, level):
     example_clusters = example_tree[level]["clusters"]

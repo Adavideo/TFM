@@ -4,7 +4,7 @@ from .example_trees import example_tree, clusters_documents
 from .mock_trees import mock_tree, mock_empty_tree
 from .mock_clusters import mock_clusters_without_tree
 from .mocks import mock_documents
-from .validations_clusters import validate_cluster, validate_clusters_list, validate_reference_documents
+from .validations_clusters import validate_cluster, validate_clusters_list
 from .validations_trees import validate_tree, validate_tree_document_types
 
 class TreeTests(TestCase):
@@ -47,22 +47,21 @@ class TreeTests(TestCase):
     def test_get_reference_documents_level0(self):
         # Initialize
         level = 0
-        example_clusters = example_tree[level]["clusters"]
         tree = mock_tree(max_level=level, linked=False)
         # Execute
         reference_documents = tree.get_reference_documents(level)
         # Validate
-        validate_reference_documents(self, reference_documents, example_clusters)
+        self.assertEqual(reference_documents, example_tree[level]["reference_documents"])
+
 
     def test_get_reference_documents_level1(self):
         # Initialize
         level = 1
-        example_clusters = example_tree[level]["clusters"]
         tree = mock_tree(max_level=level, linked=True)
         # Execute
         reference_documents = tree.get_reference_documents(level)
         # Validate
-        validate_reference_documents(self, reference_documents, example_clusters)
+        self.assertEqual(reference_documents, example_tree[level]["reference_documents"])
 
     def test_add_clusters(self):
         # Initialize
