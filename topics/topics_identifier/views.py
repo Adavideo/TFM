@@ -24,7 +24,7 @@ def generate_model_view(request):
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
         documents_options = { "types": document_types}
-        max_level=0
+        max_level=1
         documents = select_documents(documents_options)
         models_manager = ModelsManager(name=model_name)
         model_filename = models_manager.generate_and_store_models(documents, max_level)

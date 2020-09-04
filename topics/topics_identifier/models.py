@@ -1,9 +1,10 @@
 from django.db import models
 from timeline.models import Document, Topic
+from .config import *
 
 
 class Tree(models.Model):
-    name = models.CharField(max_length=25, unique=True)
+    name = models.CharField(max_length=tree_name_max_length, unique=True)
     news = models.BooleanField(default=False)
     comments = models.BooleanField(default=False)
 
@@ -69,8 +70,8 @@ class Cluster(models.Model):
     number = models.IntegerField()
     level = models.IntegerField(null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
-    reference_document = models.CharField(max_length=255, null=True)
-    terms = models.CharField(max_length=255)
+    reference_document = models.CharField(max_length=reference_documents_max_length, null=True)
+    terms = models.CharField(max_length=terms_max_length)
 
     def get_terms(self):
         cleaned_terms_string = self.terms.strip("[]").replace(" ", "").replace("'","")
@@ -78,6 +79,7 @@ class Cluster(models.Model):
         return terms_list
 
     def assign_reference_document(self, content):
+        check_max_length("Reference document", content)
         self.reference_document = content
         self.save()
 
