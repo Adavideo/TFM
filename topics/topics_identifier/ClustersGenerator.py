@@ -62,6 +62,7 @@ class ClustersGenerator:
                 cluster.terms = clusters_terms[cluster_index]
                 reference_document = self.reference_documents[cluster_index]
                 cluster.assign_reference_document(reference_document)
+                cluster.save()
                 clusters_list.append(cluster)
             return clusters_list
         except:
