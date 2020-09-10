@@ -41,10 +41,10 @@ class ViewsTests(TestCase):
         response = validate_page(self, page, arguments=[cluster.id])
         validate_contains_cluster(self, response, cluster)
 
-    def test_cluster_topic_view(self):
-        page = 'cluster_topic'
-        response = validate_page(self, page)
-
     def test_assign_topic_from_file_view(self):
         page = 'assign_topic_from_file'
+        response = validate_page(self, page)
+
+    def test_cluster_topic_view(self):
+        page = 'cluster_topic'
         response = validate_page(self, page)
