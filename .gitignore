@@ -128,4 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-topics/data/texts/*
+topics/duplicates.txt
+topics/models/sklearn/delete_me*
+topics/models/sklearn/news_v1*
+
