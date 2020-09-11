@@ -58,6 +58,8 @@ class TreeGenerator:
         self.generate_level_clusters(clusters_generator, level)
         dataset = self.get_dataset(level)
         self.add_documents_to_clusters(clusters_generator, dataset.data, level)
+        if level > 0:
+            self.tree.link_children_to_parents(level)
 
     def generate_tree(self):
         print(str(datetime.datetime.now().time())+" - Generating clusters tree")

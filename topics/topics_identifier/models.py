@@ -49,8 +49,6 @@ class Tree(models.Model):
         for document_content in cluster_documents:
             cluster = self.get_cluster(cluster_number, level)
             cluster.add_document(content=document_content)
-        if level > 0:
-            self.link_children_to_parents(level)
 
     def add_documents_to_several_clusters(self, level, clusters_list):
         for num_cluster in range(len(clusters_list)):
@@ -66,9 +64,9 @@ class Tree(models.Model):
 
 
 class Cluster(models.Model):
-    tree = models.ForeignKey(Tree, on_delete=models.CASCADE, null=True)
+    tree = models.ForeignKey(Tree, on_delete=models.CASCADE, null=False)
     number = models.IntegerField()
-    level = models.IntegerField(null=True)
+    level = models.IntegerField(null=False)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     reference_document = models.CharField(max_length=reference_documents_max_length, null=True)
     terms = models.CharField(max_length=terms_max_length)
@@ -111,8 +109,13 @@ class Cluster(models.Model):
         return children
 
     def __str__(self):
-        text = "Cluster - tree "+ self.tree.name
-        text += ", level " + str(self.level) + ", num cluster "+str(self.number)
+        text = "Cluster - "
+        try:
+            text += "tree "+ self.tree.name
+            text += ", level " + str(self.level) + ","
+        except:
+            text += "no tree,"
+        text += " num cluster "+str(self.number)
         return text
 
 

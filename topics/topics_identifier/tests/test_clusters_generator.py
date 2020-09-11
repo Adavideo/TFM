@@ -5,7 +5,7 @@ from .examples_clustering import example1, example2
 from .mock_generators import mock_clusters_generator, mock_models_manager
 from .mocks import mock_documents
 from .validations_clusters_generator import *
-from .validations_clusters import validate_clusters_terms, validate_clusters_without_tree
+from .validations_clusters import validate_clusters_terms, validate_clusters_list
 from topics_identifier.ClustersGenerator import ClustersGenerator
 
 
@@ -69,9 +69,10 @@ class ClustersGeneratorTests(TestCase):
     def test_get_clusters(self):
         level = 0
         mock_documents()
-        generator = mock_clusters_generator(level)
-        clusters_list = generator.get_clusters()
-        validate_clusters_without_tree(self, clusters_list, level)
+        clusters_generator = mock_clusters_generator(level)
+        clusters_list = clusters_generator.get_clusters()
+        expected_clusters = example_tree[0]["clusters"]
+        validate_clusters_list(self, clusters_list, expected_clusters, with_documents=False)
 
     def test_generate_reference_documents(self):
         # Initialize
