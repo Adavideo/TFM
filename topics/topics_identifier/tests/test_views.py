@@ -18,13 +18,27 @@ class ViewsTests(TestCase):
         page = 'generate_tree'
         response = validate_page(self, page)
 
-    def test_trees_index_view(self):
+    def test_trees_index_view_empty(self):
         page = 'trees_index'
         response = validate_page(self, page)
 
+    def test_trees_index_view_1tree(self):
+        page = 'trees_index'
+        tree = mock_tree(max_level=0, with_documents=True, document_types="both")
+        response = validate_page(self, page)
+        self.assertContains(response, tree.name)
+
+    def test_trees_index_view_2trees(self):
+        page = 'trees_index'
+        tree1 = mock_tree(max_level=0, with_documents=True, document_types="both", name="tree1")
+        tree2 = mock_tree(max_level=0, with_documents=True, document_types="both", name="tree2")
+        response = validate_page(self, page)
+        self.assertContains(response, tree1.name)
+        self.assertContains(response, tree2.name)
+
     def test_tree_view_level0_view(self):
         page = 'tree'
-        tree = mock_tree(max_level=0, linked=True, with_documents=True, document_types="both")
+        tree = mock_tree(max_level=0, with_documents=True, document_types="both")
         response = validate_page(self, page, arguments=[tree.id])
         validate_contains_tree(self, response, tree)
 
