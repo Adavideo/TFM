@@ -1,6 +1,9 @@
 from django.test import TestCase
+from .mocks import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
+from .examples import test_model_name
+from .views_util import get_response, post_response
 from .validations_views import *
 
 
@@ -17,6 +20,16 @@ class ViewsTests(TestCase):
         validate_page(self, response)
         self.assertContains(response, "Model name")
         self.assertContains(response, "Document types")
+
+    def test_generate_model_view_post(self):
+        #Initialize
+        page = 'generate_model'
+        parameters = { "model_name":test_model_name, "document_types":"both"}
+        mock_documents()
+        #Execute
+        response = post_response(page, parameters)
+        #Validate
+        validate_page(self, response)
 
     def test_generate_tree_view(self):
         page = 'generate_tree'
