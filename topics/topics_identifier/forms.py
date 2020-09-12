@@ -1,38 +1,17 @@
 from django import forms
-from .models import Topic
+from .views_util import get_documents_options, get_topics_options
 
-def get_documents_options():
-    document_types = ["news", "comments", "both"]
-    options = []
-    for type in document_types:
-        options.append((type, type))
-    return options
-
-def get_topics_options():
-    try:
-        topics_list = Topic.objects.all()
-        len(topics_list)
-    except:
-        topics_list = None
-
-    if not topics_list:
-        options = [("","")]
-    else:
-        options = []
-        for topic in topics_list:
-            options.append((topic.id, topic))
-    return options
 
 class ModelsForm(forms.Form):
     model_name = forms.CharField(max_length=25)
-    document_types = forms.ChoiceField(choices=get_documents_options())
-    max_num_documents = forms.IntegerField(required=False, label="Maximum number of documents")
-    max_level = forms.IntegerField(required=False, label="Maximum tree level")
+    document_types = forms.ChoiceField(choices=get_documents_options(), required=False)
+    max_num_documents = forms.IntegerField(required=False, label="Max number of documents")
+    max_level = forms.IntegerField(required=False, label="Max tree level")
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)
     model_name = forms.CharField(max_length=25)
-    document_types = forms.ChoiceField(choices=get_documents_options())
+    document_types = forms.ChoiceField(choices=get_documents_options(), required=False)
 
 class ClusterSeachForm(forms.Form):
     search_terms = forms.CharField(max_length=100)
@@ -41,5 +20,5 @@ class AssignTopicFromFileForm(forms.Form):
     topic_name = forms.CharField(max_length=100)
 
 class ClusterTopicForm(forms.Form):
-    topic = forms.ChoiceField(choices=get_topics_options())
+    topic = forms.ChoiceField(choices=get_topics_options(), required=False)
     model_name = forms.CharField(max_length=25)
