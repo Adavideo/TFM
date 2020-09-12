@@ -26,6 +26,8 @@ def get_topics_options():
 class ModelsForm(forms.Form):
     model_name = forms.CharField(max_length=25)
     document_types = forms.ChoiceField(choices=get_documents_options())
+    max_num_documents = forms.IntegerField(required=False, label="Maximum number of documents")
+    max_level = forms.IntegerField(required=False, label="Maximum tree level")
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)

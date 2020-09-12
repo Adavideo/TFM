@@ -21,12 +21,19 @@ class ViewsTests(TestCase):
         validate_page(self, response)
         self.assertContains(response, "Model name")
         self.assertContains(response, "Document types")
+        self.assertContains(response, "Maximum number of documents")
+        self.assertContains(response, "Maximum tree level")
 
     def test_generate_model_view_post(self):
         #Initialize
         page = 'generate_model'
         name = "delete_me_generate_model_test"
-        parameters = { "model_name": name, "document_types":"both"}
+        parameters = {
+            "model_name": name,
+            "document_types":"both",
+            "max_num_documents": 100,
+            "max_level": 1
+        }
         mock_documents()
         #Execute
         response = post_response(page, parameters)
