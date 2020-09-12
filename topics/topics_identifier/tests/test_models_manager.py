@@ -92,8 +92,8 @@ class ModelsManagerTests(TestCase):
         level = 0
         model_name = "delete_me_2"
         manager = mock_models_manager(name=model_name)
-        model_filename = manager.generate_and_store_models(example_documents, level)
-        self.assertEqual(model_filename, "models/sklearn/delete_me_2_model_level0.joblib")
+        filenames = manager.generate_and_store_models(example_documents, level)
+        validate_filenames(self, filenames, name=model_name, num_levels=level+1)
         validate_model_stored(self, model_name, level)
         validate_vectorizer_stored(self, model_name, level)
 
@@ -102,7 +102,7 @@ class ModelsManagerTests(TestCase):
         model_name = "delete_me_2"
         mock_documents()
         manager = mock_models_manager(name=model_name)
-        model_filename = manager.generate_and_store_models(example_documents, level)
-        self.assertEqual(model_filename, "models/sklearn/delete_me_2_model_level1.joblib")
+        filenames = manager.generate_and_store_models(example_documents, level)
+        validate_filenames(self, filenames, name=model_name, num_levels=level+1)
         validate_model_stored(self, model_name, level)
         validate_vectorizer_stored(self, model_name, level)

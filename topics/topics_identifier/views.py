@@ -28,8 +28,8 @@ def generate_model_view(request):
         documents = select_documents(documents_options)
         max_level = int(request.POST["max_level"])
         models_manager = ModelsManager(name=model_name)
-        model_filename = models_manager.generate_and_store_models(documents, max_level)
-        context["model_filename"] = model_filename
+        filenames = models_manager.generate_and_store_models(documents, max_level)
+        context["filenames"] = filenames
     return render(request, template, context)
 
 def generate_tree_view(request):

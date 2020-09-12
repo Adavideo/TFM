@@ -11,12 +11,26 @@
   </form>
 
 <hr>
-<br>
 
-  {% if model_filename %}
+  {% if filenames %}
     <h2>Generated model: {{ model_name }}</h2>
     <br>
-    <h4><b>Filename:</b> {{ model_filename }}<h4>
+    <h3>Filenames:</h3>
+    <br>
+      <b>Models:</b><br>
+        {% for filename in filenames.models %}
+          {{ filename }}<br>
+        {% endfor %}
+      <br>
+      <b>Vectorizers:</b><br>
+      {% for filename in filenames.vectorizers %}
+        {{ filename }}<br>
+      {% endfor %}
+      <br>
+      <b>Reference documents:</b><br>
+      {% for filename in filenames.reference_documents %}
+        {{ filename }}<br>
+      {% endfor %}
   {% endif %}
 
 {% endblock %}

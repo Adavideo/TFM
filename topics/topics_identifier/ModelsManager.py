@@ -45,6 +45,14 @@ class ModelsManager:
         reference_docs_filename = self.store_object(reference_documents, type="reference_documents", level=level)
         self.reference_documents_filenames.append(reference_docs_filename)
 
+    def get_filenames(self):
+        filenames = {
+            "models": self.models_filenames,
+            "vectorizers": self.vectorizers_filenames,
+            "reference_documents": self.reference_documents_filenames
+        }
+        return filenames
+
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()
         for level in range(max_level+1):
@@ -54,4 +62,5 @@ class ModelsManager:
             reference_documents = self.generate_reference_documents(model, vectorizer, documents, level)
             self.store_level_information(model, vectorizer, reference_documents, level)
             documents = reference_documents
-        return self.models_filenames[max_level]
+        filenames = self.get_filenames()
+        return filenames
