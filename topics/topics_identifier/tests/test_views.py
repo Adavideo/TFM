@@ -30,6 +30,9 @@ class ViewsTests(TestCase):
         response = post_response(page, parameters)
         #Validate
         validate_page(self, response)
+        self.assertContains(response, "Generated model: test")
+        self.assertContains(response, "Filename:")
+        self.assertContains(response, "models/sklearn/test_model_level1.joblib")
 
     def test_generate_tree_view(self):
         page = 'generate_tree'
