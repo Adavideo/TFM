@@ -25,15 +25,17 @@ class ViewsTests(TestCase):
     def test_generate_model_view_post(self):
         #Initialize
         page = 'generate_model'
-        parameters = { "model_name":test_model_name, "document_types":"both"}
+        name = "delete_me_generate_model_test"
+        parameters = { "model_name": name, "document_types":"both"}
         mock_documents()
         #Execute
         response = post_response(page, parameters)
         #Validate
         validate_page(self, response)
-        self.assertContains(response, "Generated model: test")
+        self.assertContains(response, "Generated model: "+ name)
         self.assertContains(response, "Filename:")
-        self.assertContains(response, "models/sklearn/test_model_level1.joblib")
+        model_filename = "models/sklearn/"+name+"_model_level1.joblib"
+        self.assertContains(response, model_filename)
 
     def test_generate_tree_view_form(self):
         page = 'generate_tree'
