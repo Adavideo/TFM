@@ -11,10 +11,12 @@ class ViewsTests(TestCase):
         response = get_response(page)
         validate_page(self, response)
 
-    def test_generate_model_view(self):
+    def test_generate_model_view_form(self):
         page = 'generate_model'
         response = get_response(page)
         validate_page(self, response)
+        self.assertContains(response, "Model name")
+        self.assertContains(response, "Document types")
 
     def test_generate_tree_view(self):
         page = 'generate_tree'
