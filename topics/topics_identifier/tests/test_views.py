@@ -1,4 +1,5 @@
 from django.test import TestCase
+from topics_identifier.models import Tree
 from .mocks import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
@@ -34,10 +35,28 @@ class ViewsTests(TestCase):
         self.assertContains(response, "Filename:")
         self.assertContains(response, "models/sklearn/test_model_level1.joblib")
 
-    def test_generate_tree_view(self):
+    def test_generate_tree_view_form(self):
         page = 'generate_tree'
         response = get_response(page)
         validate_page(self, response)
+        self.assertContains(response, "Tree name")
+        self.assertContains(response, "Model name")
+        self.assertContains(response, "Document types")
+
+    def test_generate_tree_view_post(self):
+        #Initialize
+        page = 'generate_tree'
+        tree_name = "prueba"
+        parameters = { "tree_name": tree_name,"model_name":test_model_name, "document_types":"both"}
+        mock_documents()
+        #Execute
+        response = post_response(page, parameters)
+        #Validate
+        validate_page(self, response)
+        self.assertContains(response, "Generating tree: "+tree_name)
+        tree = Tree.objects.get(name=tree_name)
+        for cluster in tree.get_clusters_of_level(level=1):
+            validate_contains_cluster(self, response, cluster, with_documents=False)
 
     def test_trees_index_view_empty(self):
         page = 'trees_index'
