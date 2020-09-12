@@ -1,16 +1,21 @@
 from django.urls import reverse
+from django.test import Client
+
+def get_response(page, arguments=[]):
+    if arguments:
+        url = reverse(page, args=arguments)
+    else:
+        url = reverse(page)
+    client = Client()
+    response = client.get(url)
+    return response
 
 def validate_menu(test, response):
     menu_texts = ["Generate model", "Generate clusters tree", "Cluster for topic", "Show trees"]
     for text in menu_texts:
         test.assertContains(response, text)
 
-def validate_page(test, page, arguments=[]):
-    if arguments:
-        url = reverse(page, args=arguments)
-    else:
-        url = reverse(page)
-    response = test.client.get(url)
+def validate_page(test, response):
     test.assertEqual(response.status_code, 200)
     head_text = "Topics identifier"
     test.assertContains(response, head_text)
