@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .examples_csv import *
+from .examples_csv_processed import *
 from .validations import validate_document_with_thread, validate_processed_line
 from csv_import.csv_importer import *
 from timeline.models import Thread
