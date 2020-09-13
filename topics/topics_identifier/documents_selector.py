@@ -1,5 +1,5 @@
 from .models import Document
-from .config import default_document_limit
+from .config import default_documents_limit
 
 
 def short_document_types(document_types):
@@ -16,7 +16,7 @@ def short_document_types(document_types):
 
 # Cutting to the maximum number of documents, to not overload the aviable memory.
 def ensure_documents_limit(documents, limit):
-    if not limit: limit = default_document_limit
+    if not limit: limit = default_documents_limit
     num_documents = len(documents)
     print("Documents selected: "+str(num_documents))
     if num_documents > limit:
