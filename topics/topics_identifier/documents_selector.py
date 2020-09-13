@@ -14,8 +14,9 @@ def short_document_types(document_types):
         comments = True
     return news, comments
 
-def ensure_documents_limit(documents, limit=default_document_limit):
-    # Cutting to the maximum number of documents, to not overload the aviable memory.
+# Cutting to the maximum number of documents, to not overload the aviable memory.
+def ensure_documents_limit(documents, limit):
+    if not limit: limit = default_document_limit
     num_documents = len(documents)
     print("Documents selected: "+str(num_documents))
     if num_documents > limit:
@@ -43,8 +44,9 @@ def get_documents_content(documents_list):
         documents_content.append(doc.content)
     return documents_content
 
-def select_documents(documents_options, limit=default_document_limit, topic=None):
+def select_documents(documents_options, topic=None):
     documents_list = select_documents_from_database(documents_options)
+    limit = documents_options["max_num_documents"]
     documents_list = ensure_documents_limit(documents_list, limit)
     documents_content = get_documents_content(documents_list)
     return documents_content
