@@ -17,9 +17,11 @@ def home_view(request):
 
 def generate_model_view(request):
     template = "topics_identifier/generate_model.html"
-    form = ModelsForm(request.POST)
-    context = { "form": form }
+    context = {}
+    if request.method == "GET":
+        form = ModelsForm()
     if request.method == "POST":
+        form = ModelsForm(request.POST)
         model_name = request.POST["model_name"]
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
@@ -30,6 +32,7 @@ def generate_model_view(request):
         models_manager = ModelsManager(name=model_name)
         filenames = models_manager.generate_and_store_models(documents, max_level)
         context["filenames"] = filenames
+    context["form"] = form
     return render(request, template, context)
 
 def generate_tree_view(request):
