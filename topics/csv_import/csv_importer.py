@@ -1,6 +1,8 @@
 import csv, io
 from datetime import datetime
+from .csv_headers import headers_types
 from timeline.models import Document
+
 
 # PROCESS DATA
 
@@ -86,16 +88,8 @@ def process_data(csv_reader, file_type, total_num_registers):
 
 # IDENTIFY FILE TYPE
 
-def get_headers_types():
-    headers_types = [
-        {"file_type":"comments", "header": '"comment_id","comment_link_id","comment_user_id","comment_date","comment_content"'},
-        {"file_type":"news", "header": 'link_id,link_author,link_date,link_uri,link_url_title,link_title,link_content'},
-    ]
-    return headers_types
-
 def get_file_type(header):
     file_type = "incorrect"
-    headers_types = get_headers_types()
     for header_type in headers_types:
         if header_type["header"] in header:
             file_type = header_type["file_type"]
