@@ -1,12 +1,12 @@
 from django import forms
-from .views_util import get_documents_options, get_topics_options
+from .views_util import get_documents_options, get_topics_options, get_tree_levels
 
 
 class ModelsForm(forms.Form):
     model_name = forms.CharField(max_length=25)
     document_types = forms.ChoiceField(choices=get_documents_options(), required=False)
     max_num_documents = forms.IntegerField(required=False, label="Max number of documents")
-    max_level = forms.IntegerField(required=False, label="Max tree level")
+    max_level = forms.ChoiceField(required=False, label="Max tree level", choices=get_tree_levels())
 
 class TreeForm(forms.Form):
     tree_name = forms.CharField(max_length=25)
