@@ -68,13 +68,13 @@ class DocumentsSelectorTests(TestCase):
     def test_select_documents(self):
         mock_news_and_comments()
         expected_content = expected_content_all()
-        documents_content = select_documents(documents_options=example_doc_options, topic=None)
+        documents_content = select_documents(documents_options=example_doc_options)
         self.assertEqual(documents_content, expected_content)
 
     def test_select_documents_max_num_documents(self):
         mock_news_and_comments()
         documents_options = { "types": "both", "max_num_documents":5 }
-        documents_content = select_documents(documents_options, topic=None)
+        documents_content = select_documents(documents_options)
         expected_content = expected_content_all()
         self.assertEqual(len(documents_content), 5)
         self.assertEqual(documents_content, expected_content[:5])

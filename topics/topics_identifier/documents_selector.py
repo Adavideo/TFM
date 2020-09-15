@@ -44,7 +44,7 @@ def get_documents_content(documents_list):
         documents_content.append(doc.content)
     return documents_content
 
-def select_documents(documents_options, topic=None):
+def select_documents(documents_options):
     documents_list = select_documents_from_database(documents_options)
     limit = documents_options["max_num_documents"]
     documents_list = ensure_documents_limit(documents_list, limit)
