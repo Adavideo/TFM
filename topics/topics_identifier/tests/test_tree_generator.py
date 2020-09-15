@@ -5,7 +5,9 @@ from .mocks import mock_documents
 from .mock_trees import mock_tree
 from .mock_generators import mock_tree_generator, mock_clusters_generator
 from .example_trees import tree_name, example_tree
-from .examples import test_model_name, example_doc_options, example_documents
+from .examples import test_model_name
+from .examples_documents_selector import example_doc_options
+from .example_documents import example_documents
 from .validations import validate_dataset
 from .validations_trees import validate_tree_document_types, validate_tree
 from .validations_clusters import validate_clusters_list, validate_cluster

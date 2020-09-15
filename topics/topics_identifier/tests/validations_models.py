@@ -1,5 +1,5 @@
 from topics_identifier.ModelsManager import ModelsManager
-from .examples import example_documents_limit
+from .examples_documents_selector import example_documents_limit
 from .example_trees import example_reference_documents
 
 model_type = "<class 'sklearn.cluster.affinity_propagation_.AffinityPropagation'>"

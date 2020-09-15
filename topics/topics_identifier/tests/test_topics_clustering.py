@@ -3,7 +3,7 @@ from topics_identifier.topics_clustering import *
 from topics_identifier.models import Topic
 from .mocks import mock_threads_with_topic
 from .mock_documents import mock_documents_for_topic
-from .examples import all_threads_content
+from .example_documents import all_threads_content
 from .example_topics import topic, topic_model_name, example_reference_documents
 from .validations_models import validate_model_stored, validate_vectorizer_stored, validate_reference_documents_stored
 

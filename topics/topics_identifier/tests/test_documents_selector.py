@@ -1,6 +1,8 @@
 from django.test import TestCase
 from topics_identifier.documents_selector import *
-from .examples import news_content, comments_content, example_doc_options, all_threads_content, example_threads
+from .examples_documents_selector import *
+from .example_documents import *
+from .examples import example_threads
 from .mocks import mock_news_and_comments, mock_thread
 from .validations_documents import validate_documents
 
@@ -29,7 +31,7 @@ class DocumentsSelectorTests(TestCase):
         self.assertEqual(comments, True)
 
     def test_ensure_documents_limit(self):
-        documents1 = comments_content
+        documents1 = example_documents
         self.assertEqual(len(documents1), 10)
         limit = 5
         documents2 = ensure_documents_limit(documents1, limit)
@@ -47,7 +49,7 @@ class DocumentsSelectorTests(TestCase):
         documents_options = { "types": "comments"}
         mock_news_and_comments()
         documents_content = select_documents_from_database(documents_options)
-        validate_documents(self, documents_content, comments_content)
+        validate_documents(self, documents_content, example_documents)
 
     def test_select_documents_from_database_both(self):
         documents_options = { "types": "both"}

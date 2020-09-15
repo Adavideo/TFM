@@ -1,8 +1,9 @@
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ModelsManager import ModelsManager
-from .example_trees import tree_name, example_tree
-from .examples import test_model_name, example_terms, example_doc_options
+from .example_trees import tree_name, example_tree, example_terms
+from .examples import test_model_name
+from .examples_documents_selector import example_doc_options
 
 
 def mock_models_manager(name=test_model_name):

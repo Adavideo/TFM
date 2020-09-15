@@ -1,7 +1,10 @@
 from django.test import TestCase
 from .mock_generators import mock_models_manager
 from .validations_models import validate_model_stored, validate_vectorizer_stored
-from .examples import test_model_name, example_documents, example_documents_limit
+from .examples import test_model_name
+from .example_documents import example_documents
+from .examples_documents_selector import example_documents_limit
+
 
 
 class ModelGeneratorTests(TestCase):
