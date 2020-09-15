@@ -2,7 +2,6 @@ import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .ModelsManager import ModelsManager
-from .datasets_manager import generate_dataset
 from .documents_selector import short_document_types, select_documents
 
 
@@ -34,14 +33,13 @@ class TreeGenerator:
             self.tree.save()
             return self.tree
 
-    def get_dataset(self, level):
+    def get_documents(self, level):
         if level==0:
             documents = select_documents(self.documents_options)
         else:
             # Gets the reference documents from the inferior level
             documents = self.tree.get_reference_documents(level-1)
-        dataset = generate_dataset(documents)
-        return dataset
+        return documents
 
     def generate_level_clusters(self, clusters_generator, level):
         clusters = clusters_generator.get_clusters()
@@ -56,8 +54,8 @@ class TreeGenerator:
         print(str(datetime.datetime.now().time())+" - Generating clusters for level "+str(level) )
         clusters_generator = ClustersGenerator(self.models_manager, level)
         self.generate_level_clusters(clusters_generator, level)
-        dataset = self.get_dataset(level)
-        self.add_documents_to_clusters(clusters_generator, dataset.data, level)
+        documents = self.get_documents(level)
+        self.add_documents_to_clusters(clusters_generator, documents, level)
         if level > 0:
             self.tree.link_children_to_parents(level)
 

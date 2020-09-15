@@ -1,7 +1,6 @@
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ModelsManager import ModelsManager
-from .mock_datasets import mock_dataset
 from .example_trees import tree_name, example_tree
 from .examples import test_model_name, example_terms, example_doc_options
 

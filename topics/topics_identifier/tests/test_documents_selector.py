@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.documents_selector import *
-from .examples import news_content, comments_content, example_doc_options
-from .mocks import mock_news_and_comments
+from .examples import news_content, comments_content, example_doc_options, all_threads_content, example_threads
+from .mocks import mock_news_and_comments, mock_thread
 from .validations_documents import validate_documents
 
 
@@ -76,3 +76,17 @@ class DocumentsSelectorTests(TestCase):
         expected_content = expected_content_all()
         self.assertEqual(len(documents_content), 5)
         self.assertEqual(documents_content, expected_content[:5])
+
+    def test_get_documents_from_threads_one_thread(self):
+        thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
+        threads_list = [ thread0 ]
+        documents = get_documents_from_threads(threads_list)
+        expected_content = example_threads[0]["documents_content"]
+        self.assertEqual(documents, expected_content)
+
+    def test_get_documents_from_threads_two_threads(self):
+        thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
+        thread1 = mock_thread(thread_number=1, with_documents=True, news_number=1)
+        threads_list = [ thread0, thread1 ]
+        documents = get_documents_from_threads(threads_list)
+        self.assertEqual(documents, all_threads_content)

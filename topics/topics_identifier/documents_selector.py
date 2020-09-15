@@ -50,3 +50,10 @@ def select_documents(documents_options, topic=None):
     documents_list = ensure_documents_limit(documents_list, limit)
     documents_content = get_documents_content(documents_list)
     return documents_content
+
+def get_documents_from_threads(threads_list):
+    documents = []
+    for thread in threads_list:
+        thread_documents = thread.documents_content()
+        documents.extend(thread_documents)
+    return documents

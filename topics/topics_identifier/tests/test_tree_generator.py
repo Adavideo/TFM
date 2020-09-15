@@ -27,21 +27,21 @@ class TreeGeneratorTests(TestCase):
         tree = generator.create_empty_tree(tree_name)
         self.assertEqual(tree.name, tree_name)
 
-    def test_get_dataset_level0(self):
+    def test_get_documents_level0(self):
         level = 0
         generator = TreeGenerator("", test_model_name, example_doc_options)
         mock_documents()
-        dataset = generator.get_dataset(level)
-        validate_dataset(self, dataset, example_documents)
+        documents = generator.get_documents(level)
+        self.assertEqual(documents, example_documents)
 
-    def test_get_dataset_level1(self):
+    def test_get_documents_level1(self):
         level = 1
         generator = TreeGenerator("", test_model_name, example_doc_options)
         mock_documents()
         generator.level_iteration(level=0)
-        dataset = generator.get_dataset(level)
+        documents = generator.get_documents(level)
         documents_level1 = example_tree[1]["documents"]
-        validate_dataset(self, dataset, documents_level1)
+        self.assertEqual(documents, documents_level1)
 
     def test_generate_level_clusters_level0(self):
         # Initialize

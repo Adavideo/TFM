@@ -1,5 +1,5 @@
 from .models import Tree
-from .datasets_manager import generate_dataset_from_threads
+from .documents_selector import get_documents_from_threads
 from .ClustersGenerator import ClustersGenerator
 from .ModelsManager import ModelsManager
 from .ModelGenerator import ModelGenerator
@@ -8,18 +8,18 @@ from .TreeGenerator import TreeGenerator
 
 # Create and store model, vectorizer and reference documents
 
-def get_dataset_for_topic(topic):
+def get_documents_for_topic(topic):
     print("Getting threads for topic: " + topic.name)
     topic_threads = topic.get_threads()
-    print("Generating dataset")
-    dataset = generate_dataset_from_threads(topic_threads)
+    print("Geneting documents")
+    dataset = get_documents_from_threads(topic_threads)
     return dataset
 
 def create_and_store_model_for_topic(topic):
     level = 0
-    dataset = get_dataset_for_topic(topic)
+    documents = get_documents_for_topic(topic)
     # Generate model and vectorizer
-    model_generator = ModelGenerator(dataset.data)
+    model_generator = ModelGenerator(documents)
     model = model_generator.generate_model()
     vectorizer = model_generator.vectorizer
     # Store model and vectorizer
@@ -28,7 +28,7 @@ def create_and_store_model_for_topic(topic):
     models_manager.store_object(vectorizer, "vectorizer", level)
     # Get and store reference documents
     clusters_generator = ClustersGenerator(models_manager, level, model=model, vectorizer=vectorizer)
-    reference_documents = clusters_generator.get_reference_documents(dataset.data)
+    reference_documents = clusters_generator.get_reference_documents(documents)
     models_manager.store_object(reference_documents, "reference_documents", level)
 
 
@@ -41,8 +41,8 @@ def get_clusters_generator(topic, model_name):
     return clusters_generator
 
 def add_documents_to_clusters(topic, tree_generator, clusters_generator):
-    dataset = get_dataset_for_topic(topic)
-    tree_generator.add_documents_to_clusters(clusters_generator, dataset.data, level=0)
+    documents = get_documents_for_topic(topic)
+    tree_generator.add_documents_to_clusters(clusters_generator, documents, level=0)
 
 def generate_tree_for_topic(topic_name, model_name, clusters_generator):
     level = 0
