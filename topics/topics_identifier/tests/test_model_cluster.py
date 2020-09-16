@@ -1,7 +1,7 @@
 from django.test import TestCase
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree, mock_empty_tree
-from .mocks import mock_document
+from .mock_documents import mock_document
 from .example_trees import example_tree
 from .example_documents import example_documents
 from .validations_clusters import validate_clusters_list, validate_cluster

@@ -2,7 +2,7 @@ from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from topics_identifier.ModelsManager import ModelsManager
-from .mocks import mock_documents
+from .mock_documents import mock_documents
 from .mock_generators import mock_model, mock_models_manager
 from .validations_models import *
 from .examples import test_model_name

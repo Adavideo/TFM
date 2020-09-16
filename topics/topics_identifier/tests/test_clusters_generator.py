@@ -3,7 +3,7 @@ from .example_trees import example_tree
 from .examples import test_model_name
 from .examples_clustering import example1, example2
 from .mock_generators import mock_clusters_generator, mock_models_manager
-from .mocks import mock_documents
+from .mock_documents import mock_documents
 from .validations_clusters_generator import *
 from .validations_clusters import validate_clusters_terms, validate_clusters_list
 from topics_identifier.ClustersGenerator import ClustersGenerator

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ClustersGenerator import ClustersGenerator
-from .mocks import mock_documents
+from .mock_documents import mock_documents
 from .mock_trees import mock_tree
 from .mock_generators import mock_tree_generator, mock_clusters_generator
 from .example_trees import tree_name, example_tree

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Tree
-from .mocks import mock_documents
+from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
 from .examples import test_model_name

@@ -1,5 +1,5 @@
 from .example_trees import example_tree, tree_name
-from .mocks import mock_documents
+from .mock_documents import mock_documents
 from topics_identifier.models import Cluster, Document, Tree
 from topics_identifier.documents_selector import short_document_types
 

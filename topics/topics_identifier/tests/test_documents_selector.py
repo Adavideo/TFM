@@ -3,7 +3,8 @@ from topics_identifier.documents_selector import *
 from .examples_documents_selector import *
 from .example_documents import *
 from .examples import example_threads
-from .mocks import mock_news_and_comments, mock_thread
+from .mocks import mock_thread
+from .mock_documents import mock_news_and_comments, mock_documents
 from .validations_documents import validate_documents
 
 
