@@ -26,7 +26,9 @@ def generate_model_view(request):
         context["model_name"] = model_name
         document_types = request.POST["document_types"]
         max_num_documents = int(request.POST["max_num_documents"])
-        documents_options = { "types": document_types, "max_num_documents": max_num_documents}
+        documents_options = { "types": document_types,
+                              "max_num_documents": max_num_documents,
+                              "batches": False }
         documents = select_documents(documents_options)
         max_level = int(request.POST["max_level"])
         models_manager = ModelsManager(name=model_name)
@@ -44,7 +46,9 @@ def generate_tree_view(request):
         tree_name = request.POST["tree_name"]
         model_name = request.POST["model_name"]
         document_types = request.POST["document_types"]
-        documents_options = { "types": document_types, "max_num_documents": None }
+        documents_options = { "types": document_types,
+                              "max_num_documents": None,
+                              "batches": True }
         tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
         if tree_generator.tree_already_exist:
             context["message"] = "Tree name already in use. Pick a different one."

@@ -2,7 +2,9 @@ import datetime
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .ModelsManager import ModelsManager
-from .documents_selector import short_document_types, select_documents
+from .documents_selector import short_document_types, select_documents, get_documents_batch
+from .config import batch_size
+from .batches_util import *
 
 
 def tree_already_exist(tree_name):
@@ -21,6 +23,9 @@ class TreeGenerator:
         self.max_level = max_level
         self.models_manager = ModelsManager(name=model_name)
 
+
+    # GENERATE TREE STRUCTURE
+
     def create_empty_tree(self, tree_name):
         # Avoids trying to create a tree with a name that is already taken
         if tree_already_exist(tree_name):
@@ -33,29 +38,64 @@ class TreeGenerator:
             self.tree.save()
             return self.tree
 
-    def get_documents(self, level):
+    def generate_level_clusters(self, clusters_generator, level):
+        clusters = clusters_generator.get_clusters()
+        self.tree.add_clusters(level, clusters)
+
+
+    # ADD DOCUMENTS TO CLUSTERS
+
+    def get_all_level_documents(self, level):
         if level==0:
-            documents = select_documents(self.documents_options)
+            documents_options = { "types": self.documents_options["types"],
+                                  "max_num_documents": None,
+                                  "batches": False }
+            documents = select_documents(documents_options)
         else:
             # Gets the reference documents from the inferior level
             documents = self.tree.get_reference_documents(level-1)
         return documents
 
-    def generate_level_clusters(self, clusters_generator, level):
-        clusters = clusters_generator.get_clusters()
-        self.tree.add_clusters(level, clusters)
+    def get_documents(self, level, batch_number=None, size=batch_size):
+        all_documents = self.get_all_level_documents(level)
+        if not self.documents_options["batches"]:
+            return all_documents
+        else:
+            batch_options = get_batch_options(self.documents_options, batch_number, size)
+            batch_documents = get_documents_batch(all_documents, batch_options)
+            return batch_documents
+
+    def get_number_of_documents(self, level):
+        num_documents = len(self.get_all_level_documents(level))
+        return num_documents
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
-        print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
         self.tree.add_documents_to_several_clusters(level, clusters_documents)
+
+    def add_documents_to_clusters_in_batches(self, clusters_generator, level, size=batch_size):
+        num_documents = self.get_number_of_documents(level)
+        num_of_batches = get_number_of_batches(num_documents, size)
+        for batch_number in range(1, num_of_batches+1):
+            documents = self.get_documents(level, batch_number, size)
+            self.add_documents_to_clusters(clusters_generator, documents, level)
+
+    def add_documents(self, clusters_generator, level, size=batch_size):
+        print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
+        if self.documents_options["batches"]:
+            self.add_documents_to_clusters_in_batches(clusters_generator, level, size)
+        else:
+            documents = self.get_documents(level)
+            self.add_documents_to_clusters(clusters_generator, documents, level)
+
+
+    # MAIN LOOP
 
     def level_iteration(self, level):
         print(str(datetime.datetime.now().time())+" - Generating clusters for level "+str(level) )
         clusters_generator = ClustersGenerator(self.models_manager, level)
         self.generate_level_clusters(clusters_generator, level)
-        documents = self.get_documents(level)
-        self.add_documents_to_clusters(clusters_generator, documents, level)
+        self.add_documents(clusters_generator, level)
         if level > 0:
             self.tree.link_children_to_parents(level)
 

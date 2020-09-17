@@ -1,5 +1,5 @@
 from .models import Document
-from .config import default_documents_limit
+from .config import default_documents_limit, batch_size
 
 
 def short_document_types(document_types):
@@ -38,16 +38,32 @@ def select_documents_from_database(documents_options):
         documents_list = Document.objects.filter(is_news=with_news)
     return documents_list
 
+def get_number_of_documents(documents_options):
+    documents = select_documents_from_database(documents_options)
+    return len(documents)
+
 def get_documents_content(documents_list):
     documents_content = []
     for doc in documents_list:
         documents_content.append(doc.content)
     return documents_content
 
-def select_documents(documents_options):
+def get_documents_batch(document_list, batch_options):
+    end = batch_options["size"] * batch_options["number"]
+    start = end - batch_options["size"]
+    batch = document_list[start:end]
+    return batch
+
+def select_documents(documents_options, batch_options=None):
     documents_list = select_documents_from_database(documents_options)
-    limit = documents_options["max_num_documents"]
-    documents_list = ensure_documents_limit(documents_list, limit)
+
+    if documents_options["batches"]:
+        documents_list = get_documents_batch(documents_list, batch_options)
+
+    elif documents_options["max_num_documents"]:
+        limit = documents_options["max_num_documents"]
+        documents_list = ensure_documents_limit(documents_list, limit)
+
     documents_content = get_documents_content(documents_list)
     return documents_content
 

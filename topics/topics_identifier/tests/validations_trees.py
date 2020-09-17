@@ -1,20 +1,8 @@
 from topics_identifier.models import Cluster
 from .example_trees import example_tree
 from .validations_clusters import validate_clusters_list
+from .validations_documents import validate_documents
 
-
-# TREES VALIDATION
-
-def validate_number_of_clusters(test, level, clusters):
-    # Obtain the number of clusters for this level
-    num_clusters = len(example_tree[level]["clusters"])
-    test.assertIs(len(clusters), num_clusters)
-
-def validate_tree_level(test, tree, level):
-    clusters_list = Cluster.objects.filter(tree=tree, level=level)
-    validate_number_of_clusters(test, level, clusters_list)
-    example_clusters = example_tree[level]["clusters"]
-    validate_clusters_list(test, clusters_list, example_clusters, with_documents=True)
 
 def validate_tree_document_types(test, tree, document_types):
     if document_types == "both":
@@ -27,7 +15,26 @@ def validate_tree_document_types(test, tree, document_types):
         test.assertEqual(tree.news, False)
         test.assertEqual(tree.comments, True)
 
+def validate_number_of_clusters(test, level, clusters):
+    # Obtain the number of clusters for this level
+    num_clusters = len(example_tree[level]["clusters"])
+    test.assertIs(len(clusters), num_clusters)
+
+def validate_tree_level(test, tree, level, with_documents=True, with_children=True):
+    #clusters_list = Cluster.objects.filter(tree=tree, level=level)
+    clusters_list = tree.get_clusters_of_level(level)
+    validate_number_of_clusters(test, level, clusters_list)
+    example_clusters = example_tree[level]["clusters"]
+    validate_clusters_list(test, clusters_list, example_clusters, with_documents, with_children)
+
 def validate_tree(test, tree, max_level, document_types="both"):
     validate_tree_document_types(test, tree, document_types)
     for level in range(0, max_level):
         validate_tree_level(test, tree, level)
+
+def validate_level_clusters_documents(test, tree, level):
+    clusters_list = tree.get_clusters_of_level(level)
+    example_clusters = example_tree[level]["clusters"]
+    for i in range(len(clusters_list)):
+        cluster_documents = clusters_list[i].documents()
+        validate_documents(test, cluster_documents, example_clusters[i]["documents"])
