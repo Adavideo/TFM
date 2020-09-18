@@ -1,5 +1,5 @@
 from django import forms
-from .views_util import get_documents_options, get_topics_options, get_tree_levels
+from .forms_util import *
 from .config import default_documents_limit
 
 
