@@ -3,8 +3,8 @@ from topics_identifier.models import Tree
 from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
+from .mock_web_client import get_response, post_response
 from .examples import test_model_name
-from .views_util import get_response, post_response
 from .validations_views import *
 
 

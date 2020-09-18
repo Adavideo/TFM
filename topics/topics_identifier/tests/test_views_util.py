@@ -3,8 +3,8 @@ from topics_identifier.views_util import *
 from topics_identifier.TreeGenerator import TreeGenerator
 from .mocks import mock_topic
 from .mock_documents import mock_documents
+from .mock_web_client import post_request
 from .examples import test_model_name
-from .views_util import post_request
 
 
 class ViewsUtilTests(TestCase):
