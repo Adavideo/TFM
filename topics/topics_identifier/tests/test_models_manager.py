@@ -5,7 +5,7 @@ from topics_identifier.ModelsManager import ModelsManager
 from .mock_documents import mock_documents
 from .mock_generators import mock_model, mock_models_manager
 from .validations_models import *
-from .examples import test_model_name
+from .examples_models import test_model_name
 from .example_documents import example_documents
 from .example_trees import example_tree
 

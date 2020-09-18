@@ -4,7 +4,8 @@ from topics_identifier.ClustersGenerator import ClustersGenerator
 from .mock_documents import mock_documents
 from .mock_generators import mock_tree_generator, mock_clusters_generator
 from .example_trees import tree_name, example_tree
-from .examples import test_model_name, test_batch_size
+from .examples_models import test_model_name
+from .examples import test_batch_size
 from .examples_documents_selector import example_doc_options, doc_options_with_batches
 from .validations_trees import *
 from .validations_batches import validate_batch_documents

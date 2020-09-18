@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.forms_util import *
 from .mocks import mock_topic
-from .examples import test_model_name, filenames_test_list
+from .examples_models import test_model_name, filenames_test_list
 
 
 class FormsUtilTests(TestCase):

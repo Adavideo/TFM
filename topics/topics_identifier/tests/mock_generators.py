@@ -2,7 +2,7 @@ from topics_identifier.ClustersGenerator import ClustersGenerator
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ModelsManager import ModelsManager
 from .example_trees import tree_name, example_tree, example_terms
-from .examples import test_model_name
+from .examples_models import test_model_name
 from .examples_documents_selector import example_doc_options
 
 

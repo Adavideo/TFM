@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.views_util import build_tree_generator
 from .mock_documents import mock_documents
 from .mock_web_client import post_request
-from .examples import test_model_name
+from .examples_models import test_model_name
 
 
 class ViewsUtilTests(TestCase):

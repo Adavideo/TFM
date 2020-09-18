@@ -4,7 +4,7 @@ from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
 from .mock_web_client import get_response, post_response
-from .examples import test_model_name
+from .examples_models import test_model_name
 from .validations_views import *
 
 
