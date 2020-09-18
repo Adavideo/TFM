@@ -1,5 +1,6 @@
 from django.test import TestCase
-from topics_identifier.models import Tree
+from topics_identifier.models import Tree, Topic
+from .mocks import mock_threads_with_topic
 from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree
@@ -153,3 +154,20 @@ class ViewsTests(TestCase):
         self.assertContains(response, "Cluster topic threads")
         self.assertContains(response, "Topic")
         self.assertContains(response, "Model name")
+
+    def test_cluster_topic_threads_view_post(self):
+        #Initialize
+        page = 'cluster_topic_threads'
+        topic_name = "topic_test"
+        topic = Topic(name=topic_name)
+        mock_threads_with_topic(topic)
+        parameters = { "model_name":test_model_name, "topic":topic.id}
+        #Execute
+        response = post_response(page, parameters)
+        #Validate
+        validate_page(self, response)
+        self.assertContains(response, "Cluster topic threads")
+        self.assertContains(response, topic_name)
+        tree = Tree.objects.get(name=topic_name)
+        for cluster in tree.get_clusters_of_level(level=0):
+            validate_contains_cluster(self, response, cluster, with_documents=False)
