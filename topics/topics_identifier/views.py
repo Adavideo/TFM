@@ -91,9 +91,9 @@ def assign_topic_from_file_view(request):
         context["threads_list"] = threads_list
     return render(request, template, context)
 
-def cluster_topic_view(request):
-    template = "topics_identifier/clusters_on_topic.html"
-    form = ClusterTopicForm()
+def cluster_topic_threads_view(request):
+    template = "topics_identifier/cluster_topic_threads.html"
+    form = ClusterTopicThreadsForm()
     context = { "form": form }
     if request.method == "POST":
         topic_id = request.POST["topic"]

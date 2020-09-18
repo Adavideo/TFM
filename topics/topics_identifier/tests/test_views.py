@@ -146,7 +146,10 @@ class ViewsTests(TestCase):
         response = get_response(page)
         validate_page(self, response)
 
-    def test_cluster_topic_view(self):
-        page = 'cluster_topic'
+    def test_cluster_topic_threads_view_form(self):
+        page = 'cluster_topic_threads'
         response = get_response(page)
         validate_page(self, response)
+        self.assertContains(response, "Cluster topic threads")
+        self.assertContains(response, "Topic")
+        self.assertContains(response, "Model name")

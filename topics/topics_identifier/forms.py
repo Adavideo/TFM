@@ -22,6 +22,6 @@ class ClusterSeachForm(forms.Form):
 class AssignTopicFromFileForm(forms.Form):
     topic_name = forms.CharField(max_length=100)
 
-class ClusterTopicForm(forms.Form):
+class ClusterTopicThreadsForm(forms.Form):
     topic = forms.ChoiceField(choices=get_topics_options())
     model_name = forms.ChoiceField(choices=get_models_options())
