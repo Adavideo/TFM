@@ -126,3 +126,12 @@ class ClusterDocument(models.Model):
     def __str__(self):
         text = str(self.cluster)+" - "+str(self.document)
         return text
+
+
+class ClusterTopic(models.Model):
+    cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    def __str__(self):
+        text = str(self.cluster)+" - topic: "+str(self.topic)
+        return text
