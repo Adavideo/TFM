@@ -44,10 +44,24 @@ def add_documents_to_clusters(topic, tree_generator, clusters_generator):
     documents = get_documents_for_topic(topic)
     tree_generator.add_documents_to_clusters(clusters_generator, documents, level=0)
 
+def get_tree_name(topic_name):
+    tree_list = Tree.objects.all()
+    tree_names = []
+    for tree in tree_list:
+        tree_names.append(tree.name)
+
+    name = topic_name
+    n = 2
+    while (name in tree_names):
+        name = topic_name + "_" + str(n)
+        n += 1
+    return name
+
+
 def generate_tree_for_topic(topic_name, model_name, clusters_generator):
     level = 0
     documents_options = { "types": "both" }
-    tree_name = topic_name
+    tree_name = get_tree_name(topic_name)
     tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
     tree_generator.generate_level_clusters(clusters_generator, level)
     print("Clusters completed")

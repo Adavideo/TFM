@@ -171,3 +171,21 @@ class ViewsTests(TestCase):
         tree = Tree.objects.get(name=topic_name)
         for cluster in tree.get_clusters_of_level(level=0):
             validate_contains_cluster(self, response, cluster, with_documents=False)
+
+    def test_cluster_topic_threads_view_post_same_topic_twice(self):
+        #Initialize
+        page = 'cluster_topic_threads'
+        topic_name = "topic_test"
+        topic = Topic(name=topic_name)
+        mock_threads_with_topic(topic)
+        parameters = { "model_name":test_model_name, "topic":topic.id}
+        #Execute
+        response = post_response(page, parameters)
+        response = post_response(page, parameters)
+        #Validate
+        topic_name2 = topic_name + "_2"
+        validate_page(self, response)
+        self.assertContains(response, "Cluster topic threads")
+        tree = Tree.objects.get(name=topic_name2)
+        for cluster in tree.get_clusters_of_level(level=0):
+            validate_contains_cluster(self, response, cluster, with_documents=False)
