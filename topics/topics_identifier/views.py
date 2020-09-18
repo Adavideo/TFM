@@ -93,7 +93,7 @@ def assign_topic_from_file_view(request):
 
 def cluster_topic_view(request):
     template = "topics_identifier/clusters_on_topic.html"
-    form = ClusterTopicForm(request.POST)
+    form = ClusterTopicForm()
     context = { "form": form }
     if request.method == "POST":
         topic_id = request.POST["topic"]
