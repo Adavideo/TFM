@@ -11,9 +11,9 @@ class ModelsForm(forms.Form):
                                             label= "Max number of documents",
                                             help_text= "Number of documents used to generate the model")
 
-class TreeForm(forms.Form):
+class TreeForm(forms.Form):    
     tree_name = forms.CharField(max_length=25)
-    model_name = forms.CharField(max_length=25)
+    model_name = forms.ChoiceField(choices=get_models_options())
     document_types = forms.ChoiceField(choices=get_documents_options(), required=False)
 
 class ClusterSeachForm(forms.Form):
