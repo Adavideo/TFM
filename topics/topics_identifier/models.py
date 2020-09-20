@@ -5,8 +5,9 @@ from .config import *
 
 class Tree(models.Model):
     name = models.CharField(max_length=tree_name_max_length, unique=True)
-    news = models.BooleanField(default=False)
-    comments = models.BooleanField(default=False)
+    news = models.BooleanField(default=False) # indicate if the tree has news documents
+    comments = models.BooleanField(default=False) # indicate if the tree has comments documents
+    num_levels = models.IntegerField(default=0) # indicate the number of levels in the tree
 
     def get_cluster(self, cluster_number, level):
         cluster, cleated = Cluster.objects.get_or_create(tree=self, number=cluster_number, level=level)
@@ -21,6 +22,9 @@ class Tree(models.Model):
             cluster.tree = self
             cluster.level = level
             cluster.save()
+        # Increase the variable "num_levels" if the new level is higher
+        if self.num_levels < level:
+            self.num_levels = level
 
     def get_reference_documents(self, level):
         clusters_list = self.get_clusters_of_level(level)
