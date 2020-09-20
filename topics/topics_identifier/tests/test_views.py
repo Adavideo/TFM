@@ -93,11 +93,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters)
         #Validate
-        validate_page(self, response)
-        self.assertContains(response, "Generating tree: "+tree_name)
-        tree = Tree.objects.get(name=tree_name)
-        for cluster in tree.get_clusters_of_level(level=1):
-            validate_contains_cluster(self, response, cluster, with_documents=False)
+        validate_generate_tree_view_post(self, response, tree_name)
 
     def test_trees_index_view_empty(self):
         page = 'trees_index'

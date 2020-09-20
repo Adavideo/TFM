@@ -12,6 +12,13 @@ def validate_page(test, response):
     validate_menu(test, response)
     return response
 
+def validate_generate_tree_view_post(test, response, tree_name):
+    validate_page(test, response)
+    test.assertContains(response, "Generating tree: "+tree_name)
+    tree = Tree.objects.get(name=tree_name)
+    for cluster in tree.get_clusters_of_level(level=1):
+        validate_contains_cluster(test, response, cluster, with_documents=False)
+
 def validate_terms(test, response, terms_list):
     for term in terms_list:
         test.assertContains(response, term)
