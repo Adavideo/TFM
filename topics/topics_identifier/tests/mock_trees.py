@@ -14,6 +14,8 @@ def mock_empty_tree(document_types="both", name=tree_name):
 def mock_tree(max_level=0, linked=False, with_documents=True, document_types="both", name=tree_name):
     mock_documents()
     tree = mock_empty_tree(document_types, name)
+    tree.max_level = max_level
+    tree.save()
     for level in range(0, max_level+1):
         num_clusters = len(example_tree[level]["clusters"])
         for n in range(0, num_clusters):

@@ -12,7 +12,7 @@ class TreeTests(TestCase):
     def test_create_tree(self):
         tree = Tree(name="", news=True, comments=True)
         validate_tree_document_types(self, tree, document_types="both")
-        self.assertEqual(tree.num_levels, 0)
+        self.assertEqual(tree.max_level, 0)
 
     def test_get_cluster(self):
         # Initialize
@@ -77,7 +77,7 @@ class TreeTests(TestCase):
         clusters_list = tree.get_clusters_of_level(level)
         for i in range(len(clusters_list)):
             self.assertEqual(clusters_list[i].terms, example_clusters[i]["terms"])
-        self.assertEqual(tree.num_levels, level)
+        self.assertEqual(tree.max_level, level)
 
     def test_add_clusters_level1(self):
         # Initialize
@@ -92,7 +92,7 @@ class TreeTests(TestCase):
         clusters_list = tree.get_clusters_of_level(level)
         for i in range(len(clusters_list)):
             self.assertEqual(clusters_list[i].terms, example_clusters[i]["terms"])
-        self.assertEqual(tree.num_levels, level)
+        self.assertEqual(tree.max_level, level)
 
     def test_link_children_to_parents(self):
         level = 1

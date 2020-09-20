@@ -17,10 +17,10 @@ class TreeGenerator:
 
     def __init__(self, tree_name, model_name, documents_options, max_level=1):
         self.documents_options = documents_options
+        self.max_level = max_level
         created = self.create_empty_tree(tree_name)
         if not created: return None
         self.model_name = model_name
-        self.max_level = max_level
         self.models_manager = ModelsManager(name=model_name)
 
 
@@ -35,6 +35,7 @@ class TreeGenerator:
             self.tree_already_exist = False
             news, comments = short_document_types(self.documents_options["types"])
             self.tree = Tree(name=tree_name, news=news, comments=comments)
+            self.tree.max_level = self.max_level
             self.tree.save()
             return self.tree
 

@@ -7,24 +7,26 @@ class Tree(models.Model):
     name = models.CharField(max_length=tree_name_max_length, unique=True)
     news = models.BooleanField(default=False) # indicate if the tree has news documents
     comments = models.BooleanField(default=False) # indicate if the tree has comments documents
-    num_levels = models.IntegerField(default=0) # indicate the number of levels in the tree
+    max_level = models.IntegerField(default=0) # indicate the higher level in the tree
 
     def get_cluster(self, cluster_number, level):
+        if level > self.max_level: return None
         cluster, cleated = Cluster.objects.get_or_create(tree=self, number=cluster_number, level=level)
         return cluster
 
     def get_clusters_of_level(self, level):
+        if level > self.max_level: return []
         clusters = Cluster.objects.filter(tree=self, level=level)
         return clusters
 
     def add_clusters(self, level, clusters_list):
+        # Increase the variable "max_level" if the new level is higher
+        if self.max_level < level:
+            self.max_level = level
         for cluster in clusters_list:
             cluster.tree = self
             cluster.level = level
             cluster.save()
-        # Increase the variable "num_levels" if the new level is higher
-        if self.num_levels < level:
-            self.num_levels = level
 
     def get_reference_documents(self, level):
         clusters_list = self.get_clusters_of_level(level)
@@ -60,7 +62,8 @@ class Tree(models.Model):
             self.add_documents_to_cluster(level, num_cluster, cluster_documents)
 
     def __str__(self):
-        text = "Tree "+ self.name + " - documents: "
+        text = "Tree "+ self.name + " maximum level: "+str(self.max_level)
+        text += " - documents: "
         if self.news: text += "news"
         if self.news and self.comments: text += " and "
         if self.comments: text += "comments"

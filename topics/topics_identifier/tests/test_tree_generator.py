@@ -13,13 +13,25 @@ from .validations_batches import validate_batch_documents
 
 class TreeGeneratorTests(TestCase):
 
-    def test_create_tree_generator(self):
-        tree_generator = mock_tree_generator()
+    def test_create_tree_generator_max_level_0(self):
+        max_level = 0
+        tree_generator = mock_tree_generator(max_level=max_level)
         tree = tree_generator.tree
         self.assertEqual(tree.name, tree_name)
         validate_tree_document_types(self, tree, example_doc_options["types"])
         self.assertEqual(tree_generator.model_name, test_model_name)
         self.assertEqual(tree_generator.tree.name, tree_name)
+        self.assertEqual(tree_generator.tree.max_level, max_level)
+
+    def test_create_tree_generator_max_level_1(self):
+        max_level = 1
+        tree_generator = mock_tree_generator(max_level=max_level)
+        tree = tree_generator.tree
+        self.assertEqual(tree.name, tree_name)
+        validate_tree_document_types(self, tree, example_doc_options["types"])
+        self.assertEqual(tree_generator.model_name, test_model_name)
+        self.assertEqual(tree_generator.tree.name, tree_name)
+        self.assertEqual(tree_generator.tree.max_level, max_level)
 
 
 class GenerateTreeStructureTests(TestCase):
