@@ -4,19 +4,24 @@
 
   {% include "topics_identifier/topics_identifier_menu.html" %}
 
-  <h3>Cluster topic threads</h3>
-  <br>
+  {% if not topic %}
+    <h3>Cluster topic threads</h3>
+    <br>
 
-  <form action="" method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Cluster">
-  </form>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Cluster">
+    </form>
+  {% endif %}
 
   <hr>
 
   {% if topic %}
-      <h2>Topic: {{ topic }}</h2>
+      <h3>Topic: {{ topic }} - Tree: {{ tree_name }}</h3>
+        Result of clustering all documents in the threads associated
+        with the topic <b>{{ topic }}</b> using the model <b>{{ model_name }}</b>.
+
       <hr>
 
       {% if clusters_list %}

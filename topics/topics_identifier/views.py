@@ -3,11 +3,10 @@ from .forms import *
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
-from .topics_clustering import cluster_for_topic
 from .topics_assignations import assign_topic_from_file
 from .ModelsManager import ModelsManager
 from .documents_selector import select_documents
-from .views_util import build_tree_generator
+from .views_util import build_tree_generator, cluster_topic_threads
 
 
 def home_view(request):
@@ -96,10 +95,5 @@ def cluster_topic_threads_view(request):
     form = ClusterTopicThreadsForm()
     context = { "form": form }
     if request.method == "POST":
-        topic_id = request.POST["topic"]
-        topic = Topic.objects.get(id=topic_id)
-        context["topic"] = topic.name
-        model_name = request.POST["model_name"]
-        context["model_name"] = model_name
-        context["clusters_list"] = cluster_for_topic(topic, model_name)
+        context = cluster_topic_threads(request)
     return render(request, template, context)

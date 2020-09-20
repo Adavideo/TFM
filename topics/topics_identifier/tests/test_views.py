@@ -166,9 +166,9 @@ class ViewsTests(TestCase):
         response = post_response(page, parameters)
         #Validate
         validate_page(self, response)
-        self.assertContains(response, "Cluster topic threads")
         self.assertContains(response, topic_name)
         tree = Tree.objects.get(name=topic_name)
+        self.assertContains(response, tree.name)
         for cluster in tree.get_clusters_of_level(level=0):
             validate_contains_cluster(self, response, cluster, with_documents=False)
 
@@ -185,7 +185,8 @@ class ViewsTests(TestCase):
         #Validate
         topic_name2 = topic_name + "_2"
         validate_page(self, response)
-        self.assertContains(response, "Cluster topic threads")
+        self.assertContains(response, topic_name2)
         tree = Tree.objects.get(name=topic_name2)
+        self.assertContains(response, tree.name)
         for cluster in tree.get_clusters_of_level(level=0):
             validate_contains_cluster(self, response, cluster, with_documents=False)
