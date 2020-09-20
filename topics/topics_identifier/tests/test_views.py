@@ -30,51 +30,26 @@ class ViewsTests(TestCase):
         page = 'generate_model'
         name = "delete_me_generate_model_test"
         max_level = 0
-        parameters = {
-            "model_name": name,
-            "document_types":"both",
-            "max_num_documents": 100,
-            "max_level": max_level
-        }
+        parameters = { "model_name": name, "document_types":"both",
+                       "max_num_documents": 100, "max_level": max_level }
         mock_documents()
         #Execute
         response = post_response(page, parameters)
         #Validate
-        validate_page(self, response)
-        self.assertContains(response, "Generated model: "+ name)
-        self.assertContains(response, "Filenames:")
-        model_filename = "models/sklearn/"+name+"_model_level0.joblib"
-        vectorizer_filename = "models/sklearn/"+name+"_vectorizer_level0.joblib"
-        ref_docs_filename = "models/sklearn/"+name+"_reference_documents_level0.joblib"
-        self.assertContains(response, model_filename)
-        self.assertContains(response, vectorizer_filename)
-        self.assertContains(response, ref_docs_filename)
+        validate_generate_model_view_post(self, response, name, max_level)
 
     def test_generate_model_view_post_level1(self):
         #Initialize
         page = 'generate_model'
         name = "delete_me_generate_model_test"
         max_level = 1
-        parameters = {
-            "model_name": name,
-            "document_types":"both",
-            "max_num_documents": 100,
-            "max_level": max_level
-        }
+        parameters = { "model_name": name, "document_types":"both",
+                       "max_num_documents": 100, "max_level": max_level }
         mock_documents()
         #Execute
         response = post_response(page, parameters)
         #Validate
-        validate_page(self, response)
-        self.assertContains(response, "Generated model: "+ name)
-        self.assertContains(response, "Filenames:")
-        for level in range(max_level+1):
-            model_filename = "models/sklearn/"+name+"_model_level"+str(level)+".joblib"
-            vectorizer_filename = "models/sklearn/"+name+"_vectorizer_level"+str(level)+".joblib"
-            ref_docs_filename = "models/sklearn/"+name+"_reference_documents_level"+str(level)+".joblib"
-            self.assertContains(response, model_filename)
-            self.assertContains(response, vectorizer_filename)
-            self.assertContains(response, ref_docs_filename)
+        validate_generate_model_view_post(self, response, name, max_level)
 
     def test_generate_tree_view_form(self):
         page = 'generate_tree'

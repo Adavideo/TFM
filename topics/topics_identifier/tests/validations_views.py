@@ -12,6 +12,18 @@ def validate_page(test, response):
     validate_menu(test, response)
     return response
 
+def validate_generate_model_view_post(test, response, name, max_level):
+    validate_page(test, response)
+    test.assertContains(response, "Generated model: "+ name)
+    test.assertContains(response, "Filenames:")
+    for level in range(max_level+1):
+        model_filename = "models/sklearn/"+name+"_model_level"+str(level)+".joblib"
+        vectorizer_filename = "models/sklearn/"+name+"_vectorizer_level"+str(level)+".joblib"
+        ref_docs_filename = "models/sklearn/"+name+"_reference_documents_level"+str(level)+".joblib"
+        test.assertContains(response, model_filename)
+        test.assertContains(response, vectorizer_filename)
+        test.assertContains(response, ref_docs_filename)
+
 def validate_generate_tree_view_post(test, response, tree_name):
     validate_page(test, response)
     test.assertContains(response, "Generating tree: "+tree_name)
