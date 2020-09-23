@@ -25,6 +25,16 @@ class TreeTests(TestCase):
         # Validate
         validate_cluster(self, cluster, example_cluster, with_documents=True)
 
+    def test_get_max_level_clusters(self):
+        # Initialize
+        level = 1
+        example_clusters = example_tree[level]["clusters"]
+        tree = mock_tree(max_level=level, linked=True)
+        # Execute
+        clusters_list = tree.get_max_level_clusters()
+        # Validate
+        validate_clusters_list(self, clusters_list, example_clusters, with_documents=True)
+
     def test_get_clusters_of_level0(self):
         # Initialize
         level = 0

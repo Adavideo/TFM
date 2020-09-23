@@ -14,6 +14,10 @@ class Tree(models.Model):
         cluster, cleated = Cluster.objects.get_or_create(tree=self, number=cluster_number, level=level)
         return cluster
 
+    def get_max_level_clusters(self):
+        clusters = Cluster.objects.filter(tree=self, level=self.max_level)
+        return clusters
+
     def get_clusters_of_level(self, level):
         if level > self.max_level: return []
         clusters = Cluster.objects.filter(tree=self, level=level)
