@@ -3,16 +3,13 @@ from django.test import Client, RequestFactory
 
 
 def get_response(page, arguments=[]):
-    if arguments:
-        url = reverse(page, args=arguments)
-    else:
-        url = reverse(page)
+    url = reverse(page, args=arguments)
     client = Client()
     response = client.get(url)
     return response
 
-def post_response(page, parameters={}):
-    url = reverse(page)
+def post_response(page, parameters={}, arguments=[]):
+    url = reverse(page, args=arguments)
     client = Client()
     response = client.post(url, parameters)
     return response

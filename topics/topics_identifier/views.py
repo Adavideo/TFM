@@ -6,7 +6,7 @@ from .models import Cluster, Tree
 from .topics_assignations import assign_topic_from_file
 from .ModelsManager import ModelsManager
 from .documents_selector import select_documents
-from .views_util import build_tree_generator, cluster_topic_threads
+from .views_util import *
 
 
 def home_view(request):
@@ -59,18 +59,18 @@ def trees_index_view(request):
     return render(request, template, context)
 
 def tree_view(request, tree_id):
-    template = "topics_identifier/tree.html"
+    template = "topics_identifier/tree_page.html"
     tree = Tree.objects.get(id=tree_id)
-    form = ClusterSeachForm()
-    context = { "tree": tree, 'form': form }
+    context = { "tree": tree }
+    if request.method == "GET":
+        context["form"] = ClusterSeachForm()
+        context["clusters_list"] = tree.get_max_level_clusters()
     if request.method == "POST":
         search_string = request.POST["search_terms"]
         context["search_string"] = search_string
-        context["search_results"] = cluster_search(tree, search_string)
-    else:
-        clusters = tree.get_clusters_of_level(1)
-        if not clusters: clusters = tree.get_clusters_of_level(0)
-        context["clusters_list"] = clusters
+        search_results = cluster_search(tree, search_string)
+        context["search_results"] = search_results
+        context["form"] = AssignTopicToClustersForm(request.POST, search_results=search_results)
     return render(request, template, context)
 
 def cluster_view(request, cluster_id):
@@ -78,6 +78,12 @@ def cluster_view(request, cluster_id):
     cluster = Cluster.objects.get(id=cluster_id)
     cluster_info = compose_cluster_information(cluster, include_documents=True)
     context = { "cluster_info": cluster_info }
+    return render(request, template, context)
+
+def assign_topic_to_clusters_view(request):
+    template = "topics_identifier/assigned_topic_to_clusters.html"
+    topic, clusters_list = assign_topic_to_clusters(request)
+    context = { "selected_clusters": clusters_list, "topic": topic }
     return render(request, template, context)
 
 def assign_topic_from_file_view(request):

@@ -1,5 +1,5 @@
 from .TreeGenerator import TreeGenerator
-from .models import Topic
+from .models import Topic, Cluster, ClusterTopic
 from .topics_clustering import cluster_for_topic
 
 
@@ -12,6 +12,18 @@ def build_tree_generator(request, level):
                           "batches": True }
     tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
     return tree_generator
+
+def assign_topic_to_clusters(request):
+    # Get topic
+    topic_id = request.POST["topic"]
+    topic = Topic.objects.get(id=topic_id)
+    # Get clusters
+    clusters_ids = request.POST.getlist("selected_clusters")
+    clusters_list = [ Cluster.objects.get(id=id) for id in clusters_ids ]
+    # Assign topic to clusters
+    for cluster in clusters_list:
+        ClusterTopic.objects.get_or_create(cluster=cluster, topic=topic)
+    return topic, clusters_list
 
 def cluster_topic_threads(request):
     topic_id = request.POST["topic"]

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
+  {% if not search_string %}
+    {% include "topics_identifier/search_in_tree_form.html" %}
+    <hr>
+  {% endif %}
+
+  <h2>Tree: {{ tree.name }}</h2>
+    {% if not search_string %}
+      <h4>{% include "topics_identifier/document_types.html" %}</h4>
+      <hr>
+      {% include "topics_identifier/clusters_list.html" %}
+    {% else %}
+      {% include "topics_identifier/assign_topic_to_clusters.html" %}
+    {% endif %}
+
+{% endblock %}

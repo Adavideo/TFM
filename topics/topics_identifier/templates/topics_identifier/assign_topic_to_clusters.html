@@ -1,0 +1,16 @@
+
+<h4>Search for: {{ search_string }}</h4>
+<hr>
+<form action="{% url 'assign_topic_to_clusters' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Assign">
+</form>
+
+<hr>
+{% for cluster_info in search_results %}
+    {% with cluster=cluster_info.cluster documents=cluster_info.documents children=cluster_info.children %}
+      {% include "topics_identifier/cluster.html" %}
+    {% endwith %}
+    <hr>
+{% endfor %}

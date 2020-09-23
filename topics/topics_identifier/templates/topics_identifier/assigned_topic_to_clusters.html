@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
+  <h3>Topic: {{ topic.name }}</h3>
+  <hr>
+  <h3>Clusters assigned:</h3>
+  {% for cluster in selected_clusters %}
+    {% include "topics_identifier/cluster.html" %}
+    <hr>
+  {% endfor %}
+
+{% endblock %}
