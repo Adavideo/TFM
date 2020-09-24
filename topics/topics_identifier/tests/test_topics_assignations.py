@@ -1,9 +1,11 @@
 from django.test import TestCase
+from topics_identifier.models import Topic
 from topics_identifier.topics_assignations import *
 from .mocks import mock_thread, mock_threads_list
 from .example_documents import news_content
-from .example_topics import topic
 from .validations import validate_threads_list
+
+topic = Topic(name="prueba")
 
 
 class TopicsTests(TestCase):
