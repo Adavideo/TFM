@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.test import Client
+from django.test import Client, RequestFactory
 
 
 def get_response(page, arguments=[]):
@@ -13,3 +13,9 @@ def post_response(page, parameters={}, arguments=[]):
     client = Client()
     response = client.post(url, parameters)
     return response
+
+def post_request(page, parameters={}):
+    url = reverse(page)
+    factory = RequestFactory()
+    request = factory.post(url, parameters)
+    return request

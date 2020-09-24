@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.views_util import *
 from .mock_documents import mock_documents
 from .mock_clusters import mock_clusters_list
-from .mock_web_client import post_request
+from testing_commons.mock_web_client import post_request
 from .mocks import mock_topic
 from .examples_models import test_model_name
 
