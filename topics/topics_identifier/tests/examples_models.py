@@ -1,5 +1,5 @@
+from testing_commons.example_models import test_model_name
 
-test_model_name = "test"
 
 filenames_test_list = [
     "delete_me_model_level0.joblib",
