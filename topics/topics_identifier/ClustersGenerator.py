@@ -1,7 +1,6 @@
 import datetime
 from .models import Cluster, Document
 from .errors import loading_files_errors
-from .config import check_max_length
 
 
 class ClustersGenerator:
@@ -42,7 +41,6 @@ class ClustersGenerator:
         for term_index in cluster_center.indices:
             term = self.terms[term_index]
             cluster_terms.append(term)
-        check_max_length("Terms", str(cluster_terms))
         return cluster_terms
 
     def get_all_clusters_terms(self):

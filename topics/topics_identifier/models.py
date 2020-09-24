@@ -88,7 +88,6 @@ class Cluster(models.Model):
         return terms_list
 
     def assign_reference_document(self, content):
-        check_max_length("Reference document", content)
         self.reference_document = content
 
     def add_document(self, content):
