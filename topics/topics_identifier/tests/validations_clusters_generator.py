@@ -1,10 +1,10 @@
-from .validations_models import model_type, vectoricer_type
+from .validations import validate_model_type, validate_vectorizer_type
 
 
 def validate_clusters_generator(test, clusters_generator, model_name, expected):
     test.assertEqual(clusters_generator.models_manager.name, model_name)
-    test.assertEqual(str(type(clusters_generator.model)), model_type)
-    test.assertEqual(str(type(clusters_generator.vectorizer)), vectoricer_type)
+    validate_model_type(test, clusters_generator.model)
+    validate_vectorizer_type(test, clusters_generator.vectorizer)
     test.assertEqual(clusters_generator.reference_documents, expected["reference_documents"])
     test.assertEqual(clusters_generator.terms, expected["terms"])
     num_clusters = len(expected["clusters"])
