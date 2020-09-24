@@ -1,6 +1,6 @@
 from django.db import models
 from timeline.models import Document, Topic
-from .config import *
+from config import *
 
 
 class Tree(models.Model):

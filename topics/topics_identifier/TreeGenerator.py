@@ -1,9 +1,9 @@
 import datetime
+from config import batch_size
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .ModelsManager import ModelsManager
 from .documents_selector import short_document_types, select_documents, get_documents_batch
-from .config import batch_size
 from .batches_util import *
 
 
