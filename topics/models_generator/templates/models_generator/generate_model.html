@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Generate model</h2>
+  <hr>
+
+  {% if not filenames %}
+
+      <form action="" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Generate models">
+      </form>
+
+  {% else %}
+
+    <h3>Model generated: {{ model_name }}</h3>
+    <br>
+    <h3>Filenames:</h3>
+    <br>
+      <b>Models:</b><br>
+        {% for filename in filenames.models %}
+          {{ filename }}<br>
+        {% endfor %}
+      <br>
+      <b>Vectorizers:</b><br>
+      {% for filename in filenames.vectorizers %}
+        {{ filename }}<br>
+      {% endfor %}
+      <br>
+      <b>Reference documents:</b><br>
+      {% for filename in filenames.reference_documents %}
+        {{ filename }}<br>
+      {% endfor %}
+      
+  {% endif %}
+
+{% endblock %}

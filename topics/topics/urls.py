@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('topics_identifier/', include('topics_identifier.urls')),
     path('import_csv/', include('csv_import.urls')),
+    path('models_generator/', include('models_generator.urls')),
     path('timeline/', include('timeline.urls'))
 ]
