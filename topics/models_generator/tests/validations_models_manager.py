@@ -1,16 +1,14 @@
-from sklearn.cluster import AffinityPropagation
-from sklearn.feature_extraction.text import TfidfVectorizer
-from models_generator.ModelsManager import ModelsManager
 from .load import load_object
+from testing_commons.validations_models import validate_model_type, validate_vectorizer_type
 
 
 def validate_model_stored(test, model_name, level):
     model = load_object("model", level, model_name)
-    test.assertEqual(type(model), type(AffinityPropagation()))
+    validate_model_type(test, model)
 
 def validate_vectorizer_stored(test, model_name, level):
     vectorizer = load_object("vectorizer", level, model_name)
-    test.assertEqual(type(vectorizer), type(TfidfVectorizer()))
+    validate_vectorizer_type(test, vectorizer)
 
 def validate_reference_documents_stored(test, model_name, level, expected):
     reference_documents = load_object("reference_documents", level, model_name)
