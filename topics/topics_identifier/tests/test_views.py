@@ -1,10 +1,10 @@
 from django.test import TestCase
+from testing_commons.mock_web_client import get_response, post_response
 from topics_identifier.models import Topic
-from .mocks import mock_threads_with_topic, mock_topic
+from .mocks import mock_topic
 from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
-from .mock_web_client import get_response, post_response
 from .examples_models import test_model_name
 from .example_trees import example_terms
 from .validations_views import *
@@ -16,41 +16,6 @@ class ViewsTests(TestCase):
         page = 'topics_identifier'
         response = get_response(page)
         validate_page(self, response)
-
-    def test_generate_model_view_form(self):
-        page = 'generate_model'
-        response = get_response(page)
-        validate_page(self, response)
-        self.assertContains(response, "Model name")
-        self.assertContains(response, "Document types")
-        self.assertContains(response, "Max number of documents")
-        self.assertContains(response, "Max tree level")
-
-    def test_generate_model_view_post_level0(self):
-        #Initialize
-        page = 'generate_model'
-        name = "delete_me_generate_model_test"
-        max_level = 0
-        parameters = { "model_name": name, "document_types":"both",
-                       "max_num_documents": 100, "max_level": max_level }
-        mock_documents()
-        #Execute
-        response = post_response(page, parameters)
-        #Validate
-        validate_generate_model_view_post(self, response, name, max_level)
-
-    def test_generate_model_view_post_level1(self):
-        #Initialize
-        page = 'generate_model'
-        name = "delete_me_generate_model_test"
-        max_level = 1
-        parameters = { "model_name": name, "document_types":"both",
-                       "max_num_documents": 100, "max_level": max_level }
-        mock_documents()
-        #Execute
-        response = post_response(page, parameters)
-        #Validate
-        validate_generate_model_view_post(self, response, name, max_level)
 
     def test_generate_tree_view_form(self):
         page = 'generate_tree'
@@ -172,36 +137,3 @@ class ViewsTests(TestCase):
         page = 'assign_topic_from_file'
         response = get_response(page)
         validate_page(self, response)
-
-    def test_cluster_topic_threads_view_form(self):
-        page = 'cluster_topic_threads'
-        response = get_response(page)
-        validate_page(self, response)
-        self.assertContains(response, "Cluster topic threads")
-        self.assertContains(response, "Topic")
-        self.assertContains(response, "Model name")
-
-    def test_cluster_topic_threads_view_post(self):
-        #Initialize
-        page = 'cluster_topic_threads'
-        topic_name = "topic_test"
-        topic = Topic(name=topic_name)
-        mock_threads_with_topic(topic)
-        parameters = { "model_name":test_model_name, "topic":topic.id}
-        #Execute
-        response = post_response(page, parameters)
-        #Validate
-        validate_cluster_topic_threads_post(self, response, topic_name)
-
-    def test_cluster_topic_threads_view_post_same_topic_twice(self):
-        #Initialize
-        page = 'cluster_topic_threads'
-        topic_name = "topic_test"
-        topic = Topic(name=topic_name)
-        mock_threads_with_topic(topic)
-        parameters = { "model_name":test_model_name, "topic":topic.id}
-        #Execute
-        post_response(page, parameters)
-        response = post_response(page, parameters)
-        #Validate
-        validate_cluster_topic_threads_post(self, response, topic_name+"_2")

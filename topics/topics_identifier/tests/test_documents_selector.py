@@ -3,7 +3,7 @@ from topics_identifier.documents_selector import *
 from topics_identifier.models import Document
 from .examples_documents_selector import example_doc_options, doc_options_with_batches
 from .example_documents import *
-from .examples import example_threads, test_batch_size
+from .examples import test_batch_size, example_threads
 from .mocks import mock_thread
 from .mock_documents import mock_news_and_comments, mock_documents
 from .validations_documents import validate_documents
@@ -31,14 +31,6 @@ class DocumentsSelectorTests(TestCase):
         news, comments = short_document_types(document_types="comments")
         self.assertEqual(news, False)
         self.assertEqual(comments, True)
-
-    def test_ensure_documents_limit(self):
-        documents1 = example_documents
-        self.assertEqual(len(documents1), 10)
-        limit = 5
-        documents2 = ensure_documents_limit(documents1, limit)
-        self.assertEqual(len(documents2), 5)
-        self.assertEqual(documents1[:limit], documents2)
 
     def test_select_documents_from_database_news(self):
         documents_options = { "types": "news"}
@@ -118,27 +110,13 @@ class DocumentsSelectorTests(TestCase):
         for i in range(len(batch)):
             self.assertEqual(batch[i], expected[i])
 
-    def test_select_documents(self):
+    def test_select_documents_no_batch(self):
         mock_news_and_comments()
         expected_content = expected_content_all()
         documents_content = select_documents(example_doc_options)
         self.assertEqual(documents_content, expected_content)
 
-    def test_select_documents_with_max_num_documents(self):
-        mock_news_and_comments()
-        documents_options = { "types": "both", "max_num_documents":5, "batches": False }
-        documents_content = select_documents(documents_options)
-        expected_content = expected_content_all()
-        self.assertEqual(len(documents_content), 5)
-        self.assertEqual(documents_content, expected_content[:5])
-
-    def test_select_documents_for_model_generation(self):
-        mock_news_and_comments()
-        expected_content = expected_content_all()
-        documents_content = select_documents(example_doc_options)
-        self.assertEqual(documents_content, expected_content)
-
-    def test_select_documents_for_doc_classification_batch1(self):
+    def test_select_documents_batch1(self):
         #Initialize
         mock_news_and_comments()
         batch_options = { "size": test_batch_size, "number": 1 }
@@ -148,7 +126,7 @@ class DocumentsSelectorTests(TestCase):
         expected_content = expected_content_all()[:test_batch_size]
         self.assertEqual(documents_content, expected_content)
 
-    def test_select_documents_for_doc_classification_batch2(self):
+    def test_select_documents_batch2(self):
         #Initialize
         mock_news_and_comments()
         batch_options = { "size": test_batch_size, "number": 2 }

@@ -1,10 +1,9 @@
 import os
+from config import sklearn_models_path, document_types
 from .models import Topic
-from .config import max_tree_level, sklearn_models_path
 
 
 def get_documents_options():
-    document_types = ["news", "comments", "both"]
     options = []
     for type in document_types:
         options.append((type, type))
@@ -23,13 +22,6 @@ def get_topics_options():
         options = []
         for topic in topics_list:
             options.append((topic.id, topic))
-    return options
-
-def get_tree_levels():
-    options = []
-    max_level = int(max_tree_level) + 1
-    for level in range(max_level):
-        options.append((level, str(level)))
     return options
 
 def get_model_name_from_filename(filename):

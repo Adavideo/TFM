@@ -1,5 +1,5 @@
 from .models import Document
-from .config import default_documents_limit, batch_size
+from config import batch_size
 
 
 def short_document_types(document_types):
@@ -13,16 +13,6 @@ def short_document_types(document_types):
         news = False
         comments = True
     return news, comments
-
-# Cutting to the maximum number of documents, to not overload the aviable memory.
-def ensure_documents_limit(documents, limit):
-    if not limit: limit = default_documents_limit
-    num_documents = len(documents)
-    print("Documents selected: "+str(num_documents))
-    if num_documents > limit:
-        print("Adjusting to limit of "+str(limit)+" documents")
-        documents = documents[:limit]
-    return documents
 
 def check_document_types(documents_options):
     document_types = documents_options["types"]
@@ -55,16 +45,12 @@ def get_documents_batch(document_list, batch_options):
     return batch
 
 def select_documents(documents_options, batch_options=None):
-    documents_list = select_documents_from_database(documents_options)
-
-    if documents_options["batches"]:
-        documents_list = get_documents_batch(documents_list, batch_options)
-
-    elif documents_options["max_num_documents"]:
-        limit = documents_options["max_num_documents"]
-        documents_list = ensure_documents_limit(documents_list, limit)
-
-    documents_content = get_documents_content(documents_list)
+    all_documents = select_documents_from_database(documents_options)
+    if batch_options:
+        documents_batch = get_documents_batch(all_documents, batch_options)
+    else:
+        documents_batch = all_documents
+    documents_content = get_documents_content(documents_batch)
     return documents_content
 
 def get_documents_from_threads(threads_list):

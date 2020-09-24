@@ -1,13 +1,8 @@
 from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
-from topics_identifier.ModelsManager import ModelsManager
-from .mock_documents import mock_documents
-from .mock_generators import mock_model, mock_models_manager
-from .validations_models import *
-from .examples_models import test_model_name
-from .example_documents import example_documents
-from .example_trees import example_tree
+from .mock_generators import mock_models_manager
+from testing_commons.example_documents import example_reference_documents
 
 
 class ModelsManagerTests(TestCase):
@@ -37,73 +32,11 @@ class ModelsManagerTests(TestCase):
         manager = mock_models_manager()
         reference_documents = manager.load_object("reference_documents", level)
         expected = example_reference_documents[level]
-        validate_reference_documents(self, reference_documents, level, expected)
+        self.assertEqual(reference_documents, expected)
 
     def test_load_reference_documents_level1(self):
         level = 1
         manager = mock_models_manager()
         reference_documents = manager.load_object("reference_documents", level)
         expected = example_reference_documents[level]
-        validate_reference_documents(self, reference_documents, level, expected)
-
-    def test_store_model(self):
-        model_name = "delete_me"
-        level = 0
-        model = mock_model()
-        manager = mock_models_manager(name=model_name)
-        manager.store_object(model, "model", level)
-        validate_model_stored(self, model_name, level)
-
-    def test_store_vectorizer(self):
-        manager1 = mock_models_manager()
-        level = 0
-        vectorizer = manager1.load_object("vectorizer", level)
-        model_name = "delete_me"
-        manager2 = mock_models_manager(name=model_name)
-        # Execute
-        manager2.store_object(vectorizer, "vectorizer", level)
-        # Validate
-        validate_vectorizer_stored(self, model_name, level)
-
-    def test_store_reference_documents_level0(self):
-        # Initialize
-        level = 0
-        manager_load = mock_models_manager()
-        reference_documents = manager_load.load_object("reference_documents", level)
-        # Execute
-        manager_store = mock_models_manager(name="delete_me")
-        manager_store.store_object(reference_documents, "reference_documents", level)
-        # Validate
-        expected = example_reference_documents[level]
-        validate_reference_documents_stored(self, model_name="delete_me", level=level, expected=expected)
-
-    def test_store_reference_documents_level1(self):
-        # Initialize
-        level = 1
-        manager_load = mock_models_manager()
-        reference_documents = manager_load.load_object("reference_documents", level)
-        # Execute
-        manager_store = mock_models_manager(name="delete_me")
-        manager_store.store_object(reference_documents, "reference_documents", level)
-        # Validate
-        expected = example_reference_documents[level]
-        validate_reference_documents_stored(self, model_name="delete_me", level=level, expected=expected)
-
-    def test_generate_and_store_model_level0(self):
-        level = 0
-        model_name = "delete_me_2"
-        manager = mock_models_manager(name=model_name)
-        filenames = manager.generate_and_store_models(example_documents, level)
-        validate_filenames(self, filenames, name=model_name, num_levels=level+1)
-        validate_model_stored(self, model_name, level)
-        validate_vectorizer_stored(self, model_name, level)
-
-    def test_generate_and_store_model_level1(self):
-        level = 1
-        model_name = "delete_me_2"
-        mock_documents()
-        manager = mock_models_manager(name=model_name)
-        filenames = manager.generate_and_store_models(example_documents, level)
-        validate_filenames(self, filenames, name=model_name, num_levels=level+1)
-        validate_model_stored(self, model_name, level)
-        validate_vectorizer_stored(self, model_name, level)
+        self.assertEqual(reference_documents, expected)

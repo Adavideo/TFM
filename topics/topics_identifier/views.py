@@ -4,36 +4,12 @@ from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree
 from .topics_assignations import assign_topic_from_file
-from .ModelsManager import ModelsManager
-from .documents_selector import select_documents
 from .views_util import *
 
 
 def home_view(request):
     template = "topics_identifier/topics_identifier_home.html"
     context = {}
-    return render(request, template, context)
-
-def generate_model_view(request):
-    template = "topics_identifier/generate_model.html"
-    context = {}
-    if request.method == "GET":
-        form = ModelsForm()
-    if request.method == "POST":
-        form = ModelsForm(request.POST)
-        model_name = request.POST["model_name"]
-        context["model_name"] = model_name
-        document_types = request.POST["document_types"]
-        max_num_documents = int(request.POST["max_num_documents"])
-        documents_options = { "types": document_types,
-                              "max_num_documents": max_num_documents,
-                              "batches": False }
-        documents = select_documents(documents_options)
-        max_level = int(request.POST["max_level"])
-        models_manager = ModelsManager(name=model_name)
-        filenames = models_manager.generate_and_store_models(documents, max_level)
-        context["filenames"] = filenames
-    context["form"] = form
     return render(request, template, context)
 
 def generate_tree_view(request):
@@ -94,12 +70,4 @@ def assign_topic_from_file_view(request):
         topic_name = request.POST["topic_name"]
         threads_list = assign_topic_from_file(topic_name)
         context["threads_list"] = threads_list
-    return render(request, template, context)
-
-def cluster_topic_threads_view(request):
-    template = "topics_identifier/cluster_topic_threads.html"
-    form = ClusterTopicThreadsForm()
-    context = { "form": form }
-    if request.method == "POST":
-        context = cluster_topic_threads(request)
     return render(request, template, context)

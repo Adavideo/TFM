@@ -1,7 +1,8 @@
 from topics_identifier.models import Tree
 
+
 def validate_menu(test, response):
-    menu_texts = ["Generate clusters tree", "Cluster topic threads", "Show trees"]
+    menu_texts = ["Generate clusters tree", "Show trees"]
     for text in menu_texts:
         test.assertContains(response, text)
 
@@ -11,18 +12,6 @@ def validate_page(test, response):
     test.assertContains(response, head_text)
     validate_menu(test, response)
     return response
-
-def validate_generate_model_view_post(test, response, name, max_level):
-    validate_page(test, response)
-    test.assertContains(response, "Generated model: "+ name)
-    test.assertContains(response, "Filenames:")
-    for level in range(max_level+1):
-        model_filename = "models/sklearn/"+name+"_model_level"+str(level)+".joblib"
-        vectorizer_filename = "models/sklearn/"+name+"_vectorizer_level"+str(level)+".joblib"
-        ref_docs_filename = "models/sklearn/"+name+"_reference_documents_level"+str(level)+".joblib"
-        test.assertContains(response, model_filename)
-        test.assertContains(response, vectorizer_filename)
-        test.assertContains(response, ref_docs_filename)
 
 def validate_generate_tree_view_post(test, response, tree_name):
     validate_page(test, response)
