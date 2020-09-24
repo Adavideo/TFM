@@ -1,8 +1,7 @@
-from config import max_tree_level
+from config import max_tree_level, document_types
 
 
 def get_documents_options():
-    document_types = ["news", "comments", "both"]
     options = []
     for type in document_types:
         options.append((type, type))
