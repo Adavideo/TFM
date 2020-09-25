@@ -2,7 +2,7 @@ from django.test import TestCase
 from timeline.models import Thread
 from .examples import example_threads
 from .mocks import mock_thread
-from .validations_threads import validate_thread
+from .validations import validate_thread
 
 
 def validate_documents_content(test, documents_content, expected_content):

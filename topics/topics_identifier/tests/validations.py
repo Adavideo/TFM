@@ -1,2 +1,2 @@
-from timeline.tests.validations_threads import validate_threads_list
+from testing_commons.validations_threads import validate_threads_list
 from testing_commons.validations_models import validate_model_type, validate_vectorizer_type
