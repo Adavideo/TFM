@@ -1,4 +1,4 @@
-from .validations_documents import validate_documents
+from .validations import validate_documents
 from .example_trees import example_tree
 
 
@@ -25,14 +25,17 @@ def validate_clusters_terms(test, clusters_terms, level):
     for i in range(len(example_clusters)):
         test.assertEqual(str(clusters_terms[i]), example_clusters[i]["terms"])
 
+def validate_clusters_documents(test, clusters_documents, example):
+    for i in range(len(example["clusters_documents"])):
+        test.assertEqual(clusters_documents[i], example["clusters_documents"][i])
+
 
 # CLUSTERS NAVIGATION
 
 def validate_children(test, cluster, cluster_info):
-    i = 0
-    for child in cluster.children():
-        test.assertEqual(cluster_info["children"][i]["cluster"], child)
-        i += 1
+    children = cluster.children()
+    for i in range(len(children)):
+        test.assertEqual(cluster_info["children"][i]["cluster"], children[i])
 
 def validate_clusters_information(test, cluster, cluster_info, with_children):
     test.assertEqual(cluster_info["cluster"], cluster)

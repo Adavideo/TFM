@@ -14,7 +14,3 @@ def validate_clusters_information_in_clusters_generator(test, clusters_generator
     test.assertEqual(clusters_generator.number_of_clusters, len(expected["clusters"]))
     test.assertEqual(clusters_generator.terms, expected["terms"])
     test.assertEqual(clusters_generator.reference_documents, expected["reference_documents"])
-
-def validate_clusters_documents(test, clusters_documents, example):
-    for i in range(len(example["clusters_documents"])):
-        test.assertEqual(clusters_documents[i], example["clusters_documents"][i])

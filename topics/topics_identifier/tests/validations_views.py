@@ -35,11 +35,3 @@ def validate_contains_tree(test, response, tree, max_level=0):
     clusters_max_level = tree.get_clusters_of_level(max_level)
     for cluster in clusters_max_level:
         validate_contains_cluster(test, response, cluster, with_documents=False)
-
-def validate_cluster_topic_threads_post(test, response, topic_name):
-    validate_page(test, response)
-    test.assertContains(response, topic_name)
-    tree = Tree.objects.get(name=topic_name)
-    test.assertContains(response, tree.name)
-    for cluster in tree.get_clusters_of_level(level=0):
-        validate_contains_cluster(test, response, cluster, with_documents=False)

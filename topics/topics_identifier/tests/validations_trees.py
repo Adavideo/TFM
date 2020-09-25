@@ -1,7 +1,6 @@
-from topics_identifier.models import Cluster
 from .example_trees import example_tree
+from .validations import validate_documents
 from .validations_clusters import validate_clusters_list
-from .validations_documents import validate_documents
 
 
 def validate_tree_document_types(test, tree, document_types):
@@ -21,7 +20,6 @@ def validate_number_of_clusters(test, level, clusters):
     test.assertIs(len(clusters), num_clusters)
 
 def validate_tree_level(test, tree, level, with_documents=True, with_children=True):
-    #clusters_list = Cluster.objects.filter(tree=tree, level=level)
     clusters_list = tree.get_clusters_of_level(level)
     validate_number_of_clusters(test, level, clusters_list)
     example_clusters = example_tree[level]["clusters"]

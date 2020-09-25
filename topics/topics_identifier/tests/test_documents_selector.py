@@ -3,7 +3,7 @@ from topics_identifier.documents_selector import *
 from topics_identifier.models import Document
 from .examples import *
 from .mocks import mock_news_and_comments, mock_documents
-from .validations_documents import validate_documents
+from .validations import validate_documents
 
 
 def expected_content_all():
