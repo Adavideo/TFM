@@ -59,7 +59,7 @@ class TreeGenerator:
 
     def get_documents(self, level, batch_number=None, size=batch_size):
         all_documents = self.get_all_level_documents(level)
-        if not self.documents_options["batches"]:
+        if not self.documents_options["batches"] or not batch_number:
             return all_documents
         else:
             batch_options = get_batch_options(self.documents_options, batch_number, size)
