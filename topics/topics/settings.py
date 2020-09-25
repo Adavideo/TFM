@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'csv_import.apps.CsvImportConfig',
     'models_generator.apps.ModelsGeneratorConfig',
     'timeline.apps.TimelineConfig',
+    'metrics.apps.MetricsConfig',
 ]
 
 MIDDLEWARE = [

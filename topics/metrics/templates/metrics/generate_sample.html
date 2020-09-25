@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "metrics/metrics_menu.html" %}
+
+  {% if not filename %}
+      <h2>Generate sample</h2>
+      <hr>
+      <form action="" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Generate sample">
+      </form>
+
+  {% else %}
+
+    <h2>Sample generated</h2>
+    <hr>
+      <b>File:</b> {{ filename }}.txt<br><br>
+      <b>Topic:</b> {{ topic.name }}<br><br>
+      <b>Documents:</b><br><br>
+        {% for doc in documents %}
+          {{ doc }}<br><br>
+        {% endfor %}
+
+  {% endif %}
+
+{% endblock %}
