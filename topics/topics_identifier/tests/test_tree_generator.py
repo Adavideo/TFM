@@ -3,7 +3,7 @@ from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from .examples import test_batch_size, doc_options_with_batches, test_model_name
 from .example_trees import tree_name, example_tree
-from .mock_documents import mock_documents
+from .mocks import mock_documents
 from .mock_generators import mock_tree_generator, mock_clusters_generator
 from .validations_trees import *
 from .validations_batches import validate_batch_documents

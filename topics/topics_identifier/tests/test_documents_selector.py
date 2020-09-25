@@ -2,7 +2,7 @@ from django.test import TestCase
 from topics_identifier.documents_selector import *
 from topics_identifier.models import Document
 from .examples import *
-from .mock_documents import mock_news_and_comments, mock_documents
+from .mocks import mock_news_and_comments, mock_documents
 from .validations_documents import validate_documents
 
 

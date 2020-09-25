@@ -1,9 +1,7 @@
 from django.test import TestCase
 from .examples import test_model_name
 from .example_trees import example_terms
-from testing_commons.mock_web_client import get_response, post_response
-from .mocks import mock_topic
-from .mock_documents import mock_documents
+from .mocks import mock_topic, mock_documents, get_response, post_response
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
 from .validations_views import *

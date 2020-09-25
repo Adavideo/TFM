@@ -1,9 +1,7 @@
 from django.test import TestCase
 from topics_identifier.views_util import *
 from .examples import test_model_name
-from testing_commons.mock_web_client import post_request
-from .mocks import mock_topic
-from .mock_documents import mock_documents
+from .mocks import mock_topic, mock_documents, post_request
 from .mock_clusters import mock_clusters_list
 
 

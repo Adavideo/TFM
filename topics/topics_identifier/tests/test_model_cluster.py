@@ -1,11 +1,11 @@
 from django.test import TestCase
+from topics_identifier.models import Cluster, Document
+from .mocks import mock_document
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree, mock_empty_tree
-from .mock_documents import mock_document
-from .example_trees import example_tree
 from .examples import example_documents
+from .example_trees import example_tree
 from .validations_clusters import validate_clusters_list, validate_cluster
-from topics_identifier.models import Cluster, Document
 
 
 class ClusterTests(TestCase):

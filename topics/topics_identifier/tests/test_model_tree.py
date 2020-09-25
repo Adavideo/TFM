@@ -1,11 +1,12 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Tree
+from .mocks import mock_documents
 from .example_trees import example_tree, clusters_documents
 from .mock_trees import mock_tree, mock_empty_tree
 from .mock_clusters import mock_clusters_without_tree
-from .mock_documents import mock_documents
 from .validations_clusters import validate_cluster, validate_clusters_list
 from .validations_trees import validate_tree, validate_tree_document_types
+
 
 class TreeTests(TestCase):
 
