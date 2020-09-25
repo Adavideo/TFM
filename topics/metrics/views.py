@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .forms import GenerateSampleForm
 from timeline.models import Topic
+from .forms import GenerateSampleForm
+from .SampleGenerator import SampleGenerator
 
 
 def home_view(request):
@@ -17,5 +18,6 @@ def generate_sample_view(request):
         filename = request.POST["filename"]
         topic_id = request.POST["topic"]
         topic = Topic.objects.get(id=topic_id)
-        context = { "filename": filename, "topic": topic }
+        documents = SampleGenerator(topic, filename).generate_sample()
+        context = { "filename": filename, "topic": topic, "documents": documents }
     return render(request, template, context)

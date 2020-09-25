@@ -9,3 +9,6 @@ document_types = ["news", "comments", "both"]
 # topics identifier
 tree_name_max_length = 25
 batch_size = 1000
+
+# metrics
+sample_size = 100
