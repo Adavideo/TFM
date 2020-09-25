@@ -1,8 +1,9 @@
 from django.test import TestCase
+from timeline.models import Thread
+from csv_import.csv_importer import *
 from .examples_csv_processed import *
 from .validations import validate_document_with_thread, validate_processed_line
-from csv_import.csv_importer import *
-from timeline.models import Thread
+
 
 news = example_processed_news
 comment = example_processed_comment

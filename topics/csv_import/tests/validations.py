@@ -20,3 +20,9 @@ def validate_document_with_thread(test, doc, expected, is_news):
     test.assertEqual(doc.author, expected["author"])
     test.assertEqual(doc.date, expected["date"])
     validate_thread(test, doc.thread, expected, is_news)
+
+def validate_page(test, response):
+    test.assertEqual(response.status_code, 200)
+    head_text = "Import CSV file"
+    test.assertContains(response, head_text)
+    return response

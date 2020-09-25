@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from .views_util import get_response, post_response, validate_page
 from .example_csv_to_import import example_csv
+from .mocks import get_response, post_response
+from .validations import validate_page
+
 
 class ViewsTests(TestCase):
 
