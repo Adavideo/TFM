@@ -1,5 +1,6 @@
 from django.test import TestCase
-from models_generator.forms_util import get_documents_options, get_tree_levels
+from common.forms import get_documents_options
+from models_generator.forms_util import get_tree_levels
 
 
 class FormsUtilTests(TestCase):

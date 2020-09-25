@@ -1,4 +1,5 @@
 from django.test import TestCase
+from common.forms import get_topics_options
 from topics_identifier.forms_util import *
 from .examples import test_model_name, filenames_test_list
 from .mocks import mock_topic

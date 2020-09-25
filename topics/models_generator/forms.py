@@ -1,6 +1,7 @@
 from django import forms
 from config import default_documents_limit
-from .forms_util import get_documents_options, get_tree_levels
+from common.forms import get_documents_options
+from .forms_util import get_tree_levels
 
 
 class ModelsForm(forms.Form):

@@ -1,11 +1,5 @@
-from config import max_tree_level, document_types
+from config import max_tree_level
 
-
-def get_documents_options():
-    options = []
-    for type in document_types:
-        options.append((type, type))
-    return options
 
 def get_tree_levels():
     options = []

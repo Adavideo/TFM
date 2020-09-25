@@ -1,28 +1,6 @@
 import os
-from config import sklearn_models_path, document_types
-from .models import Topic
+from config import sklearn_models_path
 
-
-def get_documents_options():
-    options = []
-    for type in document_types:
-        options.append((type, type))
-    return options
-
-def get_topics_options():
-    try:
-        topics_list = Topic.objects.all()
-        len(topics_list)
-    except:
-        topics_list = None
-
-    if not topics_list:
-        options = [("","")]
-    else:
-        options = []
-        for topic in topics_list:
-            options.append((topic.id, topic))
-    return options
 
 def get_model_name_from_filename(filename):
     parts = filename.split("_")
