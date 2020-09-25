@@ -1,12 +1,11 @@
 from django.test import TestCase
+from .examples import test_model_name
+from .example_trees import example_terms
 from testing_commons.mock_web_client import get_response, post_response
-from topics_identifier.models import Topic
 from .mocks import mock_topic
 from .mock_documents import mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
-from .examples_models import test_model_name
-from .example_trees import example_terms
 from .validations_views import *
 
 

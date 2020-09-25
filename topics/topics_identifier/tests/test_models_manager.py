@@ -1,8 +1,8 @@
 from django.test import TestCase
 from sklearn.cluster import AffinityPropagation
 from sklearn.feature_extraction.text import TfidfVectorizer
+from .examples import example_reference_documents
 from .mock_generators import mock_models_manager
-from testing_commons.example_documents import example_reference_documents
 
 
 class ModelsManagerTests(TestCase):

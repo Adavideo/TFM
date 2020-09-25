@@ -1,12 +1,10 @@
 from django.test import TestCase
 from topics_identifier.TreeGenerator import TreeGenerator
 from topics_identifier.ClustersGenerator import ClustersGenerator
+from .examples import test_batch_size, doc_options_with_batches, test_model_name
+from .example_trees import tree_name, example_tree
 from .mock_documents import mock_documents
 from .mock_generators import mock_tree_generator, mock_clusters_generator
-from .example_trees import tree_name, example_tree
-from .examples_models import test_model_name
-from .examples import test_batch_size
-from .examples_documents_selector import example_doc_options, doc_options_with_batches
 from .validations_trees import *
 from .validations_batches import validate_batch_documents
 
@@ -18,7 +16,7 @@ class TreeGeneratorTests(TestCase):
         tree_generator = mock_tree_generator(max_level=max_level)
         tree = tree_generator.tree
         self.assertEqual(tree.name, tree_name)
-        validate_tree_document_types(self, tree, example_doc_options["types"])
+        validate_tree_document_types(self, tree, doc_options_with_batches["types"])
         self.assertEqual(tree_generator.model_name, test_model_name)
         self.assertEqual(tree_generator.tree.name, tree_name)
         self.assertEqual(tree_generator.tree.max_level, max_level)
@@ -28,7 +26,7 @@ class TreeGeneratorTests(TestCase):
         tree_generator = mock_tree_generator(max_level=max_level)
         tree = tree_generator.tree
         self.assertEqual(tree.name, tree_name)
-        validate_tree_document_types(self, tree, example_doc_options["types"])
+        validate_tree_document_types(self, tree, doc_options_with_batches["types"])
         self.assertEqual(tree_generator.model_name, test_model_name)
         self.assertEqual(tree_generator.tree.name, tree_name)
         self.assertEqual(tree_generator.tree.max_level, max_level)
@@ -37,7 +35,7 @@ class TreeGeneratorTests(TestCase):
 class GenerateTreeStructureTests(TestCase):
 
     def test_create_empty_tree(self):
-        tree_generator = TreeGenerator("", test_model_name, example_doc_options)
+        tree_generator = TreeGenerator("", test_model_name, doc_options_with_batches)
         tree = tree_generator.create_empty_tree(tree_name)
         self.assertEqual(tree.name, tree_name)
 
@@ -227,7 +225,7 @@ class MainLoopTests(TestCase):
 
     def test_generate_tree(self):
         mock_documents()
-        tree_generator = TreeGenerator(tree_name, test_model_name, example_doc_options, max_level=1)
+        tree_generator = TreeGenerator(tree_name, test_model_name, doc_options_with_batches, max_level=1)
         clusters_level1 = tree_generator.generate_tree()
         clusters_level0 = tree_generator.tree.get_clusters_of_level(level=0)
         self.assertEqual(len(clusters_level0), 4)

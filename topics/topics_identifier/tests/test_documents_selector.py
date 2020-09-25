@@ -1,10 +1,7 @@
 from django.test import TestCase
 from topics_identifier.documents_selector import *
 from topics_identifier.models import Document
-from .examples_documents_selector import example_doc_options, doc_options_with_batches
-from .example_documents import *
-from .examples import test_batch_size, example_threads
-from .mocks import mock_thread
+from .examples import *
 from .mock_documents import mock_news_and_comments, mock_documents
 from .validations_documents import validate_documents
 
@@ -113,7 +110,8 @@ class DocumentsSelectorTests(TestCase):
     def test_select_documents_no_batch(self):
         mock_news_and_comments()
         expected_content = expected_content_all()
-        documents_content = select_documents(example_doc_options)
+        doc_options = { "types": "both", "Batches": False }
+        documents_content = select_documents(doc_options)
         self.assertEqual(documents_content, expected_content)
 
     def test_select_documents_batch1(self):
@@ -135,17 +133,3 @@ class DocumentsSelectorTests(TestCase):
         #Validate
         expected_content = expected_content_all()[test_batch_size:test_batch_size*batch_options["number"]]
         self.assertEqual(documents_content, expected_content)
-
-    def test_get_documents_from_threads_one_thread(self):
-        thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
-        threads_list = [ thread0 ]
-        documents = get_documents_from_threads(threads_list)
-        expected_content = example_threads[0]["documents_content"]
-        self.assertEqual(documents, expected_content)
-
-    def test_get_documents_from_threads_two_threads(self):
-        thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
-        thread1 = mock_thread(thread_number=1, with_documents=True, news_number=1)
-        threads_list = [ thread0, thread1 ]
-        documents = get_documents_from_threads(threads_list)
-        self.assertEqual(documents, all_threads_content)

@@ -1,7 +1,6 @@
 from django.test import TestCase
 from topics_identifier.batches_util import *
-from .examples import test_batch_size
-from .examples_documents_selector import example_doc_options, doc_options_with_batches
+from .examples import test_batch_size, doc_options_with_batches
 
 
 class TreeBatchesUtilTest(TestCase):
@@ -14,7 +13,8 @@ class TreeBatchesUtilTest(TestCase):
 
     def test_get_batch_options_batches_false(self):
         batch_number = 1
-        batch_options = get_batch_options(example_doc_options, batch_number, test_batch_size)
+        doc_options = { "types": "both", "batches": False }
+        batch_options = get_batch_options(doc_options, batch_number, test_batch_size)
         self.assertEqual(batch_options, None)
 
     def test_get_number_of_batches_even(self):

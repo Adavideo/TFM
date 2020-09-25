@@ -1,4 +1,4 @@
-from timeline.tests.example_documents import comments_content, news_content
+from .examples import comments_content, news_content
 from .example_trees import clusters_documents
 
 

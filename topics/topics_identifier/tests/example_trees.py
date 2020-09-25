@@ -1,4 +1,4 @@
-from .example_documents import news_content, comments_content
+from .examples import news_content, comments_content
 
 
 tree_name = "test_comments10"
