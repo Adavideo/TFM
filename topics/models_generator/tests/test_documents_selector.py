@@ -1,7 +1,7 @@
 from django.test import TestCase
-from testing_commons.example_documents import *
-from testing_commons.mock_documents import mock_news_and_comments, mock_documents
-from testing_commons.validations_documents import validate_documents
+from common.testing.example_documents import *
+from common.testing.mock_documents import mock_news_and_comments, mock_documents
+from common.testing.validations_documents import validate_documents
 from timeline.models import Document
 from models_generator.documents_selector import *
 from .examples import example_max_documents

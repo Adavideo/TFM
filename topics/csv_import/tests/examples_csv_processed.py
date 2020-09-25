@@ -1,4 +1,4 @@
-from testing_commons.dates import get_date
+from common.testing.dates import get_date
 
 news_header = '''link_id,link_author,link_date,link_uri,link_url_title,link_title,link_content'''
 #news_header = '''"link_id","link_author","link_date","link_uri","link_url_title","link_title","link_content"'''

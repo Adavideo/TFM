@@ -1,1 +1,1 @@
-from testing_commons.validations_threads import validate_thread
+from common.testing.validations_threads import validate_thread

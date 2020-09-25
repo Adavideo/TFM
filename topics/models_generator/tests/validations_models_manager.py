@@ -1,5 +1,5 @@
 from .load import load_object
-from testing_commons.validations_models import validate_model_type, validate_vectorizer_type
+from common.testing.validations_models import validate_model_type, validate_vectorizer_type
 
 
 def validate_model_stored(test, model_name, level):

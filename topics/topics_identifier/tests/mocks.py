@@ -1,8 +1,8 @@
 from topics_identifier.models import ClusterTopic
-from testing_commons.mock_documents import *
-from testing_commons.mock_web_client import *
-from testing_commons.mock_threads import mock_thread, mock_threads_list
-from testing_commons.mock_topics import mock_topic
+from common.testing.mock_documents import *
+from common.testing.mock_web_client import *
+from common.testing.mock_threads import mock_thread, mock_threads_list
+from common.testing.mock_topics import mock_topic
 from .mock_clusters import mock_clusters_list
 
 

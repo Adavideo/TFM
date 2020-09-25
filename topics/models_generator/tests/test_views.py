@@ -1,6 +1,6 @@
 from django.test import TestCase
-from testing_commons.mock_documents import mock_documents
-from testing_commons.mock_web_client import get_response, post_response
+from common.testing.mock_documents import mock_documents
+from common.testing.mock_web_client import get_response, post_response
 from .validations_views import *
 
 page = 'generate_models'

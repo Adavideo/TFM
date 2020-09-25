@@ -1,5 +1,5 @@
 from django.test import TestCase
-from testing_commons.example_documents import example_documents, example_reference_documents
+from common.testing.example_documents import example_documents, example_reference_documents
 from models_generator.ModelsManager import ModelsManager
 from .validations_models_manager import *
 

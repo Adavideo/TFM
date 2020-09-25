@@ -1,8 +1,8 @@
 from django.test import TestCase
 from joblib import load
 from models_generator.ModelsManager import ModelsManager
-from testing_commons.mock_documents import mock_documents
-from testing_commons.example_documents import example_documents, example_reference_documents
+from common.testing.mock_documents import mock_documents
+from common.testing.example_documents import example_documents, example_reference_documents
 from .validations_models_manager import *
 from .load import load_object
 
