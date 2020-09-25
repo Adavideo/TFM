@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
+  <center>
+  {% for topic in topics_list %}
+    <h4>
+      <a href="{% url 'topic' topic.id %}">{{ topic.name }}</a>
+    </h4>
+  {% endfor %}</center>
+
+
+{% endblock %}

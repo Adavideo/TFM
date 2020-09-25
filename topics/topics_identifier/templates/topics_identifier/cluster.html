@@ -1,7 +1,7 @@
 
-<h3><a href="{% url 'cluster' cluster.id %}">
+<h4><a href="{% url 'cluster' cluster.id %}">
   Level {{ cluster.level }} - Cluster {{ cluster.number }}</a>
-</h3><br>
+</h4><br>
 <b>Terms:</b><br>
   {{ cluster.terms }}<br>
 <br>
@@ -19,7 +19,7 @@
 
 {% if children %}
   <hr>
-  <h3>Sub clusters: </h3><br>
+  <h4>Sub clusters: </h4><br>
   {% for child in children %}
     {% with cluster=child.cluster documents=child.documents children=child.children %}
       {% include "topics_identifier/cluster.html" %}

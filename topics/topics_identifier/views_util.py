@@ -12,6 +12,11 @@ def build_tree_generator(request, level):
     tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
     return tree_generator
 
+def get_topic_clusters_with_documents(topic):
+    topic_clusters = ClusterTopic.objects.filter(topic=topic)
+    list = [ { "cluster": i.cluster, "documents": i.cluster.documents()} for i in topic_clusters ]
+    return list
+
 def assign_topic_to_clusters(request):
     # Get topic
     topic_id = request.POST["topic"]

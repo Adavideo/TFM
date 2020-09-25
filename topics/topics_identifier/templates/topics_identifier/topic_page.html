@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "topics_identifier/topics_identifier_menu.html" %}
+
+  <center><h3>Topic {{ topic.name }}</h3></center>
+  <hr>
+
+  {% for element in clusters_with_documents %}
+      {% with cluster=element.cluster documents=element.documents %}
+        {% include "topics_identifier/cluster_documents.html" %}<br>
+      {% endwith %}
+  {% endfor %}
+
+{% endblock %}

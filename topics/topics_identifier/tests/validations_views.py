@@ -2,7 +2,7 @@ from topics_identifier.models import Tree
 
 
 def validate_menu(test, response):
-    menu_texts = ["Generate clusters tree", "Show trees"]
+    menu_texts = ["Generate clusters tree", "Clusters trees", "Topics"]
     for text in menu_texts:
         test.assertContains(response, text)
 

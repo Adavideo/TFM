@@ -17,13 +17,9 @@ def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False):
             cluster.add_document(doc)
     return cluster
 
-def mock_clusters_list(num=3):
+def mock_clusters_list(num=3, with_documents=False):
     tree = mock_empty_tree()
-    clusters_list = []
-    for i in range(num):
-        cluster = Cluster(tree=tree, number=i, terms="", level=0)
-        cluster.save()
-        clusters_list.append(cluster)
+    clusters_list = [ mock_cluster(tree, num_cluster=i, with_documents=with_documents) for i in range(num) ]
     return clusters_list
 
 def mock_clusters_without_tree(level):

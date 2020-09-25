@@ -1,7 +1,8 @@
 from django.test import TestCase
+from topics_identifier.models import ClusterTopic
 from .examples import test_model_name
 from .example_trees import example_terms
-from .mocks import mock_topic, mock_documents, get_response, post_response
+from .mocks import *
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
 from .validations_views import *
@@ -113,6 +114,30 @@ class ViewsTests(TestCase):
         response = get_response(page, arguments=[cluster.id])
         validate_page(self, response)
         validate_contains_cluster(self, response, cluster)
+
+    def test_topics_index_view(self):
+        page = 'topics_index'
+        topic1 = mock_topic(name="topic1")
+        topic2 = mock_topic(name="topic2")
+        response = get_response(page)
+        validate_page(self, response)
+        self.assertContains(response, topic1.name)
+        self.assertContains(response, topic2.name)
+
+    def test_topic_view(self):
+        # Initialize
+        page = 'topic'
+        topic, topic_clusters = mock_topic_with_clusters()
+        # Execute
+        response = get_response(page, arguments=[topic.id])
+        # Validate
+        validate_page(self, response)
+        self.assertContains(response, topic.name)
+        for cluster in topic_clusters:
+            cluster_text = "Level 0 - Cluster "+str(cluster.number)
+            self.assertContains(response, cluster_text)
+            for doc in cluster.documents():
+                self.assertContains(response, doc.content)
 
     def test_assign_topic_to_clusters_view(self):
         #Initialize

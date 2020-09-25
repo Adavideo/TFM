@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import *
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
-from .models import Cluster, Tree
+from .models import Cluster, Tree, ClusterTopic
 from .topics_assignations import assign_topic_from_file
 from .views_util import *
 
@@ -54,6 +54,19 @@ def cluster_view(request, cluster_id):
     cluster = Cluster.objects.get(id=cluster_id)
     cluster_info = compose_cluster_information(cluster, include_documents=True)
     context = { "cluster_info": cluster_info }
+    return render(request, template, context)
+
+def topics_index_view(request):
+    template = "topics_identifier/topics_index.html"
+    topics_list = Topic.objects.all()
+    context = { "topics_list": topics_list }
+    return render(request, template, context)
+
+def topic_view(request, topic_id):
+    template = "topics_identifier/topic_page.html"
+    topic = Topic.objects.get(id=topic_id)
+    clusters_with_documents = get_topic_clusters_with_documents(topic)
+    context = { "topic": topic, "clusters_with_documents": clusters_with_documents }
     return render(request, template, context)
 
 def assign_topic_to_clusters_view(request):
