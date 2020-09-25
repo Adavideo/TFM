@@ -1,0 +1,2 @@
+from testing_commons.mock_documents import mock_news, mock_comments
+from testing_commons.mock_threads import mock_thread

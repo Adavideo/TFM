@@ -1,7 +1,7 @@
 from django.test import TestCase
 from timeline.models import Thread
-from .mocks_threads import mock_thread
-from .example_threads import example_threads
+from .examples import example_threads
+from .mocks import mock_thread
 from .validations_threads import validate_thread
 
 

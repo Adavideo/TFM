@@ -1,6 +1,7 @@
 from timeline.models import Document
 from .example_documents import *
 
+
 def mock_document(content=comments_content[0], is_news=False):
     doc, created = Document.objects.get_or_create(is_news=is_news, content=content, author=example_author, date=example_date)
     if created: doc.save()
