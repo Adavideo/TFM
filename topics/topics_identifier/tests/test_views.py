@@ -6,6 +6,7 @@ from .mocks import *
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
 from .validations_views import *
+from .menus import topic_menu
 
 
 class ViewsTests(TestCase):
@@ -124,14 +125,14 @@ class ViewsTests(TestCase):
         self.assertContains(response, topic1.name)
         self.assertContains(response, topic2.name)
 
-    def test_topic_view(self):
+    def test_topic_clusters_view(self):
         # Initialize
-        page = 'topic'
+        page = 'topic_clusters'
         topic, topic_clusters = mock_topic_with_clusters()
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response)
+        validate_page(self, response, menu=topic_menu)
         self.assertContains(response, topic.name)
         for cluster in topic_clusters:
             cluster_text = "Level 0 - Cluster "+str(cluster.number)

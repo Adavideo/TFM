@@ -23,6 +23,17 @@ class AssignTopicToClustersForm(forms.Form):
                                     widget=forms.CheckboxSelectMultiple,
                                     required=False)
 
+class AssignTopicToDocumentsForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        documents = kwargs.pop("documents", [])
+        super(AssignTopicToDocumentsForm, self).__init__(*args, **kwargs)
+        self.fields['documents'] = forms.MultipleChoiceField(
+                                    label="Documents",
+                                    choices=documents,
+                                    widget=forms.CheckboxSelectMultiple,
+                                    required=False)
+
 class AssignTopicFromFileForm(forms.Form):
     topic_name = forms.CharField(max_length=100)
 

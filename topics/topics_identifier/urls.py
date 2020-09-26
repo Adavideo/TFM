@@ -9,6 +9,8 @@ urlpatterns = [
     path('cluster/<cluster_id>', views.cluster_view, name='cluster'),
     path('topics_index', views.topics_index_view, name='topics_index'),
     path('topic/<topic_id>', views.topic_view, name='topic'),
+    path('topic_clusters/<topic_id>', views.topic_clusters_view, name='topic_clusters'),
+    path('label_documents/<topic_id>', views.label_documents_view, name='label_documents'),
     path('assign_topic_to_clusters/', views.assign_topic_to_clusters_view, name='assign_topic_to_clusters'),
     path('assign_topic_from_file/', views.assign_topic_from_file_view, name='assign_topic_from_file'),
 ]

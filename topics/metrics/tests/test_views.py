@@ -18,7 +18,7 @@ class ViewsTests(TestCase):
 
     def test_generate_sample_view_post(self):
         page = "generate_sample"
-        topic, clusters = mock_topic_with_clusters()
+        topic = mock_threads_and_clusters_with_topic()
         parameters = { "topic": topic.id, "filename": "test_sample" }
         #Execute
         response = post_response(page, parameters)

@@ -1,5 +1,6 @@
 from .TreeGenerator import TreeGenerator
-from .models import Topic, Cluster, ClusterTopic
+from .models import Topic, Cluster, Document, ClusterTopic
+from .topic_clusters import get_documents_to_label
 
 
 def build_tree_generator(request, level):
@@ -12,10 +13,14 @@ def build_tree_generator(request, level):
     tree_generator = TreeGenerator(tree_name, model_name, documents_options, max_level=level)
     return tree_generator
 
-def get_topic_clusters_with_documents(topic):
-    topic_clusters = ClusterTopic.objects.filter(topic=topic)
-    list = [ { "cluster": i.cluster, "documents": i.cluster.documents()} for i in topic_clusters ]
-    return list
+def prepare_documents_for_select_field(documents):
+    choices = [ (doc.id, doc.content) for doc in documents ]
+    return choices
+
+def get_selected_documents(request):
+    documents_ids = request.POST.getlist("documents")
+    documents = [ Document.objects.get(id=id) for id in documents_ids ]
+    return documents
 
 def assign_topic_to_clusters(request):
     # Get topic

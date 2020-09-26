@@ -1,16 +1,16 @@
 from topics_identifier.models import Tree
+from .menus import topics_identifier_menu
 
 
-def validate_menu(test, response):
-    menu_texts = ["Generate clusters tree", "Clusters trees", "Topics"]
-    for text in menu_texts:
+def validate_menu(test, response, menu=topics_identifier_menu):
+    for text in menu:
         test.assertContains(response, text)
 
-def validate_page(test, response):
+def validate_page(test, response, menu=topics_identifier_menu):
     test.assertEqual(response.status_code, 200)
     head_text = "Topics identifier"
     test.assertContains(response, head_text)
-    validate_menu(test, response)
+    validate_menu(test, response, menu)
     return response
 
 def validate_generate_tree_view_post(test, response, tree_name):

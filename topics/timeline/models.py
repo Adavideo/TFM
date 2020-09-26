@@ -53,6 +53,9 @@ class Document(models.Model):
         elif created: thread.save()
         self.save()
 
+    def assign_topic(self, topic):
+        self.thread.assign_topic(topic)
+
     def __str__(self):
         text = "Document "+ str(self.id) + " - "
         if self.is_news: text += "type news, "

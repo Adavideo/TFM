@@ -2,15 +2,12 @@
 
 {% block content %}
 
-  {% include "topics_identifier/topics_identifier_menu.html" %}
-
-  <center><h3>Topic {{ topic.name }}</h3></center>
+  <center><h2>Topic {{ topic.name }}</h2></center>
   <hr>
+  {% include "topics_identifier/topic_menu.html" %}
 
-  {% for element in clusters_with_documents %}
-      {% with cluster=element.cluster documents=element.documents %}
-        {% include "topics_identifier/cluster_documents.html" %}<br>
-      {% endwith %}
+  {% for document in documents %}
+    {{ document.content }}<br><br>
   {% endfor %}
 
 {% endblock %}

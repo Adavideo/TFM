@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <center><h2>Topic {{ topic.name }}</h2></center>
+  <hr>
+  {% include "topics_identifier/topic_menu.html" %}
+
+  {% if form %}
+
+      <h4>Check the documents that belong to the topic {{ topic.name }}</h4>
+      <br>
+      <form action="{% url 'label_documents' topic.id %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Assign label">
+      </form>
+
+  {% else %}
+
+    <h3>Selected documents</h3>
+    <br>  
+    {% for document in documents %}
+      {{ document.content }}<br><br>
+    {% endfor %}
+
+  {% endif %}
+
+{% endblock %}

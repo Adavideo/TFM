@@ -4,6 +4,7 @@ from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree, ClusterTopic
 from .topics_assignations import assign_topic_from_file
+from .topic_clusters import get_topic_clusters_with_documents, get_labeled_documents
 from .views_util import *
 
 
@@ -65,8 +66,30 @@ def topics_index_view(request):
 def topic_view(request, topic_id):
     template = "topics_identifier/topic_page.html"
     topic = Topic.objects.get(id=topic_id)
+    documents = get_labeled_documents(topic)
+    context = { "topic": topic, "documents": documents }
+    return render(request, template, context)
+
+def topic_clusters_view(request, topic_id):
+    template = "topics_identifier/topic_clusters.html"
+    topic = Topic.objects.get(id=topic_id)
     clusters_with_documents = get_topic_clusters_with_documents(topic)
     context = { "topic": topic, "clusters_with_documents": clusters_with_documents }
+    return render(request, template, context)
+
+def label_documents_view(request, topic_id):
+    template = "topics_identifier/label_documents.html"
+    topic = Topic.objects.get(id=topic_id)
+    if request.method == "GET":
+        documents = get_documents_to_label(topic)
+        documents_choices = prepare_documents_for_select_field(documents)
+        form = AssignTopicToDocumentsForm(request.POST, documents=documents_choices)
+        context = { "topic": topic, "form": form }
+    else:
+        selected_documents = get_selected_documents(request)
+        for doc in selected_documents:
+            doc.assign_topic(topic)
+        context = { "topic": topic, "documents": selected_documents }
     return render(request, template, context)
 
 def assign_topic_to_clusters_view(request):

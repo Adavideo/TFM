@@ -21,17 +21,11 @@ class ViewsUtilTests(TestCase):
         self.assertEqual(str(type(tree_generator)), "<class 'topics_identifier.TreeGenerator.TreeGenerator'>")
         self.assertEqual(tree_generator.tree.name, tree_name)
 
-    def test_get_topic_clusters_with_documents(self):
-        topic, topic_clusters = mock_topic_with_clusters()
-        clusters_with_documents = get_topic_clusters_with_documents(topic)
-        for i in range(len(topic_clusters)):
-            cluster = clusters_with_documents[i]["cluster"]
-            self.assertEqual(cluster, topic_clusters[i])
-            documents = cluster.documents()
-            expected = topic_clusters[i].documents()
-            self.assertNotEqual(len(expected), 0)
-            for i in range(len(expected)):
-                self.assertEqual(documents[i].content, expected[i].content )
+    def test_prepare_documents_for_select_field(self):
+        documents = mock_documents()
+        choices = prepare_documents_for_select_field(documents)
+        for i in range(len(documents)):
+            self.assertEqual( choices[i], (i+1, example_documents[i]) )
 
     def test_assign_topic_to_clusters(self):
         #Initialize
