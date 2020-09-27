@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.topic_clusters import *
 from .examples_topics import *
-from .mocks import *
+from .mock_topics import mock_topic_with_clusters, mock_threads_and_clusters_with_topic
 from .validations import validate_documents_content
 
 

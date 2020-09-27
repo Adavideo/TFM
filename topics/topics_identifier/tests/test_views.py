@@ -2,9 +2,10 @@ from django.test import TestCase
 from topics_identifier.models import ClusterTopic
 from .examples import test_model_name
 from .example_trees import example_terms
-from .mocks import *
+from .mocks import get_response, post_response, mock_topic, mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
+from .mock_topics import mock_topic_with_clusters
 from .validations_views import *
 from .menus import topic_menu
 
