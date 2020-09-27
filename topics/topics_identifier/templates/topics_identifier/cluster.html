@@ -12,9 +12,7 @@
 {% if documents %}
   <br>
   <b>Documents:</b><br><br>
-  {% for document in documents %}
-    {{ document.content }}<br><br>
-  {% endfor %}
+  {% include "topics_identifier/documents.html" %}
 {% endif %}
 
 {% if children %}

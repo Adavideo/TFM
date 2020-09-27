@@ -6,8 +6,6 @@
   <hr>
   {% include "topics_identifier/topic_menu.html" %}
 
-  {% for document in documents %}
-    {{ document.content }}<br><br>
-  {% endfor %}
+  {% include "topics_identifier/documents.html" %}
 
 {% endblock %}

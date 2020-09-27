@@ -3,6 +3,4 @@
   Level {{ cluster.level }} - Cluster {{ cluster.number }}</a>
 </h4><br>
 
-  {% for document in documents %}
-    {{ document.content }}<br><br>
-  {% endfor %}
+  {% include "topics_identifier/documents.html" %}
