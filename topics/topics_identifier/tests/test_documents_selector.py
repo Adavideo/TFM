@@ -6,12 +6,6 @@ from .mocks import mock_news_and_comments, mock_documents
 from .validations import validate_documents
 
 
-def expected_content_all():
-    expected_content = [ news_content[0], news_content[1] ]
-    expected_content.extend(comments_content)
-    return expected_content
-
-
 class DocumentsSelectorTests(TestCase):
 
     def test_short_document_types_both(self):
@@ -40,14 +34,13 @@ class DocumentsSelectorTests(TestCase):
         documents_options = { "types": "comments"}
         mock_news_and_comments()
         documents_content = select_documents_from_database(documents_options)
-        validate_documents(self, documents_content, example_documents)
+        validate_documents(self, documents_content, comments_content)
 
     def test_select_documents_from_database_both(self):
         documents_options = { "types": "both"}
         mock_news_and_comments()
-        expected_content = expected_content_all()
         documents_content = select_documents_from_database(documents_options)
-        validate_documents(self, documents_content, expected_content)
+        validate_documents(self, documents_content, all_example_content)
 
     def test_get_number_of_documents_no_batches(self):
         mock_documents()
@@ -75,10 +68,9 @@ class DocumentsSelectorTests(TestCase):
 
     def test_get_documents_content(self):
         mock_news_and_comments()
-        expected_content = expected_content_all()
         documents_list = Document.objects.all()
         documents_content = get_documents_content(documents_list)
-        self.assertEqual(documents_content, expected_content)
+        self.assertEqual(documents_content, all_example_content)
 
     def test_get_documents_batch_1(self):
         #Initialize
@@ -109,10 +101,9 @@ class DocumentsSelectorTests(TestCase):
 
     def test_select_documents_no_batch(self):
         mock_news_and_comments()
-        expected_content = expected_content_all()
         doc_options = { "types": "both", "Batches": False }
         documents_content = select_documents(doc_options)
-        self.assertEqual(documents_content, expected_content)
+        self.assertEqual(documents_content, all_example_content)
 
     def test_select_documents_batch1(self):
         #Initialize
@@ -121,7 +112,7 @@ class DocumentsSelectorTests(TestCase):
         #Execute
         documents_content = select_documents(doc_options_with_batches, batch_options)
         #Validate
-        expected_content = expected_content_all()[:test_batch_size]
+        expected_content = all_example_content[:test_batch_size]
         self.assertEqual(documents_content, expected_content)
 
     def test_select_documents_batch2(self):
@@ -131,5 +122,5 @@ class DocumentsSelectorTests(TestCase):
         #Execute
         documents_content = select_documents(doc_options_with_batches, batch_options)
         #Validate
-        expected_content = expected_content_all()[test_batch_size:test_batch_size*batch_options["number"]]
+        expected_content = all_example_content[test_batch_size:test_batch_size*batch_options["number"]]
         self.assertEqual(documents_content, expected_content)

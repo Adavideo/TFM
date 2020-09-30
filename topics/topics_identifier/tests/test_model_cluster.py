@@ -62,9 +62,9 @@ class ClusterTests(TestCase):
         tree = mock_tree(level, linked=False)
         cluster = tree.get_cluster(cluster_number, level)
         children = cluster.find_children_by_reference_document()
-        self.assertEqual(len(children), 2)
-        example_clusters = example_tree[level]["clusters"][cluster_number]["children"]
-        validate_clusters_list(self, children, example_clusters, with_documents=True)
+        example_cluster = example_tree[level]["clusters"][cluster_number]
+        self.assertEqual(len(children), example_cluster["num_children"])
+        validate_clusters_list(self, children, example_cluster["children"], with_documents=True)
 
     # Tets that retuns an empty array when asking for the children of level 0 clusters
     def test_children_level0(self):

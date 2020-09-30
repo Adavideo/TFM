@@ -7,12 +7,6 @@ from models_generator.documents_selector import *
 from .examples import example_max_documents
 
 
-def expected_content_all():
-    expected_content = [ news_content[0], news_content[1] ]
-    expected_content.extend(comments_content)
-    return expected_content
-
-
 class DocumentsSelectorTests(TestCase):
 
     def test_short_document_types_both(self):
@@ -32,11 +26,9 @@ class DocumentsSelectorTests(TestCase):
 
     def test_ensure_documents_limit(self):
         documents1 = example_documents
-        self.assertEqual(len(documents1), 10)
-        limit = 5
-        documents2 = ensure_documents_limit(documents1, limit)
-        self.assertEqual(len(documents2), 5)
-        self.assertEqual(documents1[:limit], documents2)
+        documents2 = ensure_documents_limit(documents1, example_max_documents)
+        self.assertEqual(len(documents2), example_max_documents)
+        self.assertEqual(documents1[:example_max_documents], documents2)
 
     def test_select_documents_from_database_news(self):
         document_types = "news"
@@ -48,32 +40,32 @@ class DocumentsSelectorTests(TestCase):
     def test_select_documents_from_database_comments(self):
         document_types="comments"
         mock_news_and_comments()
-        documents_content = select_documents_from_database(document_types)
-        validate_documents(self, documents_content, example_documents)
+        selected_documents = select_documents_from_database(document_types)
+        validate_documents(self, selected_documents, comments_content)
 
     def test_select_documents_from_database_both(self):
         document_types="both"
-        mock_news_and_comments()
-        expected_content = expected_content_all()
-        documents_content = select_documents_from_database(document_types)
-        validate_documents(self, documents_content, expected_content)
+        expected_documents = mock_news_and_comments()
+        selected_documents = select_documents_from_database(document_types)
+        for i in range(len(expected_documents)):
+            self.assertEqual(selected_documents[i], expected_documents[i])
 
     def test_get_documents_content(self):
-        mock_news_and_comments()
-        expected_content = expected_content_all()
+        all_documents = mock_news_and_comments()
+        expected_content = [ doc.content for doc in all_documents ]
         documents_list = Document.objects.all()
         documents_content = get_documents_content(documents_list)
         self.assertEqual(documents_content, expected_content)
 
     def test_select_documents(self):
-        mock_news_and_comments()
-        expected_content = expected_content_all()
-        documents_content = select_documents(document_types="both", max_num_documents=example_max_documents)
+        all_documents = mock_news_and_comments()
+        expected_content = [ doc.content for doc in all_documents ]
+        documents_content = select_documents(document_types="both", max_num_documents=100)
         self.assertEqual(documents_content, expected_content)
 
     def test_select_documents_with_max_num_documents(self):
-        mock_news_and_comments()
-        documents_content = select_documents(document_types="both", max_num_documents=5)
-        expected_content = expected_content_all()
-        self.assertEqual(len(documents_content), 5)
-        self.assertEqual(documents_content, expected_content[:5])
+        all_documents = mock_news_and_comments()
+        expected_content = [ doc.content for doc in all_documents ]
+        documents_content = select_documents(document_types="both", max_num_documents=example_max_documents)
+        self.assertEqual(len(documents_content), example_max_documents)
+        self.assertEqual(documents_content, expected_content[:example_max_documents])

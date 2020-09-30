@@ -24,12 +24,15 @@ def validate_terms(test, response, terms_list):
     for term in terms_list:
         test.assertContains(response, term)
 
+def validate_contains_document(test, response, doc_content):
+    test.assertContains(response, doc_content[:10])
+
 def validate_contains_cluster(test, response, cluster, with_documents=True):
-    test.assertContains(response, cluster.reference_document)
+    validate_contains_document(test, response, cluster.reference_document)
     validate_terms(test, response, cluster.get_terms())
     if with_documents:
         for doc in cluster.documents():
-            test.assertContains(response, doc.content)
+            validate_contains_document(test, response, doc.content)
 
 def validate_contains_tree(test, response, tree, max_level=0):
     clusters_max_level = tree.get_clusters_of_level(max_level)

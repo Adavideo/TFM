@@ -1,7 +1,7 @@
 from django.test import TestCase
 from topics_identifier.models import Topic
 from topics_identifier.topics_assignations import *
-from .examples import news_content
+from .examples import news_content, news_titles
 from .mocks import mock_thread, mock_threads_list
 from .validations import validate_threads_list
 
@@ -13,8 +13,8 @@ class TopicsTests(TestCase):
     def test_read_file(self):
         texts_list = read_file(topic.name)
         self.assertEqual(len(texts_list), 3)
-        self.assertEqual(texts_list[0], news_content[0])
-        self.assertEqual(texts_list[1], news_content[1])
+        self.assertEqual(texts_list[0], news_titles[0])
+        self.assertEqual(texts_list[1], news_titles[1])
 
     def test_find_thread(self):
         mocked_thread = mock_thread(thread_number=0, with_documents=True, news_number=0)

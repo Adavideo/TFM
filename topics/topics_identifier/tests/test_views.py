@@ -76,7 +76,7 @@ class ViewsTests(TestCase):
         page = 'tree'
         tree = mock_tree(max_level=1, linked=True, with_documents=True, document_types="both")
         arguments = [ tree.id ]
-        valid_term = example_terms[8]
+        valid_term = 'inmunidad'
         parameters = { "search_terms": valid_term }
         #Execute
         response = post_response(page, parameters, arguments)
@@ -85,7 +85,7 @@ class ViewsTests(TestCase):
         self.assertContains(response, "Topic")
         self.assertContains(response, 'Search for: '+str(valid_term))
         self.assertContains(response, "Select clusters")
-        self.assertContains(response, "Level 0 - Cluster 1")
+        self.assertContains(response, "Level 0 - Cluster 2")
 
     def test_tree_view_search_post_empty_search(self):
         #Initialize
@@ -139,7 +139,7 @@ class ViewsTests(TestCase):
             cluster_text = "Level 0 - Cluster "+str(cluster.number)
             self.assertContains(response, cluster_text)
             for doc in cluster.documents():
-                self.assertContains(response, doc.content)
+                validate_contains_document(self, response, doc.content)
 
     def test_assign_topic_to_clusters_view(self):
         #Initialize

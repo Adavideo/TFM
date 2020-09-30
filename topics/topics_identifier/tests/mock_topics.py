@@ -16,7 +16,4 @@ def mock_topic_with_clusters(topic_name="test", with_documents=True):
 def mock_threads_and_clusters_with_topic():
     topic, clusters_list = mock_topic_with_clusters()
     threads = mock_threads_with_topic(topic)
-    news = Document.objects.filter(is_news=True)
-    clusters_list[0].add_document(news[0].content)
-    clusters_list[1].add_document(news[1].content)
     return topic

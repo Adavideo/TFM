@@ -1,49 +1,43 @@
-from .examples import news_content, comments_content
+from .examples import news_content, example_reference_documents
 
 
 tree_name = "test_comments10"
 
-example_terms = ['13', '2010', '21', '23', '310', '355', '40', '8kbxfauvdxa', 'abrir', 'ahora', 'alarma', 'allá', 'anterior', 'anticuerpos', 'aunque', 'años', 'basta', 'be', 'boe', 'brutal', 'chalao', 'cierto', 'cobra', 'cobran', 'colau', 'consta', 'cuenta', 'currar', 'cuéntame', 'darse', 'deficitarias', 'después', 'dices', 'elegantemente', 'empresas', 'enteras', 'evidente', 'explícale', 'expresidente', 'expresidentes', 'fallout', 'falta', 'forma', 'full', 'gatos', 'guardo', 'gustan', 'hace', 'https', 'improductivas', 'injustamente', 'ir', 'jugar', 'ley', 'llegara', 'lol', 'melón', 'mismo', 'mitad', 'montilla', 'niegan', 'origen', 'pantomima', 'parlamento', 'penalice', 'pensión', 'peor', 'precios', 'privadas', 'problemas', 'prohíba', 'publicaciones', 'pujol', 'regiones', 'retiraron', 'sabes', 'sacado', 'sepas', 'si', 'suban', 'subido', 'sueldo', 'todas', 'torra', 'transpasar', 'youtu']
+# TERMS
+example_terms = ['000', '015', '100', '28', '300', '40', '75', '80', '850', 'abandona', 'abuelos', 'acceso', 'actividad', 'además', 'adicción', 'adrián', 'afirma', 'africanos', 'afroamericana', 'agua', 'agujeros', 'ahora', 'aliados', 'alimentos', 'alta', 'amenazas', 'aprueba', 'argumentado', 'asintomáticos', 'asociados', 'audiencia', 'aunque', 'autodenominada', 'autorizaciones', 'avala', 'ayuda', 'ayuso', 'azúcar', 'años', 'beneficio', 'berlín', 'bienes', 'caducan', 'caliente', 'casa', 'casamientos', 'causa', 'centenar', 'centro', 'centros', 'cereales', 'christian', 'cierne', 'cifras', 'cigarrillos', 'ciudadana', 'cobrarlo', 'combatir', 'comedor', 'comida', 'comidas', 'comparación', 'compañías', 'computará', 'comunes', 'comunidad', 'comunitaria', 'comunitarias', 'concesiones', 'conlleva', 'conseguido', 'consumo', 'continente', 'convertir', 'corazón', 'coronavirus', 'corriente', 'costumbres', 'cotidianos', 'covid19', 'creciente', 'crisis', 'crónicos', 'cualquier', 'cuenta', 'cultivado', 'cuyas', 'cánceres', 'dar', 'dará', 'debe', 'deberíamos', 'decir', 'demuestra', 'denuncia', 'desayuno', 'descendiente', 'diabetes', 'diarias', 'dictamina', 'discurso', 'disponen', 'drosten', 'duermen', 'duraderas', 'década', 'día', 'días', 'educación', 'ejercicio', 'electricidad', 'elevadas', 'embargo', 'enfermedades', 'enfrenta', 'enraizados', 'esclavos', 'espacio', 'espectro', 'esperar', 'espíritu', 'estiramientos', 'estrategia', 'euros', 'exceden', 'excelente', 'expertos', 'explicaciones', 'explotación', 'fallecimientos', 'falta', 'familias', 'fin', 'financiación', 'forma', 'funerales', 'física', 'gato', 'generación', 'generada', 'generaron', 'gobierno', 'gratis', 'graves', 'habilidad', 'habitual', 'hacia', 'harto', 'hecho', 'hidráulicos', 'hijos', 'hipertensión', 'hito', 'hogares', 'hospitales', 'hábitos', 'ideología', 'imitar', 'importancia', 'imposible', 'improrrogable', 'indemnizar', 'ineludible', 'infantil', 'infecciones', 'infectados', 'influencia', 'infradotada', 'infrafinanciada', 'ingrediente', 'ingreso', 'iniciativa', 'inmunidad', 'innegociable', 'institucional', 'integral', 'internet', 'investigación', 'junio', 'junto', 'labrar', 'lado', 'leves', 'llega', 'llegados', 'lobby', 'longevidad', 'límite', 'madrid', 'mantener', 'mantiene', 'mantienen', 'material', 'mayor', 'mecha', 'medio', 'meditación', 'miedo', 'milenarios', 'mirado', 'mismo', 'modificarlos', 'momentos', 'muchas', 'muevan', 'multitudinarios', 'máximo', 'médicos', 'mínimo', 'necesidad', 'necesitadas', 'niega', 'numerosa', 'número', 'obesidad', 'obligación', 'oculto', 'oraciones', 'padres', 'pandemia', 'parecer', 'patrimonio', 'países', 'peligroso', 'personal', 'personas', 'pesar', 'plato', 'plazo', 'poblaciones', 'población', 'poca', 'pocos', 'podrían', 'potencias', 'preexistentes', 'prendió', 'preparadas', 'prevalencia', 'previa', 'previas', 'primeros', 'principal', 'principalmente', 'producen', 'progreso', 'próximos', 'puede', 'públicos', 'quedarán', 'realiza', 'refrescos', 'región', 'relaciones', 'relación', 'relajación', 'relajarse', 'relativamente', 'resfriados', 'residencias', 'residente', 'respiración', 'respirar', 'responsables', 'resto', 'reuniones', 'reversión', 'ritos', 'rivales', 'rojas', 'sagradas', 'saltos', 'salud', 'saludables', 'sanitarios', 'santo', 'seguridad', 'según', 'serie', 'si', 'siglo', 'sinagogas', 'siquiera', 'sistema', 'social', 'solidaridad', 'soslayar', 'sujeto', 'suma', 'supone', 'sánchez', 'sólo', 'tan', 'tantos', 'tasa', 'tener', 'tercio', 'test', 'tiempo', 'tierra', 'tiranía', 'tranquilos', 'transmitidos', 'tras', 'tratar', 'tres', 'unidos', 'valor', 'vecinal', 'vida', 'viernes', 'virólogo', 'vivienda', 'washington', 'xvii', 'yogui', 'yogures', 'áfrica', 'última']
 
+level0_terms = example_terms
+level1_terms = ['75', 'acceso', 'además', 'agua', 'agujeros', 'asintomáticos', 'asociados', 'audiencia', 'autodenominada', 'autorizaciones', 'avala', 'años', 'berlín', 'caducan', 'centenar', 'centros', 'christian', 'cierne', 'comparación', 'compañías', 'comunidad', 'concesiones', 'conlleva', 'coronavirus', 'corriente', 'covid19', 'crónicos', 'cuyas', 'diabetes', 'dictamina', 'disponen', 'drosten', 'década', 'electricidad', 'enfermedades', 'enfrenta', 'espectro', 'exceden', 'falta', 'financiación', 'generaron', 'hecho', 'hidráulicos', 'hogares', 'hospitales', 'improrrogable', 'indemnizar', 'infecciones', 'infectados', 'inmunidad', 'internet', 'leves', 'límite', 'mayor', 'medio', 'máximo', 'obligación', 'pandemia', 'personal', 'plazo', 'poblaciones', 'podrían', 'preexistentes', 'prevalencia', 'previa', 'previas', 'progreso', 'próximos', 'resfriados', 'residente', 'responsables', 'reversión', 'saltos', 'salud', 'sanitarios', 'según', 'si', 'siquiera', 'sistema', 'supone', 'tantos', 'tercio', 'tierra', 'unidos', 'virólogo', 'última']
+
+# LEVEL DOCUMENTS
+level0_documents = news_content
+level1_documents = [ news_content[4], news_content[6], news_content[8] ]
+
+tree_documents = [ level0_documents, level1_documents ]
 
 # PREDICTED CLUSTERS
 
-example_predicted_clusters_level0 = [0, 0, 3, 0, 3, 2, 1, 2, 0, 3]
-example_predicted_clusters_level1 = [0, 0, 1, 1]
+example_predicted_clusters_level0 = [0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 2]
+example_predicted_clusters_level1 = [0, 0, 0]
 example_predicted_clusters = [ example_predicted_clusters_level0, example_predicted_clusters_level1 ]
 
 
 # CLUSTERS DOCUMENTS
 
 documents_cluster0_level0 = [
-    '#4 Cuéntame tu,  a mi no me consta.',
-    '!Brutal! {lol}',
-    '#310 No. Las guardo para cuando tenga que ir a currar.',
-    'Pantomima Full - Gatos.\nhttps://youtu.be/8kbXfAuvdxA']
+    news_content[0], news_content[1], news_content[2],
+    news_content[3], news_content[4], news_content[5],
+    news_content[7], news_content[9]
+]
 
-documents_cluster1_level0 = [
-    '#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...']
+documents_cluster1_level0 = [ news_content[6] ]
 
-documents_cluster2_level0 = [
-    'basta jugar fallout para darse cuenta',
-    '#355 Transpasar anticuerpos? Que dices chalao...']
+documents_cluster2_level0 = [ news_content[8], news_content[10] ]
 
-documents_cluster3_level0 = [
-    'Pero más allá del estado de alarma y sus publicaciones en el BOE, ¿qué ley han sacado ahora mismo que penalice o prohíba algo de esto?\n\nQue para eso hace falta el parlamento.',
-    '#23 Pujol ya era expresidente antes que Torra llegara y le retiraron la pensión (injustamente)  hace unos años. No te enteras de nada. \n\n\nQuien sí la cobra es Montilla que es el origen de todos los problemas aunque no lo sepas porque no sabes nada anterior a 2010 (y de después la mitad). \n\n\nY también cobran los expresidentes de todas esas regiones  deficitarias e improductivas que tanto os gustan.\n\n\nPor cierto  , para sueldo subido el de Colau, ¿era el 40%?',
-    '#13 explícale que es la que hace que las empresas privadas no suban precios']
+documents_cluster0_level1 = level1_documents
 
-documents_cluster0_level1 = [
-    "#310 No. Las guardo para cuando tenga que ir a currar.",
-    "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente..."]
-
-documents_cluster1_level1 = [
-    "#355 Transpasar anticuerpos? Que dices chalao...",
-    "#13 explícale que es la que hace que las empresas privadas no suban precios"
-    ]
-
-clusters_documents_level0 = [ documents_cluster0_level0, documents_cluster1_level0 , documents_cluster2_level0, documents_cluster3_level0 ]
-clusters_documents_level1 = [ documents_cluster0_level1, documents_cluster1_level1 ]
+clusters_documents_level0 = [ documents_cluster0_level0, documents_cluster1_level0 , documents_cluster2_level0 ]
+clusters_documents_level1 = [ documents_cluster0_level1 ]
 clusters_documents = [ clusters_documents_level0, clusters_documents_level1 ]
 
 
@@ -52,8 +46,8 @@ clusters_documents = [ clusters_documents_level0, clusters_documents_level1 ]
 cluster0_level0 = {
     "num_cluster": 0,
     "num_children" : 0,
-    "terms" : "['currar', 'ir', 'guardo', '310']",
-    "reference_doc": "#310 No. Las guardo para cuando tenga que ir a currar.",
+    "terms" : "['progreso', 'tierra', 'autodenominada', 'internet', 'acceso', 'electricidad', 'tantos', 'corriente', 'agua', 'siquiera', 'disponen', 'tercio', 'poblaciones', 'comparación', 'diabetes', 'preexistentes', 'enfermedades', 'prevalencia', 'sanitarios', 'centros', 'personal', 'falta', 'crónicos', 'financiación', 'agujeros', 'salud', 'sistema', 'enfrenta', 'comunidad', 'cierne', 'espectro', 'hospitales', 'pandemia', 'unidos', 'mayor', 'hogares']",
+    "reference_doc": example_reference_documents[0][0],
     "documents": documents_cluster0_level0,
     "children": []
 }
@@ -61,8 +55,8 @@ cluster0_level0 = {
 cluster1_level0 = {
     "num_cluster": 1,
     "num_children" : 0,
-    "terms" : "['elegantemente', 'melón', 'abrir', 'forma', 'evidente', 'peor', 'niegan', 'si', '21']",
-    "reference_doc": "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",
+    "terms" : "['década', 'última', 'hecho', 'próximos', 'caducan', 'autorizaciones', 'cuyas', 'hidráulicos', 'saltos', 'centenar', 'medio', 'reversión', 'avala', 'exceden', 'si', 'indemnizar', 'obligación', 'compañías', 'conlleva', 'además', 'improrrogable', 'máximo', 'plazo', 'supone', 'concesiones', 'años', '75', 'límite', 'dictamina', 'audiencia']",
+    "reference_doc": example_reference_documents[0][1],
     "documents": documents_cluster1_level0,
     "children": []
 }
@@ -70,18 +64,9 @@ cluster1_level0 = {
 cluster2_level0 = {
     "num_cluster": 2,
     "num_children" : 0,
-    "terms" : "['chalao', 'dices', 'anticuerpos', 'transpasar', '355']",
-    "reference_doc": "#355 Transpasar anticuerpos? Que dices chalao...",
+    "terms" : "['previa', 'inmunidad', 'generaron', 'resfriados', 'responsables', 'coronavirus', 'previas', 'infecciones', 'asociados', 'podrían', 'asintomáticos', 'leves', 'covid19', 'infectados', 'drosten', 'christian', 'berlín', 'residente', 'virólogo', 'según']",
+    "reference_doc": example_reference_documents[0][2],
     "documents": documents_cluster2_level0,
-    "children": []
-}
-
-cluster3_level0 = {
-    "num_cluster": 3,
-    "num_children" : 0,
-    "terms" : "['precios', 'suban', 'privadas', 'empresas', 'explícale', '13', 'hace']",
-    "reference_doc": "#13 explícale que es la que hace que las empresas privadas no suban precios",
-    "documents": documents_cluster3_level0,
     "children": []
 }
 
@@ -90,40 +75,19 @@ cluster3_level0 = {
 
 cluster0_level1 = {
     "num_cluster": 0,
-    "num_children" : 2,
-    "terms" : "['elegantemente', 'melón', 'abrir', 'forma', 'evidente', 'peor', 'niegan', 'si', '21']",
-    "reference_doc": "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",
+    "num_children" : 3,
+    "terms" : "['previa', 'inmunidad', 'generaron', 'resfriados', 'responsables', 'coronavirus', 'previas', 'infecciones', 'asociados', 'podrían', 'asintomáticos', 'leves', 'covid19', 'infectados', 'drosten', 'christian', 'berlín', 'residente', 'virólogo', 'según']",
+    "reference_doc": example_reference_documents[1][0],
     "documents": documents_cluster0_level1,
-    "children": [ cluster0_level0, cluster1_level0 ]
-}
-cluster1_level1 = {
-    "num_cluster": 1,
-    "num_children" : 2,
-    "terms" : "['chalao', 'dices', 'anticuerpos', 'transpasar', '355']",
-    "reference_doc": "#355 Transpasar anticuerpos? Que dices chalao...",
-    "documents": documents_cluster1_level1,
-    "children": [ cluster2_level0, cluster3_level0 ]
+    "children": [ cluster0_level0, cluster1_level0, cluster2_level0 ]
 }
 
-
-# TERMS
-level0_terms = example_terms
-level1_terms = ['13', '21', '310', '355', 'abrir', 'anticuerpos', 'chalao', 'currar', 'dices', 'elegantemente', 'empresas', 'evidente', 'explícale', 'forma', 'guardo', 'hace', 'ir', 'melón', 'niegan', 'peor', 'precios', 'privadas', 'si', 'suban', 'transpasar']
-
-# LEVEL DOCUMENTS
-level0_documents = comments_content
-level1_documents = [
-    "#310 No. Las guardo para cuando tenga que ir a currar.",
-    "#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...",
-    "#355 Transpasar anticuerpos? Que dices chalao...",
-    "#13 explícale que es la que hace que las empresas privadas no suban precios"
-    ]
 
 # REFERENCE DOCUMENTS
 
 example_reference_documents = [
     level1_documents,
-    [ cluster0_level1["reference_doc"], cluster1_level1["reference_doc"] ]
+    [ cluster0_level1["reference_doc"] ]
 ]
 
 
@@ -133,14 +97,14 @@ tree_level0 = {
     "terms": level0_terms,
     "documents": level0_documents,
     "predicted_clusters": example_predicted_clusters_level0,
-    "clusters": [ cluster0_level0, cluster1_level0, cluster2_level0, cluster3_level0 ],
+    "clusters": [ cluster0_level0, cluster1_level0, cluster2_level0 ],
     "reference_documents": example_reference_documents[0]
 }
 
 tree_level1 = {
     "terms": level1_terms,
     "documents": level1_documents,
-    "clusters": [ cluster0_level1, cluster1_level1 ],
+    "clusters": [ cluster0_level1 ],
     "predicted_clusters": example_predicted_clusters_level1,
     "reference_documents": example_reference_documents[1]
 }

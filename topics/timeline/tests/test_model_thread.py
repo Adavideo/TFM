@@ -45,7 +45,7 @@ class ThreadTests(TestCase):
     def test_comments(self):
         thread = mock_thread(thread_number=1, with_documents=True)
         comments = thread.comments()
-        self.assertEqual(len(comments), 5)
+        self.assertEqual(len(comments), 2)
         self.assertEqual(comments[1].thread, thread)
 
     def test_documents_content(self):

@@ -21,7 +21,6 @@ def get_threads_on_the_topic_from_file(topic_name):
         if text:
             thread = find_thread(text)
             if thread: threads_list.append(thread)
-    print(str(len(threads_list))+" threads found")
     return threads_list
 
 def associate_threads_to_topic(topic):

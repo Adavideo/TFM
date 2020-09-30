@@ -52,16 +52,16 @@ class ClustersSearchTests(TestCase):
 
     def test_cluster_search_found_one_term(self):
         tree = mock_tree(max_level=1, linked=True)
-        search_string = "abrir"
+        search_string = "inmunidad"
         search_results = cluster_search(tree, search_string)
         self.assertEqual(len(search_results), 2)
-        validate_search_result(self, search_results, level=0, number=1)
+        validate_search_result(self, search_results, level=0, number=2)
         validate_search_result(self, search_results, level=1, number=0)
 
     def test_cluster_search_found_two_terms(self):
         tree = mock_tree(max_level=1, linked=True)
-        search_string = "abrir, melón"
+        search_string = "inmunidad, coronavirus"
         search_results = cluster_search(tree, search_string)
         self.assertEqual(len(search_results), 2)
-        validate_search_result(self, search_results, level=0, number=1)
+        validate_search_result(self, search_results, level=0, number=2)
         validate_search_result(self, search_results, level=1, number=0)

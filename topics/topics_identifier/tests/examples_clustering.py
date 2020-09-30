@@ -1,25 +1,21 @@
-from .examples import comments_content, news_content
-from .example_trees import clusters_documents
+from common.testing.example_documents import comments_content
+from .example_trees import clusters_documents, example_predicted_clusters, tree_documents
 
 
 example1 = {
-    "documents": comments_content,
-    "predicted_clusters": [0, 0, 3, 0, 3, 2, 1, 2, 0, 3],
+    "documents": tree_documents[0],
+    "predicted_clusters": example_predicted_clusters[0],
     "clusters_documents": clusters_documents[0]
 }
 
-example1_documents = comments_content
-
-example2_clusters_documents = [
-    [],
-    [],
-    ['El Gobierno aprueba el Ingreso Mínimo y dará hasta 1.015 euros a 850.000 familias 100.000 de esos hogares serán los primeros en cobrarlo en junio. Habrá test de patrimonio y no computará la vivienda habitual. Sánchez suma otro hito.',
-     'Yo alucino con la obsesión de las terrazas Ni colegios, ni residencias, ni ERTEs, ni ingreso mínimo vital, ni visitas a familiares, ni encuentros en casas y mucho menos bibliotecas o museos. Lo único que importa son las terrazas.'],
-    []
-]
-
 example2 = {
-    "documents": news_content,
-    "clusters_documents": example2_clusters_documents,
-    "predicted_clusters": [ 2, 2 ]
+    "documents": comments_content,
+    "predicted_clusters": [1, 1, 0, 1, 1, 0, 1, 1, 1, 1],
+    "clusters_documents": [
+        [ comments_content[2], comments_content[5] ],
+        [ comments_content[0], comments_content[1],
+          comments_content[3], comments_content[4],
+          comments_content[6], comments_content[7],
+          comments_content[8], comments_content[9] ]
+    ]
 }
