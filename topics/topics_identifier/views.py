@@ -77,6 +77,12 @@ def topic_clusters_view(request, topic_id):
     context = { "topic": topic, "clusters_with_documents": clusters_with_documents }
     return render(request, template, context)
 
+def assign_topic_to_clusters_view(request):
+    template = "topics_identifier/assigned_topic_to_clusters.html"
+    topic, clusters_list = assign_topic_to_clusters(request)
+    context = { "selected_clusters": clusters_list, "topic": topic }
+    return render(request, template, context)
+
 def label_documents_view(request, topic_id):
     template = "topics_identifier/label_documents.html"
     topic = Topic.objects.get(id=topic_id)
@@ -90,12 +96,6 @@ def label_documents_view(request, topic_id):
         for doc in selected_documents:
             doc.assign_topic(topic)
         context = { "topic": topic, "documents": selected_documents }
-    return render(request, template, context)
-
-def assign_topic_to_clusters_view(request):
-    template = "topics_identifier/assigned_topic_to_clusters.html"
-    topic, clusters_list = assign_topic_to_clusters(request)
-    context = { "selected_clusters": clusters_list, "topic": topic }
     return render(request, template, context)
 
 def assign_topic_from_file_view(request):

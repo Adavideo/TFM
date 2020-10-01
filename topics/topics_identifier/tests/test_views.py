@@ -5,7 +5,7 @@ from .example_trees import example_terms
 from .mocks import get_response, post_response, mock_topic, mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
-from .mock_topics import mock_topic_with_clusters, mock_threads_with_topic
+from .mock_topics import *
 from .validations_views import *
 from .menus import topic_menu
 
@@ -177,7 +177,6 @@ class ViewsTests(TestCase):
             for doc in cluster.documents():
                 validate_contains_document(self, response, doc.content)
 
-
     # Test assign_topic_to_clusters_view
 
     def test_assign_topic_to_clusters_view(self):
@@ -195,6 +194,46 @@ class ViewsTests(TestCase):
         for cluster in mocked_clusters:
             text = "Level "+ str(cluster.level)+" - Cluster "+str(cluster.number)
             self.assertContains(response, text)
+
+    # Test label_documents_view
+
+    def test_label_documents_view_get_no_clusters(self):
+        #Initialize
+        page = "label_documents"
+        topic = mock_topic()
+        # Execute
+        response = get_response(page, arguments=[topic.id])
+        # Validate
+        validate_page(self, response, menu=topic_menu)
+        self.assertContains(response, topic.name)
+
+    def test_label_documents_view_get_with_clusters(self):
+        #Initialize
+        page = "label_documents"
+        topic, topic_clusters = mock_topic_with_clusters()
+        # Execute
+        response = get_response(page, arguments=[topic.id])
+        # Validate
+        validate_page(self, response, menu=topic_menu)
+        self.assertContains(response, topic.name)
+        for cluster in topic_clusters:
+            for doc in cluster.documents():
+                validate_contains_document(self, response, doc.content)
+
+    def test_label_documents_view_post(self):
+        #Initialize
+        page = "label_documents"
+        topic = mock_threads_and_clusters_with_topic()
+        threads = topic.get_threads()
+        documents_ids = [ threads[0].news().id, threads[1].news().id ]
+        parameters = {"documents": documents_ids}
+        # Execute
+        response = post_response(page, parameters, arguments=[topic.id])
+        # Validate
+        validate_page(self, response, menu=topic_menu)
+        self.assertContains(response, topic.name)
+
+    # Test assign_topic_from_file_view
 
     def test_assign_topic_from_file_view(self):
         page = 'assign_topic_from_file'
