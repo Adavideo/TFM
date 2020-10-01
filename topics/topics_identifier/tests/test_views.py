@@ -5,7 +5,7 @@ from .example_trees import example_terms
 from .mocks import get_response, post_response, mock_topic, mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
-from .mock_topics import mock_topic_with_clusters
+from .mock_topics import mock_topic_with_clusters, mock_threads_with_topic
 from .validations_views import *
 from .menus import topic_menu
 
@@ -16,6 +16,8 @@ class ViewsTests(TestCase):
         page = 'topics_identifier'
         response = get_response(page)
         validate_page(self, response)
+
+    # Test generate_tree_view
 
     def test_generate_tree_view_form(self):
         page = 'generate_tree'
@@ -35,6 +37,8 @@ class ViewsTests(TestCase):
         response = post_response(page, parameters)
         #Validate
         validate_generate_tree_view_post(self, response, tree_name)
+
+    # Test trees_index_view
 
     def test_trees_index_view_empty(self):
         page = 'trees_index'
@@ -56,6 +60,8 @@ class ViewsTests(TestCase):
         validate_page(self, response)
         self.assertContains(response, tree1.name)
         self.assertContains(response, tree2.name)
+
+    # Test tree_view
 
     def test_tree_view_level0(self):
         page = 'tree'
@@ -109,6 +115,8 @@ class ViewsTests(TestCase):
         #Validate
         validate_page(self, response)
 
+    # Test cluster_view
+
     def test_cluster_view(self):
         page = 'cluster'
         cluster = mock_cluster(with_documents=True)
@@ -116,6 +124,8 @@ class ViewsTests(TestCase):
         response = get_response(page, arguments=[cluster.id])
         validate_page(self, response)
         validate_contains_cluster(self, response, cluster)
+
+    # Test topics_index_view
 
     def test_topics_index_view(self):
         page = 'topics_index'
@@ -125,6 +135,32 @@ class ViewsTests(TestCase):
         validate_page(self, response)
         self.assertContains(response, topic1.name)
         self.assertContains(response, topic2.name)
+
+    # Test topic_view
+
+    def test_topic_view_empty(self):
+        # Initialize
+        page = "topic"
+        topic = mock_topic()
+        # Execute
+        response = get_response(page, arguments=[topic.id])
+        # Validate
+        validate_page(self, response, menu=topic_menu)
+
+    def test_topic_view_with_documents(self):
+        # Initialize
+        page = "topic"
+        topic = mock_topic()
+        threads_list = mock_threads_with_topic(topic)
+        # Execute
+        response = get_response(page, arguments=[topic.id])
+        # Validate
+        validate_page(self, response, menu=topic_menu)
+        for thread in threads_list:
+            news_content = thread.news().content
+            validate_contains_document(self, response, news_content)
+
+    # Test topic_clusters_view
 
     def test_topic_clusters_view(self):
         # Initialize
@@ -140,6 +176,9 @@ class ViewsTests(TestCase):
             self.assertContains(response, cluster_text)
             for doc in cluster.documents():
                 validate_contains_document(self, response, doc.content)
+
+
+    # Test assign_topic_to_clusters_view
 
     def test_assign_topic_to_clusters_view(self):
         #Initialize
