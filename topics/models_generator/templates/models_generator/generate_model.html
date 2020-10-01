@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <h2>Generate model</h2>
+  <center><h2>Generate model</h2></center>
   <hr>
 
   {% if not filenames %}
@@ -33,7 +33,7 @@
       {% for filename in filenames.reference_documents %}
         {{ filename }}<br>
       {% endfor %}
-      
+
   {% endif %}
 
 {% endblock %}
