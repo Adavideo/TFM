@@ -1,6 +1,6 @@
 import csv, io
 from datetime import datetime
-from .csv_headers import headers_types
+from config import headers_types
 from timeline.models import Document
 
 
