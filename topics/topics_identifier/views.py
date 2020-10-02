@@ -3,7 +3,7 @@ from .forms import *
 from .clusters_search import cluster_search
 from .clusters_navigation import compose_cluster_information
 from .models import Cluster, Tree, ClusterTopic
-from .topics_assignations import assign_topic_from_file
+from .topic_assign_from_file import assign_topic_from_file
 from .topic_clusters import get_topic_clusters_with_documents
 from .views_util import *
 

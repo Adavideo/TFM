@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Topic
-from topics_identifier.topics_assignations import *
+from topics_identifier.topic_assign_from_file import *
 from config import assign_topic_path
 from .examples import news_content, news_titles
 from .examples_topics import example_texts_list
