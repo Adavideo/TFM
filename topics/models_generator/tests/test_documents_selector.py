@@ -24,12 +24,6 @@ class DocumentsSelectorTests(TestCase):
         self.assertEqual(news, False)
         self.assertEqual(comments, True)
 
-    def test_ensure_documents_limit(self):
-        documents1 = example_documents
-        documents2 = ensure_documents_limit(documents1, example_max_documents)
-        self.assertEqual(len(documents2), example_max_documents)
-        self.assertEqual(documents1[:example_max_documents], documents2)
-
     def test_select_documents_from_database_news(self):
         document_types = "news"
         mock_news_and_comments()
