@@ -23,13 +23,8 @@ def get_threads_on_the_topic_from_file(topic_name):
             if thread: threads_list.append(thread)
     return threads_list
 
-def associate_threads_to_topic(topic):
-    threads_list = get_threads_on_the_topic_from_file(topic.name)
-    for thread in threads_list:
-        thread.assign_topic(topic)
-    return threads_list
-
 def assign_topic_from_file(topic_name):
     topic, created = Topic.objects.get_or_create(name=topic_name)
-    threads_list = associate_threads_to_topic(topic)
+    threads_list = get_threads_on_the_topic_from_file(topic.name)
+    topic.assign_threads_list(threads_list)
     return threads_list

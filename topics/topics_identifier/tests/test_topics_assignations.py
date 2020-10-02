@@ -28,12 +28,6 @@ class TopicsTests(TestCase):
         topic_threads = get_threads_on_the_topic_from_file(topic.name)
         validate_threads_list(self, topic_threads, expected_threads)
 
-    def test_associate_threads_to_topic(self):
-        expected_threads = mock_threads_list()
-        topic.save()
-        threads_list = associate_threads_to_topic(topic)
-        validate_threads_list(self, threads_list, expected_threads)
-
     def test_assign_topic_from_file(self):
         expected_threads = mock_threads_list()
         threads_list = assign_topic_from_file(topic.name)

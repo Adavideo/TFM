@@ -28,8 +28,6 @@ def mock_threads_list():
 
 def mock_threads_with_topic(topic):
     topic.save()
-    thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
-    thread0.assign_topic(topic)
-    thread1 = mock_thread(thread_number=1, with_documents=True, news_number=1)
-    thread1.assign_topic(topic)
-    return [ thread0, thread1 ]
+    thread_list = mock_threads_list()
+    topic.assign_threads_list(thread_list)
+    return thread_list

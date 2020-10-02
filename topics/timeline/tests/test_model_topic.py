@@ -1,7 +1,7 @@
 from django.test import TestCase
 from timeline.models import Topic
 from .examples import all_threads_content, threads_news, threads_comments
-from .mocks import mock_topic, mock_threads_with_topic
+from .mocks import mock_topic, mock_threads_with_topic, mock_threads_list
 from .validations import validate_documents_content
 
 
@@ -29,3 +29,11 @@ class TopicTests(TestCase):
         mock_threads_with_topic(topic)
         documents = topic.get_documents(type="comments")
         validate_documents_content(self, documents, threads_comments)
+
+    def test_assign_threads_list(self):
+        topic = mock_topic()
+        mocked_threads = mock_threads_list()
+        topic.assign_threads_list(mocked_threads)
+        # Validate
+        topic_threads = topic.get_threads()
+        self.assertEqual(topic_threads, mocked_threads)

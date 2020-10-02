@@ -85,6 +85,10 @@ class Topic(models.Model):
             documents_list.extend(thread_documents)
         return documents_list
 
+    def assign_threads_list(self, threads_list):
+        for thread in threads_list:
+            thread.assign_topic(self)
+
     def __str__(self):
         return self.name
 
