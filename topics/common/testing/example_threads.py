@@ -56,3 +56,8 @@ all_threads_content = [
     comments_content[2],
     comments_content[3],
 ]
+
+threads_news = [ news_content[0], news_content[1] ]
+
+threads_comments = [ comments_content[0], comments_content[1],
+                     comments_content[2], comments_content[3]]

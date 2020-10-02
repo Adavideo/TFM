@@ -24,11 +24,6 @@ class TopicClustersTests(TestCase):
         clusters_documents = get_clusters_documents(topic)
         validate_documents_content(self, clusters_documents, example_clusters_documents)
 
-    def test_get_labeled_documents(self):
-        topic = mock_threads_and_clusters_with_topic()
-        labeled_documents = get_labeled_documents(topic)
-        validate_documents_content(self, labeled_documents, example_labeled_documents)
-
     def test_get_documents_to_label(self):
         topic = mock_threads_and_clusters_with_topic()
         documents_to_label = get_documents_to_label(topic)

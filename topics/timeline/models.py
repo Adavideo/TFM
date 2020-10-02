@@ -74,6 +74,17 @@ class Topic(models.Model):
             threads.append(topic_thread.thread)
         return threads
 
+    def get_documents(self, type="both"):
+        if not type=="both": is_news = (type=="news")
+        documents_list = []
+        for thread in self.get_threads():
+            if type=="both":
+                thread_documents = Document.objects.filter(thread=thread)
+            else:
+                thread_documents = Document.objects.filter(thread=thread, is_news=is_news)
+            documents_list.extend(thread_documents)
+        return documents_list
+
     def __str__(self):
         return self.name
 
