@@ -10,8 +10,9 @@
       <input type="submit" value="Assign topic">
   </form>
 
-  <hr>
-
-  {% include "timeline/threads_list.html" %}
+  {% if threads_list %}
+    <hr>
+    {% include "timeline/threads_list.html" %}
+  {% endif %}
 
 {% endblock %}

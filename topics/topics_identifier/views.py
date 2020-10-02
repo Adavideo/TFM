@@ -100,10 +100,12 @@ def label_documents_view(request, topic_id):
 
 def assign_topic_from_file_view(request):
     template = "topics_identifier/assign_topic_from_file.html"
-    form = AssignTopicFromFileForm(request.POST)
-    context = { "form": form }
-    if request.method == "POST":
+    if request.method == "GET":
+        form = AssignTopicFromFileForm()
+        context = { "form": form }
+    else:
+        form = AssignTopicFromFileForm(request.POST)
         topic_name = request.POST["topic_name"]
         threads_list = assign_topic_from_file(topic_name)
-        context["threads_list"] = threads_list
+        context = { "form": form, "topic": topic_name, "threads_list": threads_list }
     return render(request, template, context)
