@@ -31,7 +31,14 @@ def find_threads_from_texts(texts_list):
 def assign_topic_from_file(topic_name):
     topic, created = Topic.objects.get_or_create(name=topic_name)
     filename = get_filename(topic_name)
+    print("Reading file: "+filename)
     texts_list = read_file(filename)
-    threads_list = find_threads_from_texts(texts_list)
-    topic.assign_threads_list(threads_list)
+    if texts_list:
+        print("Finding threads for "+str(len(texts_list))+" news titles.")
+        threads_list = find_threads_from_texts(texts_list)
+        print("Assigning topic "+topic.name+" to "+str(len(threads_list))+" threads.")
+        topic.assign_threads_list(threads_list)
+    else:
+        print("File not found")
+        threads_list = []
     return threads_list
