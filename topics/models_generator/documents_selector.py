@@ -33,8 +33,10 @@ def ensure_documents_limit(documents, limit):
 def select_documents_from_database(document_types):
     with_news, with_comments = short_document_types(document_types)
     if with_news and with_comments:
+        print("Getting all documents from database")
         documents_list = Document.objects.all()
     else:
+        print("Getting "+document_types+" documents from database")
         documents_list = Document.objects.filter(is_news=with_news)
     return documents_list
 

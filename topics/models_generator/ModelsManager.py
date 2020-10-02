@@ -25,6 +25,7 @@ class ModelsManager:
         return filename
 
     def store_level_information(self, model, vectorizer, reference_documents, level):
+        print("Storing level "+str(level)+" model")
         model_filename = self.store_object(model, type="model", level=level)
         self.models_filenames.append(model_filename)
         vectorizer_filename = self.store_object(vectorizer, type="vectorizer", level=level)
@@ -43,6 +44,7 @@ class ModelsManager:
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()
         for level in range(max_level+1):
+            print("\nGenerating level "+str(level)+" model with "+str(len(documents))+ " documents")
             model_generator = ModelGenerator(documents)
             model = model_generator.generate_model()
             vectorizer = model_generator.vectorizer
