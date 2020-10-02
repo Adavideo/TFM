@@ -1,4 +1,4 @@
-from .examples import news_content, example_documents
+from .examples import news_content, example_documents, news_titles
 
 
 example_labeled_documents = [ news_content[0], news_content[1]]
@@ -9,3 +9,5 @@ example_documents_to_label = [
     news_content[8], news_content[9], news_content[10] ]
 
 example_clusters_documents = example_documents_to_label + example_labeled_documents
+
+example_texts_list = [ news_titles[0], news_titles[1], '']

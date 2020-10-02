@@ -9,6 +9,7 @@ document_types = ["news", "comments", "both"]
 # topics identifier
 tree_name_max_length = 25
 batch_size = 1000
+assign_topic_path = "topics_identifier/classified/"
 
 # metrics
 sample_size = 100
