@@ -1,1 +1,2 @@
 from common.testing.validations_threads import validate_thread
+from common.testing.validations_documents import validate_content, validate_documents_content

@@ -2,14 +2,7 @@ from django.test import TestCase
 from timeline.models import Thread
 from .examples import example_threads
 from .mocks import mock_thread
-from .validations import validate_thread
-
-
-def validate_documents_content(test, documents_content, expected_content):
-    num_of_documents = len(documents_content)
-    test.assertEqual(num_of_documents, len(expected_content))
-    for i in range(0, num_of_documents):
-        test.assertEqual(documents_content[i], expected_content[i])
+from .validations import validate_thread, validate_content
 
 
 class ThreadTests(TestCase):
@@ -52,4 +45,4 @@ class ThreadTests(TestCase):
         thread = mock_thread(thread_number=1, with_documents=True)
         documents_content = thread.documents_content()
         expected_content = example_threads[0]["documents_content"]
-        validate_documents_content(self, documents_content, expected_content)
+        validate_content(self, documents_content, expected_content)
