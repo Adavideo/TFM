@@ -10,7 +10,7 @@ from .validations import validate_threads_list
 topic = Topic(name="prueba")
 
 
-class TopicsTests(TestCase):
+class AssignTopicsTests(TestCase):
 
     def test_get_filename(self):
         topic_name = "test"
