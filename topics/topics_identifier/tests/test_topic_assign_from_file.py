@@ -24,6 +24,11 @@ class TopicsTests(TestCase):
         self.assertEqual(texts_list[0], news_titles[0])
         self.assertEqual(texts_list[1], news_titles[1])
 
+    def test_read_file_wrong_filename(self):
+        filename = get_filename("wrong_name")
+        texts_list = read_file(filename)
+        self.assertEqual(texts_list, [])
+
     def test_find_thread(self):
         mocked_thread = mock_thread(thread_number=0, with_documents=True, news_number=0)
         thread = find_thread(news_content[0])
@@ -35,6 +40,10 @@ class TopicsTests(TestCase):
         expected_threads = mock_threads_list()
         topic_threads = find_threads_from_texts(example_texts_list)
         validate_threads_list(self, topic_threads, expected_threads)
+
+    def test_find_threads_from_texts_empty_texts(self):
+        topic_threads = find_threads_from_texts(texts_list=[])
+        validate_threads_list(self, topic_threads, [])
 
     def test_assign_topic_from_file(self):
         expected_threads = mock_threads_list()

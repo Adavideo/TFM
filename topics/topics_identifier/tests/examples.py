@@ -1,6 +1,6 @@
 from common.testing.example_documents import *
 from common.testing.example_models import test_model_name
-from common.testing.example_threads import news_titles
+from common.testing.example_threads import news_titles, threads_news
 
 
 test_batch_size = 4

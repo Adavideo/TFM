@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import ClusterTopic
-from .examples import test_model_name
+from .examples import test_model_name, threads_news
 from .example_trees import example_terms
 from .mocks import get_response, post_response, mock_topic, mock_documents
 from .mock_clusters import mock_cluster, mock_clusters_list
@@ -235,7 +235,37 @@ class ViewsTests(TestCase):
 
     # Test assign_topic_from_file_view
 
-    def test_assign_topic_from_file_view(self):
+    def test_assign_topic_from_file_view_form(self):
         page = 'assign_topic_from_file'
         response = get_response(page)
+        validate_page(self, response)
+        self.assertContains(response, "Topic name:")
+
+    def test_assign_topic_from_file_view_post(self):
+        #Initialize
+        page = 'assign_topic_from_file'
+        topic_name = "prueba"
+        topic = mock_topic(topic_name)
+        threads = mock_threads_with_topic(topic)
+        parameters = { "topic_name": topic_name }
+        # Execute
+        response = post_response(page, parameters)
+        validate_page(self, response)
+        head_text = "Threads of topic "+topic_name
+        self.assertContains(response, head_text)
+        for content in threads_news:
+            self.assertContains(response, content[:10])
+
+    def test_assign_topic_from_file_view_post_no_threads(self):
+        page = 'assign_topic_from_file'
+        topic_name = "prueba"
+        parameters = { "topic_name": topic_name }
+        response = post_response(page, parameters)
+        validate_page(self, response)
+
+    def test_assign_topic_from_file_view_post_wrong_filename(self):
+        page = 'assign_topic_from_file'
+        topic_name = "wrong"
+        parameters = { "topic_name": topic_name }
+        response = post_response(page, parameters)
         validate_page(self, response)

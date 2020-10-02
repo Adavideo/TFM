@@ -7,9 +7,12 @@ def get_filename(topic_name):
     return filename
 
 def read_file(filename):
-    file = open(filename)
-    texts_list = file.read().split("\n")
-    return texts_list
+    try:
+        file = open(filename)
+        texts_list = file.read().split("\n")
+        return texts_list
+    except:
+        return []
 
 def find_thread(text):
     all_news = Document.objects.filter(is_news=True)
