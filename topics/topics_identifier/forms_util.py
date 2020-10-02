@@ -4,7 +4,8 @@ from config import sklearn_models_path
 
 def get_model_name_from_filename(filename):
     parts = filename.split("_")
-    if parts[0] == "delete": return None
+    if parts[0] == "delete" or parts[0] == "test":
+        return None
     name = parts[0]
     for text in parts[1:]:
         if text == "model":

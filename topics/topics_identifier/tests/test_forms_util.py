@@ -24,20 +24,21 @@ class FormsUtilTests(TestCase):
             name = get_model_name_from_filename(filename)
             if name:
                 models_names.append(name)
-
+        # Validate
         self.assertEqual(len(models_names), 2)
-        self.assertEqual(models_names[0], "test")
-        self.assertEqual(models_names[1], "test")
+        self.assertEqual(models_names[0], "news")
+        self.assertEqual(models_names[1], "news")
 
     def test_get_models_names(self):
         models_names = get_models_names()
-        self.assertNotEqual(len(models_names), 0)
-        count = 0
-        for name in models_names:
-            if name == test_model_name: count += 1
-        self.assertEqual(count, 1)
+        self.assertIs(test_model_name in models_names, False)
+        if len(models_names)==0:
+            self.assertEqual(models_names, [])
+        else:
+            self.assertEqual(type(models_names[0]), type(""))
 
     def test_get_models_options(self):
+        models_names = get_models_names()
         options = get_models_options()
-        self.assertNotEqual(len(options), 0)
-        self.assertEqual( ('test','test') in options, True )
+        if len(models_names)==0:
+            self.assertEqual(options, [('','')])

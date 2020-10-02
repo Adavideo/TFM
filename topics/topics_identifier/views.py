@@ -16,9 +16,12 @@ def home_view(request):
 def generate_tree_view(request):
     level = 1
     template = "topics_identifier/generate_tree.html"
-    form = TreeForm(request.POST)
-    context = { "form": form }
-    if request.method == "POST":
+    if request.method == "GET":
+        form = TreeForm()
+        context = { "form": form }
+    else:
+        form = TreeForm(request.POST)
+        context = { "form": form }
         tree_generator = build_tree_generator(request, level)
         if tree_generator.tree_already_exist:
             context["message"] = "Tree name already in use. Pick a different one."

@@ -12,5 +12,9 @@ filenames_test_list = [
     "test_model_level0.joblib",
     "test_model_level1.joblib",
     "test_vectorizer_level0.joblib",
-    "test_reference_documents_level0.joblib"
+    "test_reference_documents_level0.joblib",
+    "news_model_level0.joblib",
+    "news_model_level1.joblib",
+    "news_vectorizer_level0.joblib",
+    "news_reference_documents_level0.joblib"
 ]
