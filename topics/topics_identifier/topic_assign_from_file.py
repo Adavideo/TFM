@@ -1,4 +1,4 @@
-from .models import Document, Topic
+from .models import Thread
 from config import assign_topic_path
 
 
@@ -14,10 +14,9 @@ def read_titles_file(file):
         return []
 
 def find_thread(title):
-    all_news = Document.objects.filter(is_news=True)
-    for news in all_news:
-        if news.thread and news.thread.title in title:
-            return news.thread
+    thread_search = Thread.objects.filter(title=title)
+    if thread_search:
+        return thread_search[0]
 
 def find_threads_from_titles(titles_list):
     threads_list = []

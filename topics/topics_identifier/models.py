@@ -1,5 +1,5 @@
 from django.db import models
-from timeline.models import Document, Topic
+from timeline.models import Document, Topic, Thread
 from config import *
 
 

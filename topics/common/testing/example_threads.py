@@ -2,7 +2,7 @@ from .example_documents import comments_content, news_content
 
 news_titles = [
     '''El Gobierno aprueba el Ingreso Mínimo y dará hasta 1.015 euros a 850.000 familias''',
-    '''Ayuso denuncia que Madrid ha estado "infrafinanciada" e "infradotada" de material,Sobre las elevadas cifras de fallecimientos en las residencias ha argumentado que en la región "hay muchas más residencias" y "una mayor longevidad" que en el resto.''',
+    '''Ayuso denuncia que Madrid ha estado "infrafinanciada" e "infradotada" de material''',
     '''África, el continente que Estados Unidos ignora''',
     '''¿Qué les habría pasado si hubiesen tenido que pagar su atención hospitalaria en un sistema privado?''',
     '''El coronavirus llega a los indios Navajo: una reserva registra más fallecidos que 13 Estados juntos''',

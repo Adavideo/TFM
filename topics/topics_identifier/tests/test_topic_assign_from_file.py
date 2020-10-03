@@ -21,7 +21,7 @@ class AssignTopicsTests(TestCase):
 
     def test_find_thread(self):
         mocked_thread = mock_thread(thread_number=0, with_documents=True, news_number=0)
-        thread = find_thread(news_content[0])
+        thread = find_thread(news_titles[0])
         self.assertEqual(thread, mocked_thread)
         news = thread.news()
         self.assertEqual(news.content, news_content[0])
