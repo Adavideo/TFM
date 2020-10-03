@@ -34,5 +34,6 @@ example_csv = {
     "path": csv_path,
     "name": csv_name,
     "size": csv_size,
+    "type": "text/csv",
     "documents": csv_documents
 }

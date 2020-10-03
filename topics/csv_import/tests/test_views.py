@@ -1,7 +1,6 @@
 from django.test import TestCase
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from .example_csv_to_import import example_csv
-from .mocks import get_response, post_response
+from .mocks import get_response, post_response, mock_file
 from .validations import validate_page
 
 
@@ -14,12 +13,8 @@ class ViewsTests(TestCase):
 
     def test_import_files_view_post(self):
         page = 'import_files'
-        file = open(example_csv["path"], 'r')
-        in_memory_file = InMemoryUploadedFile(
-                            file=file, field_name="file",
-                            name=example_csv["name"], content_type="text/csv",
-                            size=example_csv["size"], charset=None)
-        parameters = { "file": in_memory_file }
+        file = mock_file(example_csv)
+        parameters = { "file": file }
         response = post_response(page, parameters)
         validate_page(self, response)
         new_registers = len(example_csv["documents"])
