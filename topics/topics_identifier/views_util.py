@@ -22,10 +22,13 @@ def get_selected_documents(request):
     documents = [ Document.objects.get(id=id) for id in documents_ids ]
     return documents
 
-def assign_topic_to_clusters(request):
-    # Get topic
+def get_topic(request):
     topic_id = request.POST["topic"]
     topic = Topic.objects.get(id=topic_id)
+    return topic
+
+def assign_topic_to_clusters(request):
+    topic = get_topic(request)
     # Get clusters
     clusters_ids = request.POST.getlist("selected_clusters")
     clusters_list = [ Cluster.objects.get(id=id) for id in clusters_ids ]

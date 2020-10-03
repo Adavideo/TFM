@@ -35,4 +35,4 @@ class AssignTopicToDocumentsForm(forms.Form):
                                     required=False)
 
 class AssignTopicFromFileForm(forms.Form):
-    topic_name = forms.CharField(max_length=100)
+    topic = forms.ChoiceField(choices=get_topics_options())

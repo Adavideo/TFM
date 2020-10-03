@@ -239,33 +239,25 @@ class ViewsTests(TestCase):
         page = 'assign_topic_from_file'
         response = get_response(page)
         validate_page(self, response)
-        self.assertContains(response, "Topic name:")
+        self.assertContains(response, "Topic:")
 
     def test_assign_topic_from_file_view_post(self):
         #Initialize
         page = 'assign_topic_from_file'
-        topic_name = "prueba"
-        topic = mock_topic(topic_name)
+        topic = mock_topic("prueba")
         threads = mock_threads_with_topic(topic)
-        parameters = { "topic_name": topic_name }
+        parameters = { "topic": topic.id }
         # Execute
         response = post_response(page, parameters)
         validate_page(self, response)
-        head_text = "Threads of topic "+topic_name
+        head_text = "Threads of topic "+topic.name
         self.assertContains(response, head_text)
         for content in threads_news:
             self.assertContains(response, content[:10])
 
     def test_assign_topic_from_file_view_post_no_threads(self):
         page = 'assign_topic_from_file'
-        topic_name = "prueba"
-        parameters = { "topic_name": topic_name }
-        response = post_response(page, parameters)
-        validate_page(self, response)
-
-    def test_assign_topic_from_file_view_post_wrong_filename(self):
-        page = 'assign_topic_from_file'
-        topic_name = "wrong"
-        parameters = { "topic_name": topic_name }
+        topic = mock_topic("prueba")
+        parameters = { "topic": topic.id }
         response = post_response(page, parameters)
         validate_page(self, response)
