@@ -20,5 +20,5 @@ def get_topics_options():
     else:
         options = []
         for topic in topics_list:
-            options.append((topic.id, topic))
+            options.append((topic.id, topic.name))
     return options

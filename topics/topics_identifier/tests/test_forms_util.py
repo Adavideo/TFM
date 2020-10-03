@@ -16,7 +16,7 @@ class FormsUtilTests(TestCase):
         mock_topic("test")
         options = get_topics_options()
         self.assertEqual(len(options), 1)
-        self.assertEqual(str(options[0]), "(1, <Topic: test>)")
+        self.assertEqual(str(options[0]), "(1, 'test')")
 
     def test_get_model_name_from_filename(self):
         models_names = []
