@@ -36,3 +36,4 @@ class AssignTopicToDocumentsForm(forms.Form):
 
 class AssignTopicFromFileForm(forms.Form):
     topic = forms.ChoiceField(choices=get_topics_options())
+    file = forms.FileField()

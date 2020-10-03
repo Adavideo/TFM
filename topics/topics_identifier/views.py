@@ -109,6 +109,7 @@ def assign_topic_from_file_view(request):
     else:
         form = AssignTopicFromFileForm(request.POST)
         topic = get_topic(request)
-        threads_list = assign_topic_from_file(topic.name)
+        file = request.FILES['file']
+        threads_list = assign_topic_from_file(topic, file)
         context = { "form": form, "topic": topic.name, "threads_list": threads_list }
     return render(request, template, context)

@@ -10,4 +10,13 @@ example_documents_to_label = [
 
 example_clusters_documents = example_documents_to_label + example_labeled_documents
 
-example_texts_list = [ news_titles[0], news_titles[1], '']
+example_titles_list = [ news_titles[0], news_titles[1], '']
+
+example_news_titles_file = {
+    "path": "topics_identifier/tests/example_titles.txt",
+    "name": "example_titles.txt",
+    "size": 334,
+    "type": "text/plain",
+    "charset": "utf8",
+    "documents": example_titles_list
+}

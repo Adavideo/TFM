@@ -3,8 +3,8 @@ from topics_identifier.models import Topic
 from topics_identifier.topic_assign_from_file import *
 from config import assign_topic_path
 from .examples import news_content, news_titles
-from .examples_topics import example_texts_list
-from .mocks import mock_thread, mock_threads_list
+from .examples_topics import example_titles_list, example_news_titles_file
+from .mocks import mock_thread, mock_threads_list, mock_file
 from .validations import validate_threads_list
 
 topic = Topic(name="prueba")
@@ -12,22 +12,12 @@ topic = Topic(name="prueba")
 
 class AssignTopicsTests(TestCase):
 
-    def test_get_filename(self):
-        topic_name = "test"
-        filename = get_filename(topic_name)
-        self.assertEqual(filename, assign_topic_path+topic_name+".txt")
-
-    def test_read_file(self):
-        filename = get_filename(topic.name)
-        texts_list = read_file(filename)
-        self.assertEqual(len(texts_list), 3)
-        self.assertEqual(texts_list[0], news_titles[0])
-        self.assertEqual(texts_list[1], news_titles[1])
-
-    def test_read_file_wrong_filename(self):
-        filename = get_filename("wrong_name")
-        texts_list = read_file(filename)
-        self.assertEqual(texts_list, [])
+    def test_read_titles_file(self):
+        file = mock_file(example_news_titles_file)
+        titles_list = read_titles_file(file)
+        self.assertEqual(len(titles_list), 3)
+        self.assertEqual(titles_list[0], news_titles[0])
+        self.assertEqual(titles_list[1], news_titles[1])
 
     def test_find_thread(self):
         mocked_thread = mock_thread(thread_number=0, with_documents=True, news_number=0)
@@ -36,16 +26,18 @@ class AssignTopicsTests(TestCase):
         news = thread.news()
         self.assertEqual(news.content, news_content[0])
 
-    def test_find_threads_from_texts(self):
+    def test_find_threads_from_titles(self):
         expected_threads = mock_threads_list()
-        topic_threads = find_threads_from_texts(example_texts_list)
+        topic_threads = find_threads_from_titles(example_titles_list)
         validate_threads_list(self, topic_threads, expected_threads)
 
-    def test_find_threads_from_texts_empty_texts(self):
-        topic_threads = find_threads_from_texts(texts_list=[])
+    def test_find_threads_from_titles_empty(self):
+        topic_threads = find_threads_from_titles(titles_list=[])
         validate_threads_list(self, topic_threads, [])
 
     def test_assign_topic_from_file(self):
         expected_threads = mock_threads_list()
-        threads_list = assign_topic_from_file(topic.name)
+        file = mock_file(example_news_titles_file)
+        topic.save()
+        threads_list = assign_topic_from_file(topic, file)
         validate_threads_list(self, threads_list, expected_threads)
