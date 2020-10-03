@@ -35,5 +35,6 @@ example_csv = {
     "name": csv_name,
     "size": csv_size,
     "type": "text/csv",
+    "charset": None,
     "documents": csv_documents
 }
