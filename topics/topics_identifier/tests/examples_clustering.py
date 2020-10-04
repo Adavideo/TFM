@@ -10,12 +10,12 @@ example1 = {
 
 example2 = {
     "documents": comments_content,
-    "predicted_clusters": [1, 1, 0, 1, 1, 0, 1, 1, 1, 1],
+    "predicted_clusters": [1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1],
     "clusters_documents": [
         [ comments_content[2], comments_content[5] ],
         [ comments_content[0], comments_content[1],
           comments_content[3], comments_content[4],
           comments_content[6], comments_content[7],
-          comments_content[8], comments_content[9] ]
+          comments_content[8], comments_content[9], comments_content[10] ]
     ]
 }

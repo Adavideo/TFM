@@ -1,6 +1,6 @@
 from topics_identifier.models import Cluster, Document, Tree
 from topics_identifier.documents_selector import short_document_types
-from .example_trees import example_tree, tree_name
+from .example_trees import example_tree, tree_name, comments_clusters
 from .mock_trees import mock_empty_tree
 
 
@@ -12,7 +12,11 @@ def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False, docume
     cluster.assign_reference_document(cluster_info["reference_doc"])
     cluster.save()
     if with_documents:
-        for doc in cluster_info["documents"]:
+        if document_types == "news":
+            documents = cluster_info["documents"]
+        else:
+            documents = comments_clusters[num_cluster]["documents"]
+        for doc in documents:
             cluster.add_document(doc)
     return cluster
 

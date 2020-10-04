@@ -1,4 +1,4 @@
-from .examples import news_content, example_reference_documents
+from .examples import news_content, example_reference_documents, comments_content
 
 
 tree_name = "test_comments10"
@@ -110,3 +110,10 @@ tree_level1 = {
 }
 
 example_tree = [tree_level0, tree_level1]
+
+
+comments_clusters = [
+    { "documents": comments_content[:8] } ,
+    { "documents": [ comments_content[8] ] },
+    { "documents": comments_content[9:11] }
+]

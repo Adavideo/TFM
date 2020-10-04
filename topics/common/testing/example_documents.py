@@ -28,7 +28,8 @@ comments_content = [
  '#21 si lo niegan es peor porque es evidente. Esto es una forma de abrir un melón elegantemente...',
  '#355 Transpasar anticuerpos? Que dices chalao...',
  'Pantomima Full - Gatos.\nhttps://youtu.be/8kbXfAuvdxA',
- '#13 explícale que es la que hace que las empresas privadas no suban precios']
+ '#13 explícale que es la que hace que las empresas privadas no suban precios',
+ 'bla, bla']
 
 example_documents = news_content
 
