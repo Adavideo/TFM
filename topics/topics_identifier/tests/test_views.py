@@ -118,13 +118,22 @@ class ViewsTests(TestCase):
 
     # Test cluster_view
 
-    def test_cluster_view(self):
+    def test_cluster_view_comments(self):
         page = 'cluster'
-        cluster = mock_cluster(with_documents=True)
+        cluster = mock_cluster(with_documents=True, document_types="comments")
         cluster.save()
         response = get_response(page, arguments=[cluster.id])
         validate_page(self, response)
         validate_contains_cluster(self, response, cluster)
+
+    def test_cluster_view_news(self):
+        page = 'cluster'
+        cluster = mock_cluster(with_documents=True, document_types="news")
+        cluster.save()
+        response = get_response(page, arguments=[cluster.id])
+        validate_page(self, response)
+        for doc in cluster.documents():
+            validate_document_view(self, response, doc)
 
     # Test topics_index_view
 
@@ -176,7 +185,7 @@ class ViewsTests(TestCase):
             cluster_text = "Level 0 - Cluster "+str(cluster.number)
             self.assertContains(response, cluster_text)
             for doc in cluster.documents():
-                validate_contains_document(self, response, doc.content)
+                validate_document_view(self, response, doc)
 
     # Test assign_topic_to_clusters_view
 

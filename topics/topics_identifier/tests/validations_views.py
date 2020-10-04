@@ -38,3 +38,9 @@ def validate_contains_tree(test, response, tree, max_level=0):
     clusters_max_level = tree.get_clusters_of_level(max_level)
     for cluster in clusters_max_level:
         validate_contains_cluster(test, response, cluster, with_documents=False)
+
+def validate_document_view(test, response, document):
+    if document.is_news:
+        test.assertContains(response, document.thread.title[:10])
+    else:
+        test.assertContains(response, document.content)

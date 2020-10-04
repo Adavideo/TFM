@@ -1,3 +1,8 @@
 {% for document in documents %}
-  {{ document.content }}<br><br>
+    {% if document.is_news %}
+      <a href="{% url 'thread' document.thread.id %}">
+      {{ document.thread.title }}</a>
+    {% else %}
+      {{ document.content }}
+    {% endif %}<br><br>
 {% endfor %}
