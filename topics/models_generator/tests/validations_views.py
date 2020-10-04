@@ -1,12 +1,7 @@
+from common.testing.validations_views import validate_page
 
-def validate_page(test, response):
-    test.assertEqual(response.status_code, 200)
-    head_text = "Topics identifier"
-    test.assertContains(response, head_text)
-    return response
 
 def validate_generate_model_view(test, response, name, max_level):
-    validate_page(test, response)
     test.assertContains(response, "Model generated: "+ name)
     test.assertContains(response, "Filenames:")
     for level in range(max_level+1):

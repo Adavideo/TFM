@@ -4,13 +4,14 @@ from common.testing.mock_web_client import get_response, post_response
 from .validations_views import *
 
 page = 'generate_models'
+head_text = "Generate model"
 
 
 class ViewsTests(TestCase):
 
     def test_generate_model_view_form(self):
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text)
         self.assertContains(response, "Model name")
         self.assertContains(response, "Document types")
         self.assertContains(response, "Max number of documents")

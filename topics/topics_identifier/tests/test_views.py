@@ -8,7 +8,10 @@ from .mock_clusters import mock_cluster, mock_clusters_list
 from .mock_trees import mock_tree
 from .mock_topics import *
 from .validations_views import *
-from .menus import topic_menu
+from .menus import topics_identifier_menu, topic_menu
+
+
+head_text = "Topics identifier"
 
 
 class ViewsTests(TestCase):
@@ -16,14 +19,14 @@ class ViewsTests(TestCase):
     def test_home_page(self):
         page = 'topics_identifier'
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
 
     # Test generate_tree_view
 
     def test_generate_tree_view_form(self):
         page = 'generate_tree'
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, "Tree name")
         self.assertContains(response, "Model name")
         self.assertContains(response, "Document types")
@@ -37,6 +40,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters)
         #Validate
+        validate_page(self, response, head_text, topics_identifier_menu)
         validate_generate_tree_view_post(self, response, tree_name)
 
     # Test trees_index_view
@@ -44,13 +48,13 @@ class ViewsTests(TestCase):
     def test_trees_index_view_empty(self):
         page = 'trees_index'
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
 
     def test_trees_index_view_1tree(self):
         page = 'trees_index'
         tree = mock_tree(max_level=0, with_documents=True, document_types="both")
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, tree.name)
 
     def test_trees_index_view_2trees(self):
@@ -58,7 +62,7 @@ class ViewsTests(TestCase):
         tree1 = mock_tree(max_level=0, with_documents=True, document_types="both", name="tree1")
         tree2 = mock_tree(max_level=0, with_documents=True, document_types="both", name="tree2")
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, tree1.name)
         self.assertContains(response, tree2.name)
 
@@ -68,14 +72,14 @@ class ViewsTests(TestCase):
         page = 'tree'
         tree = mock_tree(max_level=0, with_documents=True, document_types="both")
         response = get_response(page, arguments=[tree.id])
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         validate_contains_tree(self, response, tree)
 
     def test_tree_view_level1(self):
         page = 'tree'
         tree = mock_tree(max_level=1, linked=True, with_documents=True, document_types="both")
         response = get_response(page, arguments=[tree.id])
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         validate_contains_tree(self, response, tree, max_level=1)
 
     def test_tree_view_search_post_valid_search(self):
@@ -88,7 +92,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters, arguments)
         #Validate
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, "Topic")
         self.assertContains(response, 'Search for: '+str(valid_term))
         self.assertContains(response, "Select clusters")
@@ -103,7 +107,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters, arguments)
         #Validate
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
 
     def test_tree_view_search_post_invalid_search(self):
         #Initialize
@@ -114,7 +118,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters, arguments)
         #Validate
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
 
     # Test cluster_view
 
@@ -123,7 +127,7 @@ class ViewsTests(TestCase):
         cluster = mock_cluster(with_documents=True, document_types="comments")
         cluster.save()
         response = get_response(page, arguments=[cluster.id])
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         validate_contains_cluster(self, response, cluster)
 
     def test_cluster_view_news(self):
@@ -131,7 +135,7 @@ class ViewsTests(TestCase):
         cluster = mock_cluster(with_documents=True, document_types="news")
         cluster.save()
         response = get_response(page, arguments=[cluster.id])
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         for doc in cluster.documents():
             validate_document_view(self, response, doc)
 
@@ -142,7 +146,7 @@ class ViewsTests(TestCase):
         topic1 = mock_topic(name="topic1")
         topic2 = mock_topic(name="topic2")
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, topic1.name)
         self.assertContains(response, topic2.name)
 
@@ -155,7 +159,7 @@ class ViewsTests(TestCase):
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
 
     def test_topic_view_with_documents(self):
         # Initialize
@@ -165,7 +169,7 @@ class ViewsTests(TestCase):
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
         for thread in threads_list:
             news_content = thread.news().content
             validate_contains_document(self, response, news_content)
@@ -179,7 +183,7 @@ class ViewsTests(TestCase):
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
         self.assertContains(response, topic.name)
         for cluster in topic_clusters:
             cluster_text = "Level 0 - Cluster "+str(cluster.number)
@@ -199,7 +203,7 @@ class ViewsTests(TestCase):
         #Execute
         response = post_response(page, parameters)
         #Validate
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, mocked_topic.name)
         for cluster in mocked_clusters:
             text = "Level "+ str(cluster.level)+" - Cluster "+str(cluster.number)
@@ -214,7 +218,7 @@ class ViewsTests(TestCase):
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
         self.assertContains(response, topic.name)
 
     def test_label_documents_view_get_with_clusters(self):
@@ -224,7 +228,7 @@ class ViewsTests(TestCase):
         # Execute
         response = get_response(page, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
         self.assertContains(response, topic.name)
         for cluster in topic_clusters:
             for doc in cluster.documents():
@@ -240,7 +244,7 @@ class ViewsTests(TestCase):
         # Execute
         response = post_response(page, parameters, arguments=[topic.id])
         # Validate
-        validate_page(self, response, menu=topic_menu)
+        validate_page(self, response, head_text, topic_menu)
         self.assertContains(response, topic.name)
 
     # Test assign_topic_from_file_view
@@ -248,7 +252,7 @@ class ViewsTests(TestCase):
     def test_assign_topic_from_file_view_form(self):
         page = 'assign_topic_from_file'
         response = get_response(page)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
         self.assertContains(response, "Topic:")
         self.assertContains(response, "File:")
 
@@ -261,9 +265,8 @@ class ViewsTests(TestCase):
         parameters = { "topic": topic.id, "file": file }
         # Execute
         response = post_response(page, parameters)
-        validate_page(self, response)
-        head_text = "Threads of topic "+topic.name
-        self.assertContains(response, head_text)
+        topic_threads_head_text = "Threads of topic "+topic.name
+        validate_page(self, response, topic_threads_head_text, topics_identifier_menu)
         for content in threads_news:
             self.assertContains(response, content[:10])
 
@@ -273,4 +276,4 @@ class ViewsTests(TestCase):
         file = mock_file(example_news_titles_file)
         parameters = { "topic": topic.id, "file": file }
         response = post_response(page, parameters)
-        validate_page(self, response)
+        validate_page(self, response, head_text, topics_identifier_menu)
