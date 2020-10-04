@@ -27,7 +27,8 @@ def generate_tree_view(request):
             context["message"] = "Tree name already in use. Pick a different one."
         else:
             context["tree_name"] = request.POST["tree_name"]
-            clusters = tree_generator.generate_tree()
+            tree = tree_generator.generate_tree()
+            clusters = tree.get_max_level_clusters()
             context["num_clusters"] = len(clusters)
             context["clusters_list"] = clusters
     return render(request, template, context)

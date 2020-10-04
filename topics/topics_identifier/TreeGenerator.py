@@ -105,6 +105,4 @@ class TreeGenerator:
         # Iterate through the tree levels
         for level in range(0, self.max_level+1):
             self.level_iteration(level)
-        # Returns the clusters from the top level of the tree
-        clusters = self.tree.get_clusters_of_level(self.max_level)
-        return clusters
+        return self.tree
