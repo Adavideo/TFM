@@ -44,5 +44,5 @@ class ThreadTests(TestCase):
     def test_documents_content(self):
         thread = mock_thread(thread_number=1, with_documents=True)
         documents_content = thread.documents_content()
-        expected_content = example_threads[0]["documents_content"]
+        expected_content = example_threads[1]["documents_content"]
         validate_content(self, documents_content, expected_content)

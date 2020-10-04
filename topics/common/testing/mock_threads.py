@@ -2,7 +2,8 @@ from timeline.models import Thread
 from .mock_documents import mock_news, mock_comments
 
 
-def mock_thread(thread_number, with_documents=False, news_number=0):
+def mock_thread(thread_number, with_documents=False, news_number=None):
+    if not news_number: news_number = thread_number
     if not with_documents:
         thread = Thread(number=thread_number)
         thread.save()
