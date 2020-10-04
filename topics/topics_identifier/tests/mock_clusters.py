@@ -1,13 +1,12 @@
 from topics_identifier.models import Cluster, Document, Tree
 from topics_identifier.documents_selector import short_document_types
 from .example_trees import example_tree, tree_name
-from .mocks import mock_documents
 from .mock_trees import mock_empty_tree
 
 
-def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False):
+def mock_cluster(tree=None, num_cluster=0, level=0, with_documents=False, document_types="news"):
     if not tree:
-        tree = mock_empty_tree()
+        tree = mock_empty_tree(document_types)
     cluster_info = example_tree[level]["clusters"][num_cluster]
     cluster = Cluster(tree=tree, number=num_cluster, terms=cluster_info["terms"], level=level)
     cluster.assign_reference_document(cluster_info["reference_doc"])

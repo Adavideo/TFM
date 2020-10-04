@@ -19,6 +19,16 @@ news_titles = [
 news_uris = [
     "El-Gobierno-aprueba-el-Ingreso-Minimo",
     "ayuso-denuncia-madrid-ha-estado-infrafinanciada-infradotada",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
 ]
 
 

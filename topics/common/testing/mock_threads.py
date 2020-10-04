@@ -1,5 +1,4 @@
 from timeline.models import Thread
-from .example_threads import news_titles, news_uris
 from .mock_documents import mock_news, mock_comments
 
 
@@ -9,16 +8,14 @@ def mock_thread(thread_number, with_documents=False, news_number=0):
         thread.save()
     else:
         news = mock_news(number=news_number)
-        # Assign news
-        thread_info = { "thread_number":thread_number, "title":news_titles[news_number], "uri":news_uris[news_number]}
-        news.assign_thread(thread_info)
         thread = news.thread
         # Assign comments
         start = news_number*2
         end = start+2
         comments_list = mock_comments()[start:end]
         for comment in comments_list:
-            comment.assign_thread(thread_info)
+            comment.thread = thread
+            comment.save()
     return thread
 
 def mock_threads_list():

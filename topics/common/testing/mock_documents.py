@@ -1,5 +1,6 @@
 from timeline.models import Document
 from .example_documents import *
+from .example_threads import news_titles, news_uris
 
 
 def mock_document(content=example_documents[0], is_news=True):
@@ -9,18 +10,23 @@ def mock_document(content=example_documents[0], is_news=True):
 
 def mock_news(number=0):
     news = mock_document(content=news_content[number], is_news=True)
+    thread_info = { "thread_number":number, "title":news_titles[number], "uri":news_uris[number] }
+    news.assign_thread(thread_info)
     return news
 
-def mock_documents_list(content_list=news_content, is_news=True):
-    list = [ mock_document(content=content, is_news=is_news) for content in content_list]
+def mock_documents(content_list=[], is_news=True):
+    if is_news:
+        list = mock_news_list()
+    else:
+        list = mock_comments(content_list)
     return list
 
 def mock_news_list():
-    news_list = mock_documents_list(news_content, is_news=True)
+    news_list = [ mock_news(number=i) for i in range(len(news_content)) ]
     return news_list
 
-def mock_comments():
-    comments_list = mock_documents_list(comments_content, is_news=False)
+def mock_comments(content_list=comments_content):
+    comments_list = [ mock_document(content=content, is_news=False) for content in content_list ]
     return comments_list
 
 def mock_news_and_comments():
@@ -28,5 +34,7 @@ def mock_news_and_comments():
     documents_list.extend( mock_comments() )
     return documents_list
 
-def mock_documents():
-    return mock_documents_list()
+def ensure_documents(news, comments):
+    if not Document.objects.all():
+        if news: mock_news_list()
+        if comments: mock_comments()
