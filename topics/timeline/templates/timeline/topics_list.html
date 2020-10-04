@@ -2,12 +2,7 @@
 
 {% block content %}
 
-<center><h2>Timeline</<h2></center>
-  <h3><p style="text-align:center;">
-    <a href="{% url 'topics_list' %}">Threads by topic</a> |
-    <a href="{% url 'threads_list' %}">All threads</a>
-  </p></h3>
-  <hr>
+{% include "timeline/timeline_menu.html" %}
 
 <h4>Select a topic to see the related threads:</h4>
 <br>
@@ -15,7 +10,7 @@
   {% for topic in topics_list %}
     <h4><a href="{% url 'topic_threads' topic.id %}">
       {{ topic.name }}
-    </a></h4><br><br>
+    </a></h4>
   {% endfor %}
 
 {% endblock %}

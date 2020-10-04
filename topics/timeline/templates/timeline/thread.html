@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include "timeline/timeline_menu.html" %}
+
   <h4>
     {% if thread.title %}{{ thread.title }}
     {% else %}Thread {{ thread.number }}{% endif %}

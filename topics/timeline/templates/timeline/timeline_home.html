@@ -2,10 +2,6 @@
 
 {% block content %}
 
-<center><h2>Timeline</<h2></center>
-  <h3><p style="text-align:center;">
-    <a href="{% url 'topics_list' %}">Threads by topic</a> |
-    <a href="{% url 'threads_list' %}">All threads</a>
-  </p></h3>
+  {% include "timeline/timeline_menu.html" %}
 
 {% endblock %}
