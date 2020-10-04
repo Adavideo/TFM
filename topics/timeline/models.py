@@ -50,7 +50,7 @@ class Document(models.Model):
         self.thread = thread
         if self.is_news:
             thread.update(info["title"], info["uri"])
-        elif created: thread.save()
+        if created: thread.save()
         self.save()
 
     def assign_topic(self, topic):
