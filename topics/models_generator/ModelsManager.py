@@ -7,7 +7,7 @@ from .reference_documents_generator import generate_reference_documents
 class ModelsManager:
 
     def __init__(self, name):
-        self.name = name
+        self.name = name.replace(" ","-")
         self.initialize_levels_information()
 
     def initialize_levels_information(self):

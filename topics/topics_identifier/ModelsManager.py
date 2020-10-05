@@ -5,7 +5,7 @@ from config import sklearn_models_path
 class ModelsManager:
 
     def __init__(self, name):
-        self.name = name
+        self.name = name.replace(" ","-")
 
     def get_filename(self, type, level):
         filename = sklearn_models_path + self.name + "_" + type + "_level" + str(level) + ".joblib"
