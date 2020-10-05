@@ -2,7 +2,7 @@ from .validations import validate_model_type, validate_vectorizer_type
 
 
 def validate_clusters_generator(test, clusters_generator, model_name, expected):
-    test.assertEqual(clusters_generator.models_manager.name, model_name)
+    test.assertEqual(clusters_generator.model_name, model_name)
     validate_model_type(test, clusters_generator.model)
     validate_vectorizer_type(test, clusters_generator.vectorizer)
     test.assertEqual(clusters_generator.reference_documents, expected["reference_documents"])

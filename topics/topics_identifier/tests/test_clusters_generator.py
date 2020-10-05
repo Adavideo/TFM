@@ -1,44 +1,32 @@
 from django.test import TestCase
+from common.models_loader import load_object
 from topics_identifier.ClustersGenerator import ClustersGenerator
 from .examples import test_model_name
 from .example_trees import example_tree
 from .examples_clustering import example1, example2
 from .mocks import mock_documents
-from .mock_generators import mock_clusters_generator, mock_models_manager
+from .mock_generators import mock_clusters_generator
 from .validations_clusters_generator import *
 from .validations_clusters import *
 
 
 class ClustersGeneratorTests(TestCase):
 
-    def test_create_clusters_generator_loading_model_and_vectorizer_from_files(self):
+    def test_create_clusters_generator(self):
         level = 0
-        models_manager = mock_models_manager(test_model_name)
-        clusters_generator = ClustersGenerator(models_manager, level)
-        validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
-
-    def test_create_clusters_generator_with_model_and_vectorizer_as_parameters(self):
-        level = 0
-        models_manager = mock_models_manager(test_model_name)
-        model = models_manager.load_object("model", level)
-        vectorizer = models_manager.load_object("vectorizer", level)
-        clusters_generator = ClustersGenerator(models_manager, level, model, vectorizer)
+        clusters_generator = ClustersGenerator(test_model_name, level)
         validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
 
     def test_load_model_and_vectorizer_level0(self):
         level=0
         clusters_generator = mock_clusters_generator(level)
-        clusters_generator.model = None
-        clusters_generator.vectorizer = None
-        clusters_generator.load_model_and_vectorizer(model=None, vectorizer=None)
+        clusters_generator.load_model_and_vectorizer()
         validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
 
     def test_load_model_and_vectorizer_level1(self):
         level=1
         clusters_generator = mock_clusters_generator(level)
-        clusters_generator.model = None
-        clusters_generator.vectorizer = None
-        clusters_generator.load_model_and_vectorizer(model=None, vectorizer=None)
+        clusters_generator.load_model_and_vectorizer()
         validate_clusters_generator(self, clusters_generator, test_model_name, example_tree[level])
 
     def test_load_clusters_information_level0(self):

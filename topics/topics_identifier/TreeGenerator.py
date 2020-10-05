@@ -2,7 +2,6 @@ import datetime
 from config import batch_size
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
-from .ModelsManager import ModelsManager
 from .documents_selector import short_document_types, select_documents, get_documents_batch
 from .batches_util import *
 
@@ -21,7 +20,6 @@ class TreeGenerator:
         created = self.create_empty_tree(tree_name)
         if not created: return None
         self.model_name = model_name
-        self.models_manager = ModelsManager(name=model_name)
 
 
     # GENERATE TREE STRUCTURE
@@ -94,7 +92,7 @@ class TreeGenerator:
 
     def level_iteration(self, level):
         print(str(datetime.datetime.now().time())+" - Generating clusters for level "+str(level) )
-        clusters_generator = ClustersGenerator(self.models_manager, level)
+        clusters_generator = ClustersGenerator(self.model_name, level)
         self.generate_level_clusters(clusters_generator, level)
         self.add_documents(clusters_generator, level)
         if level > 0:

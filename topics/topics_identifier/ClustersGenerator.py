@@ -1,30 +1,27 @@
 import datetime
+from common.models_loader import load_object
 from .models import Cluster, Document
 from .errors import loading_files_errors
 
 
 class ClustersGenerator:
 
-    def __init__(self, models_manager, level, model=None, vectorizer=None):
+    def __init__(self, model_name, level):
+        self.model_name = model_name
         self.level = level
-        self.models_manager = models_manager
-        self.load_model_and_vectorizer(model, vectorizer)
+        self.load_model_and_vectorizer()
         self.load_clusters_information()
 
-    def load_model_and_vectorizer(self, model, vectorizer):
-        print(str(datetime.datetime.now().time())+" - Loading model "+self.models_manager.name)
-        if not model:
-            model = self.models_manager.load_object("model", self.level)
-        if not vectorizer:
-            vectorizer = self.models_manager.load_object("vectorizer", self.level)
-        self.model = model
-        self.vectorizer = vectorizer
+    def load_model_and_vectorizer(self):
+        print(str(datetime.datetime.now().time())+" - Loading model "+ self.model_name)
+        self.model = load_object("model", self.level, self.model_name)
+        self.vectorizer = load_object("vectorizer", self.level, self.model_name)
 
     def load_clusters_information(self):
         try:
             self.number_of_clusters = self.calculate_number_of_clusters()
             self.terms = self.vectorizer.get_feature_names()
-            self.reference_documents = self.models_manager.load_object("reference_documents", self.level)
+            self.reference_documents = load_object("reference_documents", self.level, self.model_name)
         except:
             error = loading_files_errors(self.model, self.vectorizer, self.level)
             return error

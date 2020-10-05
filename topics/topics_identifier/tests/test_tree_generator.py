@@ -58,7 +58,7 @@ class GenerateTreeStructureTests(TestCase):
         tree_generator = mock_tree_generator(max_level=level)
         tree_generator.level_iteration(level=0)
         # Execute
-        clusters_generator = ClustersGenerator(tree_generator.models_manager, level)
+        clusters_generator = ClustersGenerator(tree_generator.model_name, level)
         tree_generator.generate_level_clusters(clusters_generator, level)
         # Validate
         validate_tree_level(self, tree_generator.tree, level,
