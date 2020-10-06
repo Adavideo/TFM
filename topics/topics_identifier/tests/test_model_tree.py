@@ -5,14 +5,14 @@ from .example_trees import example_tree, clusters_documents
 from .mock_trees import mock_tree, mock_empty_tree
 from .mock_clusters import mock_clusters_without_tree
 from .validations_clusters import validate_cluster, validate_clusters_list
-from .validations_trees import validate_tree, validate_tree_document_types
+from .validations_trees import validate_tree, validate_tree_documents_types
 
 
 class TreeTests(TestCase):
 
     def test_create_tree(self):
         tree = Tree(name="", news=True, comments=True)
-        validate_tree_document_types(self, tree, document_types="both")
+        validate_tree_documents_types(self, tree, documents_types="both")
         self.assertEqual(tree.max_level, 0)
 
     def test_get_cluster(self):

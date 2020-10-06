@@ -1,36 +1,37 @@
 from django.test import TestCase
-from topics_identifier.batches_util import *
-from .examples import test_batch_size, doc_options_with_batches
+from topics_identifier.batches_util import get_number_of_batches, get_batch_limits
+from .examples import test_batch_size
+from .mocks import mock_documents
 
 
 class TreeBatchesUtilTest(TestCase):
 
-    def test_get_batch_options_batches_true(self):
-        batch_number = 1
-        batch_options = get_batch_options(doc_options_with_batches, batch_number, test_batch_size)
-        self.assertEqual(batch_options["size"], test_batch_size)
-        self.assertEqual(batch_options["number"], batch_number)
-
-    def test_get_batch_options_batches_false(self):
-        batch_number = 1
-        doc_options = { "types": "both", "batches": False }
-        batch_options = get_batch_options(doc_options, batch_number, test_batch_size)
-        self.assertEqual(batch_options, None)
+    # get_number_of_batches
 
     def test_get_number_of_batches_even(self):
-        # Initialize
-        num_documents = 10
-        batch_size = 5
-        # Execute
-        num_batches = get_number_of_batches(num_documents, batch_size)
-        # Validate
+        num_batches = get_number_of_batches(num_documents = 10, size = 5)
         self.assertEqual(num_batches, 2)
 
     def test_get_number_of_batches_uneven(self):
-        # Initialize
-        num_documents = 10
-        batch_size = 4
-        # Execute
-        num_batches = get_number_of_batches(num_documents, batch_size)
-        # Validate
+        num_batches = get_number_of_batches(num_documents = 10, size = 4)
         self.assertEqual(num_batches, 3)
+
+    # get_batch_limits
+
+    def test_select_documents_batch_1(self):
+        #Initialize
+        mock_documents()
+        #Execute
+        start, end = get_batch_limits(batch_number=1, size=test_batch_size)
+        #Validate
+        self.assertEqual(start, 0)
+        self.assertEqual(end, test_batch_size)
+
+    def test_get_documents_batch_2(self):
+        #Initialize
+        mock_documents()
+        #Execute
+        start, end = get_batch_limits(batch_number=2, size=test_batch_size)
+        #Validate
+        self.assertEqual(start, test_batch_size)
+        self.assertEqual(end, test_batch_size*2)

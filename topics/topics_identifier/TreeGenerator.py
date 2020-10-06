@@ -2,20 +2,14 @@ import datetime
 from config import batch_size
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
-from .documents_selector import short_document_types, select_documents, get_documents_batch
-from .batches_util import *
-
-
-def tree_already_exist(tree_name):
-    tree_search = Tree.objects.filter(name=tree_name)
-    if tree_search: return True
-    else: return False
+from .documents_selector import select_documents, get_number_of_documents
+from .batches_util import get_number_of_batches
 
 
 class TreeGenerator:
 
-    def __init__(self, tree_name, model_name, documents_options, max_level=1):
-        self.documents_options = documents_options
+    def __init__(self, tree_name, model_name, documents_types, max_level=1):
+        self.documents_types = documents_types
         self.max_level = max_level
         created = self.create_empty_tree(tree_name)
         if not created: return None
@@ -26,12 +20,11 @@ class TreeGenerator:
 
     def create_empty_tree(self, tree_name):
         # Avoids trying to create a tree with a name that is already taken
-        if tree_already_exist(tree_name):
-            self.tree_already_exist = True
-            return None
+        self.tree_already_exist = (not len(Tree.objects.filter(name=tree_name))==0)
+        if self.tree_already_exist: return None
         else:
-            self.tree_already_exist = False
-            news, comments = short_document_types(self.documents_options["types"])
+            news = (self.documents_types=="news" or self.documents_types=="both")
+            comments = (self.documents_types=="comments" or self.documents_types=="both")
             self.tree = Tree(name=tree_name, news=news, comments=comments)
             self.tree.max_level = self.max_level
             self.tree.save()
@@ -44,49 +37,29 @@ class TreeGenerator:
 
     # ADD DOCUMENTS TO CLUSTERS
 
-    def get_all_level_documents(self, level):
-        if level==0:
-            documents_options = { "types": self.documents_options["types"],
-                                  "max_num_documents": None,
-                                  "batches": False }
-            documents = select_documents(documents_options)
-        else:
-            # Gets the reference documents from the inferior level
-            documents = self.tree.get_reference_documents(level-1)
-        return documents
-
-    def get_documents(self, level, batch_number=None, size=batch_size):
-        all_documents = self.get_all_level_documents(level)
-        if not self.documents_options["batches"] or not batch_number:
-            return all_documents
-        else:
-            batch_options = get_batch_options(self.documents_options, batch_number, size)
-            batch_documents = get_documents_batch(all_documents, batch_options)
-            return batch_documents
-
-    def get_number_of_documents(self, level):
-        num_documents = len(self.get_all_level_documents(level))
-        return num_documents
-
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
         self.tree.add_documents_to_several_clusters(level, clusters_documents)
 
-    def add_documents_to_clusters_in_batches(self, clusters_generator, level, size=batch_size):
-        num_documents = self.get_number_of_documents(level)
-        num_of_batches = get_number_of_batches(num_documents, size)
+    def add_documents_level0(self, clusters_generator, level):
+        num_documents = get_number_of_documents(self.documents_types)
+        num_of_batches = get_number_of_batches(num_documents)
         for batch_number in range(1, num_of_batches+1):
-            documents = self.get_documents(level, batch_number, size)
-            self.add_documents_to_clusters(clusters_generator, documents, level)
+            documents_content = select_documents(self.documents_types, batch_number)
+            self.add_documents_to_clusters(clusters_generator, documents_content, level)
 
-    def add_documents(self, clusters_generator, level, size=batch_size):
+    # Gets the reference documents from the inferior level
+    def get_upper_level_documents(self, level):
+        documents = self.tree.get_reference_documents(level-1)
+        return documents
+
+    def add_documents(self, clusters_generator, level):
         print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
-        if self.documents_options["batches"]:
-            self.add_documents_to_clusters_in_batches(clusters_generator, level, size)
+        if level==0:
+            self.add_documents_level0(clusters_generator, level)
         else:
-            documents = self.get_documents(level)
+            documents = self.get_upper_level_documents(level)
             self.add_documents_to_clusters(clusters_generator, documents, level)
-
 
     # MAIN LOOP
 

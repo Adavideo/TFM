@@ -1,5 +1,4 @@
 from topics_identifier.models import Cluster, Document, Tree
-from topics_identifier.documents_selector import short_document_types
 from .example_trees import example_tree, tree_name, comments_clusters
 from .mock_trees import mock_empty_tree
 

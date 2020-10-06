@@ -1,12 +1,12 @@
 from topics_identifier.models import Tree, Document, Cluster
-from topics_identifier.documents_selector import short_document_types
 from .examples import news_content, comments_content
 from .example_trees import example_tree, tree_name
 from .mocks import ensure_documents
 
 
 def mock_empty_tree(document_types="both", name=tree_name):
-    with_news, with_comments = short_document_types(document_types)
+    with_news = (document_types=="both" or document_types=="news")
+    with_comments = (document_types=="both" or document_types=="comments")
     ensure_documents(with_news, with_comments)
     tree = Tree(name=name, news=with_news, comments=with_comments)
     tree.save()
