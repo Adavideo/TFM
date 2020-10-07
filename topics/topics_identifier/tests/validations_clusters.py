@@ -27,7 +27,9 @@ def validate_clusters_terms(test, clusters_terms, level):
 
 def validate_clusters_documents(test, clusters_documents, example):
     for i in range(len(example["clusters_documents"])):
-        test.assertEqual(clusters_documents[i], example["clusters_documents"][i])
+        documents = clusters_documents[i]
+        expected_content = example["clusters_documents"][i]
+        validate_documents(test, documents, expected_content)
 
 
 # CLUSTERS NAVIGATION

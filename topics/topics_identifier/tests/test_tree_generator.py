@@ -75,7 +75,7 @@ class AddDocumentsToClustersTests(TestCase):
         mock_documents()
         tree_generator = mock_tree_generator(max_level=1)
         clusters_generator = mock_clusters_generator(level)
-        documents = example_tree[level]["documents"]
+        documents = mock_documents(example_tree[level]["documents"])
         # Execute
         tree_generator.add_documents_to_clusters(clusters_generator, documents, level)
         # Validate
@@ -87,7 +87,7 @@ class AddDocumentsToClustersTests(TestCase):
         mock_documents()
         tree_generator = mock_tree_generator(max_level=level)
         clusters_generator = mock_clusters_generator(level)
-        documents = example_tree[level]["documents"]
+        documents = mock_documents(example_tree[level]["documents"])
         # Execute
         tree_generator.add_documents_to_clusters(clusters_generator, documents, level)
         # Validate
@@ -118,8 +118,8 @@ class AddDocumentsToClustersTests(TestCase):
         # Execute
         documents = tree_generator.get_upper_level_documents(level)
         # Validate
-        expected_documents = example_tree[level]["documents"]
-        self.assertEqual(documents, expected_documents)
+        expected_content = example_tree[level]["documents"]
+        validate_documents(self, documents, expected_content)
 
 
     # add_documents

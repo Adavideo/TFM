@@ -36,14 +36,8 @@ class Tree(models.Model):
         clusters_list = self.get_clusters_of_level(level)
         reference_documents = []
         for cluster in clusters_list:
-            reference_documents.append(cluster.reference_document)
+            reference_documents.append(cluster.get_reference_document())
         return reference_documents
-
-    def add_reference_documents(self, level, reference_documents):
-        clusters = self.get_clusters_of_level(level)
-        for i in range(len(clusters)):
-            clusters[i].assign_reference_document(content=reference_documents[i])
-
 
     # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
     # Parent clusters are the ones that include the reference document of the children cluster.
@@ -56,9 +50,9 @@ class Tree(models.Model):
                 child_cluster.save()
 
     def add_documents_to_cluster(self, level, cluster_number, cluster_documents):
-        for document_content in cluster_documents:
+        for document in cluster_documents:
             cluster = self.get_cluster(cluster_number, level)
-            cluster.add_document(content=document_content)
+            cluster.add_document(document)
 
     def add_documents_to_several_clusters(self, level, clusters_list):
         for num_cluster in range(len(clusters_list)):
@@ -87,12 +81,15 @@ class Cluster(models.Model):
         terms_list = cleaned_terms_string.split(",")
         return terms_list
 
+    def get_reference_document(self):
+        document = Document.objects.get(content=self.reference_document)
+        return document
+
     def assign_reference_document(self, content):
         self.reference_document = content
 
-    def add_document(self, content):
-        doc = Document.objects.get(content=content)
-        ClusterDocument.objects.get_or_create(cluster=self, document=doc)
+    def add_document(self, document):
+        ClusterDocument.objects.get_or_create(cluster=self, document=document)
 
     def documents(self):
         documents = []

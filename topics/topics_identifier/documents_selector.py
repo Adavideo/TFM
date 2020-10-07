@@ -18,5 +18,4 @@ def select_documents(documents_types, batch_number, size=batch_size):
     else:
         is_news = (documents_types == "news")
         documents_list = Document.objects.filter(is_news=is_news)[start:end]
-    documents_content = [ doc.content for doc in documents_list ]
-    return documents_content
+    return documents_list

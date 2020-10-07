@@ -62,34 +62,38 @@ class ClustersGeneratorTests(TestCase):
         expected_clusters = example_tree[0]["clusters"]
         validate_clusters_list(self, clusters_list, expected_clusters, with_documents=False)
 
-    def test_generate_reference_documents(self):
+    def test_get_reference_documents(self):
         # Initialize
         level = 0
         mock_documents()
         clusters_generator = mock_clusters_generator(level)
-        documents = example_tree[level]["documents"]
+        original_documents_content = example_tree[level]["documents"]
         # Execute
-        reference_documents = clusters_generator.get_reference_documents(documents)
+        reference_documents_content = clusters_generator.get_reference_documents(original_documents_content)
         # Validate
         expected_documents = example_tree[level]["reference_documents"]
-        self.assertEqual(reference_documents, expected_documents)
+        self.assertEqual(reference_documents_content, expected_documents)
 
     def test_get_documents_grouped_by_cluster_with_same_documents(self):
         clusters_generator = mock_clusters_generator()
-        clusters_documents = clusters_generator.get_documents_grouped_by_cluster(example1["documents"], example1["predicted_clusters"])
+        documents = mock_documents(example1["documents"])
+        clusters_documents = clusters_generator.get_documents_grouped_by_cluster(documents, example1["predicted_clusters"])
         validate_clusters_documents(self, clusters_documents, example1)
 
     def test_get_documents_grouped_by_cluster_with_diferent_documents(self):
         clusters_generator = mock_clusters_generator()
-        clusters_documents = clusters_generator.get_documents_grouped_by_cluster(example2["documents"], example2["predicted_clusters"])
+        documents = mock_documents(example2["documents"])
+        clusters_documents = clusters_generator.get_documents_grouped_by_cluster(documents, example2["predicted_clusters"])
         validate_clusters_documents(self, clusters_documents, example2)
 
     def test_predict_clusters_documents_with_same_documents(self):
         clusters_generator = mock_clusters_generator()
-        clusters_documents = clusters_generator.predict_clusters_documents(documents=example1["documents"])
+        documents = mock_documents(example1["documents"])
+        clusters_documents = clusters_generator.predict_clusters_documents(documents)
         validate_clusters_documents(self, clusters_documents, example1)
 
     def test_predict_clusters_documents_with_diferent_documents(self):
         clusters_generator = mock_clusters_generator()
-        clusters_documents = clusters_generator.predict_clusters_documents(documents=example2["documents"])
+        documents = mock_documents(example2["documents"])
+        clusters_documents = clusters_generator.predict_clusters_documents(documents)
         validate_clusters_documents(self, clusters_documents, example2)

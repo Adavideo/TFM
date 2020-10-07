@@ -1,6 +1,6 @@
 from django.test import TestCase
 from topics_identifier.models import Cluster, Document
-from .mocks import mock_document
+from .mocks import mock_document, mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree, mock_empty_tree
 from .examples import example_documents
@@ -20,7 +20,7 @@ class ClusterTests(TestCase):
     def test_create_cluster_with_documents(self):
         level = 0
         num_cluster = 0
-        cluster = mock_cluster(num_cluster, level, with_documents=True)
+        cluster = mock_cluster(num_cluster=num_cluster, level=level, with_documents=True)
         example_cluster = example_tree[level]["clusters"][num_cluster]
         validate_cluster(self, cluster, example_cluster, with_documents=True)
 
@@ -33,13 +33,11 @@ class ClusterTests(TestCase):
     # This test checks the functions cluster.add_document() and cluster.documents()
     def test_add_document(self):
         cluster = mock_cluster()
-        doc1 = example_documents[0]
-        doc2 = example_documents[1]
-        cluster.add_document(doc1)
-        cluster.add_document(doc2)
+        documents = mock_documents(example_documents[:2])
+        cluster.add_document(documents[0])
+        cluster.add_document(documents[1])
         cluster_documents = cluster.documents()
-        self.assertEqual(cluster_documents[0].content, doc1)
-        self.assertEqual(cluster_documents[1].content, doc2)
+        self.assertEqual(cluster_documents, documents)
 
     # Ensure that the same document is not stored twice
     def test_add_document_twice(self):
@@ -48,13 +46,13 @@ class ClusterTests(TestCase):
         cluster = Cluster(tree=tree, level=0, number=0)
         cluster.save()
         # Adding new document twice
-        content = example_documents[0]
-        cluster.add_document(content)
-        cluster.add_document(content)
+        document = mock_document(example_documents[0])
+        cluster.add_document(document)
+        cluster.add_document(document)
         # Validating that the document is not created twice
-        documents = Document.objects.filter(content=content)
+        documents = cluster.documents()
         self.assertIs(len(documents), 1)
-        self.assertEqual(documents[0].content, content)
+        self.assertEqual(documents[0], document)
 
     def test_find_children_by_reference_document(self):
         level = 1
@@ -63,7 +61,6 @@ class ClusterTests(TestCase):
         cluster = tree.get_cluster(cluster_number, level)
         children = cluster.find_children_by_reference_document()
         example_cluster = example_tree[level]["clusters"][cluster_number]
-        self.assertEqual(len(children), example_cluster["num_children"])
         validate_clusters_list(self, children, example_cluster["children"], with_documents=True)
 
     # Tets that retuns an empty array when asking for the children of level 0 clusters

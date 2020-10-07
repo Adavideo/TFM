@@ -45,8 +45,8 @@ class TreeGenerator:
         num_documents = get_number_of_documents(self.documents_types)
         num_of_batches = get_number_of_batches(num_documents)
         for batch_number in range(1, num_of_batches+1):
-            documents_content = select_documents(self.documents_types, batch_number)
-            self.add_documents_to_clusters(clusters_generator, documents_content, level)
+            documents = select_documents(self.documents_types, batch_number)
+            self.add_documents_to_clusters(clusters_generator, documents, level)
 
     # Gets the reference documents from the inferior level
     def get_upper_level_documents(self, level):

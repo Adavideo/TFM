@@ -1,6 +1,6 @@
 import datetime
 from common.models_loader import load_object
-from .models import Cluster, Document
+from .models import Cluster
 from .errors import loading_files_errors
 
 
@@ -84,7 +84,8 @@ class ClustersGenerator:
 
     def predict_clusters_documents(self, documents):
         print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
-        vectorized_documents = self.vectorizer.transform(documents)
+        documents_content = [ doc.content for doc in documents ]
+        vectorized_documents = self.vectorizer.transform(documents_content)
         predicted_clusters = self.model.predict(vectorized_documents)
         clusters_documents = self.get_documents_grouped_by_cluster(documents, predicted_clusters)
         return clusters_documents
