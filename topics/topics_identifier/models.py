@@ -54,11 +54,6 @@ class Tree(models.Model):
             cluster = self.get_cluster(cluster_number, level)
             cluster.add_document(document)
 
-    def add_documents_to_several_clusters(self, level, clusters_list):
-        for num_cluster in range(len(clusters_list)):
-            cluster_documents = clusters_list[num_cluster]
-            self.add_documents_to_cluster(level, num_cluster, cluster_documents)
-
     def __str__(self):
         text = "Tree "+ self.name + " maximum level: "+str(self.max_level)
         text += " - documents: "

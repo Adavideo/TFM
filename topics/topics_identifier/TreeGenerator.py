@@ -39,7 +39,10 @@ class TreeGenerator:
 
     def add_documents_to_clusters(self, clusters_generator, documents, level):
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
-        self.tree.add_documents_to_several_clusters(level, clusters_documents)
+        print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
+        for i in range(len(clusters_documents)):
+            print("Cluster "+str(i))
+            self.tree.add_documents_to_cluster(level, i, clusters_documents[i])
 
     def add_documents_level0(self, clusters_generator, level):
         num_documents = get_number_of_documents(self.documents_types)
@@ -54,7 +57,6 @@ class TreeGenerator:
         return documents
 
     def add_documents(self, clusters_generator, level):
-        print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
         if level==0:
             self.add_documents_level0(clusters_generator, level)
         else:
