@@ -1,5 +1,5 @@
 from django import forms
-from common.forms import get_topics_options
+from common.forms_util import get_topics_options
 
 
 class GenerateSampleForm(forms.Form):
