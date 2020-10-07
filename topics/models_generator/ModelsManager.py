@@ -1,7 +1,7 @@
 from joblib import dump
 from config import sklearn_models_path
+from topics_identifier.ClustersGenerator import ClustersGenerator
 from .ModelGenerator import ModelGenerator
-from .reference_documents_generator import generate_reference_documents
 
 
 class ModelsManager:
@@ -43,6 +43,11 @@ class ModelsManager:
         }
         return filenames
 
+    def generate_reference_documents(self, documents, level):
+        clusters_generator = ClustersGenerator(self.name, level)
+        reference_documents = clusters_generator.get_reference_documents(documents)
+        return reference_documents
+
     def generate_and_store_models(self, documents, max_level):
         self.initialize_levels_information()
         for level in range(max_level+1):
@@ -51,7 +56,7 @@ class ModelsManager:
             self.model = model_generator.generate_model()
             self.vectorizer = model_generator.vectorizer
             self.store_model_and_vectorizer(level)
-            reference_documents = generate_reference_documents(self.name, documents, level)
+            reference_documents = self.generate_reference_documents(documents, level)
             self.store_reference_documents(level, reference_documents)
             documents = reference_documents
         filenames = self.get_filenames()
