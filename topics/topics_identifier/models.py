@@ -23,6 +23,13 @@ class Tree(models.Model):
         clusters = Cluster.objects.filter(tree=self, level=level)
         return clusters
 
+    def get_reference_documents(self, level):
+        clusters_list = self.get_clusters_of_level(level)
+        reference_documents = []
+        for cluster in clusters_list:
+            reference_documents.append(cluster.get_reference_document())
+        return reference_documents
+
     def add_clusters(self, level, clusters_list):
         # Increase the variable "max_level" if the new level is higher
         if self.max_level < level:
@@ -32,12 +39,10 @@ class Tree(models.Model):
             cluster.level = level
             cluster.save()
 
-    def get_reference_documents(self, level):
-        clusters_list = self.get_clusters_of_level(level)
-        reference_documents = []
-        for cluster in clusters_list:
-            reference_documents.append(cluster.get_reference_document())
-        return reference_documents
+    def add_documents_to_cluster(self, level, cluster_number, cluster_documents):
+        for document in cluster_documents:
+            cluster = self.get_cluster(cluster_number, level)
+            cluster.add_document(document)
 
     # Links the children clusters on the inferior level (level-1) to their parent cluster on the provided level.
     # Parent clusters are the ones that include the reference document of the children cluster.
@@ -48,11 +53,6 @@ class Tree(models.Model):
             for child_cluster in children:
                 child_cluster.parent = parent
                 child_cluster.save()
-
-    def add_documents_to_cluster(self, level, cluster_number, cluster_documents):
-        for document in cluster_documents:
-            cluster = self.get_cluster(cluster_number, level)
-            cluster.add_document(document)
 
     def __str__(self):
         text = "Tree "+ self.name + " maximum level: "+str(self.max_level)
