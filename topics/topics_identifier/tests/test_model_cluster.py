@@ -1,5 +1,5 @@
 from django.test import TestCase
-from topics_identifier.models import Cluster, Document
+from topics_identifier.models import Cluster
 from .mocks import mock_document, mock_documents
 from .mock_clusters import mock_cluster
 from .mock_trees import mock_tree, mock_empty_tree
