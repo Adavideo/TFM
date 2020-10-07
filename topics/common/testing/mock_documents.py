@@ -15,11 +15,12 @@ def mock_news(number=0):
     return news
 
 def mock_documents(content_list=[], is_news=True):
-    if is_news:
-        list = mock_news_list()
-    else:
-        list = mock_comments(content_list)
-    return list
+    if not content_list:
+        if is_news:
+            content_list = news_content
+        else: content_list = comments_content
+    documents = [ mock_document(content, is_news) for content in content_list]
+    return documents
 
 def mock_news_list():
     news_list = [ mock_news(number=i) for i in range(len(news_content)) ]
