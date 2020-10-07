@@ -1,5 +1,4 @@
 import datetime
-from config import batch_size
 from .models import Tree
 from .ClustersGenerator import ClustersGenerator
 from .documents_selector import select_documents, get_number_of_documents
@@ -62,6 +61,8 @@ class TreeGenerator:
         else:
             documents = self.get_upper_level_documents(level)
             self.add_documents_to_clusters(clusters_generator, documents, level)
+            self.tree.link_children_to_parents(level)
+
 
     # MAIN LOOP
 
@@ -70,8 +71,6 @@ class TreeGenerator:
         clusters_generator = ClustersGenerator(self.model_name, level)
         self.generate_level_clusters(clusters_generator, level)
         self.add_documents(clusters_generator, level)
-        if level > 0:
-            self.tree.link_children_to_parents(level)
 
     def generate_tree(self):
         print(str(datetime.datetime.now().time())+" - Generating clusters tree")
