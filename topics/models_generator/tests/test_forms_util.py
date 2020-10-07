@@ -1,5 +1,5 @@
 from django.test import TestCase
-from common.forms import get_documents_options
+from common.forms_util import get_documents_options
 from models_generator.forms_util import get_tree_levels
 
 

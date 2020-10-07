@@ -1,5 +1,5 @@
 from django import forms
-from common.forms import get_documents_options, get_topics_options
+from common.forms_util import get_documents_options, get_topics_options
 from .forms_util import *
 
 
