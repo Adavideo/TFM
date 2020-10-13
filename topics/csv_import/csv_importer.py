@@ -1,7 +1,8 @@
 import csv, io
 from datetime import datetime
 from config import headers_types
-from timeline.models import Document
+from timeline.models import Document, Thread, Topic
+from metrics.models import TopicAnnotation
 
 
 # PROCESS DATA
@@ -19,8 +20,7 @@ def document_exist(info):
     if doc_search: return True
     else: return False
 
-def store_document(info, file_type):
-    is_news = (file_type == "news")
+def store_document(info, is_news):
     doc_search = Document.objects.filter(content=info["content"])
     if document_exist(info):
         save_duplicated_document(info)
@@ -47,6 +47,7 @@ def process_news(column):
     info["uri"] = clean_text(column[3])
     info["title"] = clean_text(column[5])
     info["content"] = clean_text(column[5]) + "\n" + clean_text(column[6])
+    store_document(info, is_news=True)
     return info
 
 def process_comment(column):
@@ -56,17 +57,45 @@ def process_comment(column):
     info["author"] = int(clean_text(column[2]))
     info["date"] = process_date(column[3])
     info["content"] = clean_text(column[4])
+    store_document(info, is_news=False)
+    return info
+
+def find_thread(title, content):
+    thread_search = Thread.objects.filter(title=title)
+    if len(thread_search)==0: return None
+    # If there is more than one thread with the same title
+    if len(thread_search) > 1:
+        # Search thread using the news content
+        expected_content = title + "\n" + content
+        for t in thread_search:
+            news_content = t.news().content
+            if news_content == expected_content: thread = t
+    else:
+        thread = thread_search[0]
+    return thread
+
+def process_topic_annotation(column):
+    title = clean_text(column[0])
+    content = clean_text(column[1])
+    thread = find_thread(title, content)
+    topic_name = column[2]
+    topic = Topic.objects.get(name=topic_name)
+    label = (column[3]=="x" or column[3]=="X")
+    annotator = int(column[4])
+    annotation = TopicAnnotation(topic=topic,thread=thread,label=label,annotator=annotator)
+    annotation.save()
+    info = { "title": title, "content": content }
     return info
 
 def process_csv_line(column, file_type):
     if file_type == "incorrect":
         return "File type "+ str(file_type) + " not recognised"
-
     if file_type == "news":
         info = process_news(column)
     elif file_type == "comments":
         info = process_comment(column)
-    store_document(info, file_type)
+    elif file_type == "topic_annotations":
+        info = process_topic_annotation(column)
     return info
 
 def show_progress(num_register, total):
@@ -113,10 +142,8 @@ def process_csv(file):
     file_content = file.read().decode('UTF-8')
     csv_reader, header = get_csv_reader_and_header(file_content)
     file_type = get_file_type(header)
-
-    if file_type == "incorrect": result = ["Incorrect file type"]
-    else:
-        num_registers = get_number_of_registers(file_content)
-        print("\nProcessing "+file_type+" csv file with "+str(num_registers)+" registers.")
-        result = process_data(csv_reader, file_type, num_registers)
+    if file_type == "incorrect": return ["Incorrect file type"]
+    num_registers = get_number_of_registers(file_content)
+    print("\nProcessing "+file_type+" csv file with "+str(num_registers)+" registers.")
+    result = process_data(csv_reader, file_type, num_registers)
     return result

@@ -9,34 +9,34 @@ news = example_processed_news
 comment = example_processed_comment
 
 
-class CSVProcessDataTests(TestCase):
+class CSVProcessDataNewsAndCommentsTests(TestCase):
 
     def test_store_document_news(self):
-        store_document(news, file_type="news")
+        store_document(news, is_news=True)
         doc = Document.objects.get(content=news["content"])
         validate_document_with_thread(self, doc, news, is_news=True)
 
     def test_store_document_adding_news_for_a_thread_that_already_exist(self):
-        store_document(comment, file_type="comments")
+        store_document(comment, is_news=False)
         thread_number = comment["thread_number"]
         thread = Thread.objects.get(number=thread_number)
         self.assertEqual(thread.title, None)
         self.assertEqual(thread.uri, None)
         news["thread_number"] = thread_number
-        store_document(news, file_type="news")
+        store_document(news, is_news=True)
         thread = Thread.objects.get(number=thread_number)
         self.assertEqual(thread.title, news["title"])
         self.assertEqual(thread.uri, news["uri"])
 
     def test_store_document_comment(self):
-        store_document(comment, file_type="comments")
+        store_document(comment, is_news=False)
         doc = Document.objects.get(content=comment["content"])
         validate_document_with_thread(self, doc, comment, is_news=False)
 
     # Try to store the same document twice
     def test_store_document_twice(self):
-        store_document(news, file_type="news")
-        store_document(news, file_type="news")
+        store_document(news, is_news=True)
+        store_document(news, is_news=True)
         doc_search = Document.objects.filter(content=news["content"])
         self.assertIs(len(doc_search), 1)
 
@@ -75,21 +75,3 @@ class CSVProcessDataTests(TestCase):
         progress = show_progress(num_register=2, total=10)
         expected = "2 of 10 registers. 20.0% completed"
         self.assertEqual(progress, expected)
-
-
-class CSVImporterTests(TestCase):
-
-    def test_get_file_type_incorrect_header(self):
-        header = incorrect_header_example
-        result = get_file_type(header)
-        self.assertEqual(result, "incorrect")
-
-    def test_get_file_type_news(self):
-        header = news_header
-        result = get_file_type(header)
-        self.assertEqual(result, "news")
-
-    def test_get_file_type_comments(self):
-        header = comments_header
-        result = get_file_type(header)
-        self.assertEqual(result, "comments")
