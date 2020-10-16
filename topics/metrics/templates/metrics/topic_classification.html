@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "metrics/metrics_menu.html" %}
+
+  <h3>Topic Classification Metrics</h3>
+  <hr>
+
+  {% if not topic %}
+
+      <form action="" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="See metrics">
+      </form>
+
+  {% else %}
+
+      <b>Topic:</b> {{ topic.name }}<br><br>
+      <b>Agreement score:</b> {{ agreement_score }}<br><br>
+
+  {% endif %}
+
+{% endblock %}

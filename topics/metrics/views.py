@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from timeline.models import Topic
-from .forms import GenerateSampleForm
+from .forms import GenerateSampleForm, TopicClassificationForm
 from .SampleGenerator import SampleGenerator
+from .inter_annotator_agreement import calculate_inter_annotator_agreement
 
 
 def home_view(request):
@@ -20,4 +21,16 @@ def generate_sample_view(request):
         topic = Topic.objects.get(id=topic_id)
         documents = SampleGenerator(topic, filename).generate_sample()
         context = { "filename": filename, "topic": topic, "documents": documents }
+    return render(request, template, context)
+
+def topic_classification_metrics_view(request):
+    template = "metrics/topic_classification.html"
+    if request.method == "GET":
+        form = TopicClassificationForm()
+        context = { "form": form }
+    else:
+        topic_id = request.POST["topic"]
+        topic = Topic.objects.get(id=topic_id)
+        agreement_score = calculate_inter_annotator_agreement(topic)
+        context = { "topic": topic.name, "agreement_score": agreement_score }
     return render(request, template, context)
