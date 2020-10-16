@@ -53,5 +53,5 @@ class ViewsTests(TestCase):
         response = post_response(page, parameters)
         # Validate
         validate_page(self, response, head_text)
-        self.assertContains(response, "Topic")
+        self.assertContains(response, "Topic:</b> "+topic.name)
         self.assertContains(response, "Agreement score:</b> 0.6")
