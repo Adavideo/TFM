@@ -19,10 +19,9 @@ def mock_thread(thread_number, with_documents=False, news_number=None):
             comment.save()
     return thread
 
-def mock_threads_list():
-    thread0 = mock_thread(thread_number=0, with_documents=True, news_number=0)
-    thread1 = mock_thread(thread_number=1, with_documents=True, news_number=1)
-    return [thread0, thread1]
+def mock_threads_list(num_threads=2):
+    return [ mock_thread(thread_number=n, with_documents=True) for n in range(num_threads)]
+
 
 def mock_threads_with_topic(topic):
     topic.save()
