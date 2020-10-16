@@ -1,13 +1,13 @@
 from django.test import TestCase
 from metrics.inter_annotator_agreement import *
 from .examples_annotations import annotations_examples
-from .mock_annotations import *
+from .mock_annotations import mock_topic_annotations, mock_matrix
 
 
 class InterAnnotatorAgreementTests(TestCase):
 
     def test_get_threads_ids(self):
-        annotations_list = mock_topic_annotations()
+        _, annotations_list = mock_topic_annotations()
         threads_ids = get_threads_ids(annotations_list)
         self.assertEqual(threads_ids, [1, 2, 3, 4])
 
@@ -22,7 +22,7 @@ class InterAnnotatorAgreementTests(TestCase):
         annotator1 = [True, False, False, True]
         annotator2 = [True, False, False, True]
         annotators_labels = [annotator1, annotator2]
-        annotations_list = mock_topic_annotations(annotators_labels)
+        _, annotations_list = mock_topic_annotations(annotators_labels)
         # Execute
         counters_array = get_annotations_counter(annotations_list)
         # Validate
@@ -31,8 +31,7 @@ class InterAnnotatorAgreementTests(TestCase):
 
     def test_get_annotations_matrix(self):
         # Initialize
-        annotations_list = mock_topic_annotations(annotations_examples["agreement"])
-        topic = annotations_list[0].topic
+        topic, annotations_list = mock_topic_annotations(annotations_examples["agreement"])
         # Execute
         matrix = get_annotations_matrix(topic)
         # Validate
@@ -44,8 +43,7 @@ class InterAnnotatorAgreementTests(TestCase):
 
     def test_calculate_inter_annotator_agreement_total_agreement(self):
         # Initialize
-        annotations_list = mock_topic_annotations(annotations_examples["agreement"])
-        topic = annotations_list[0].topic
+        topic, annotations_list = mock_topic_annotations(annotations_examples["agreement"])
         # Execute
         score = calculate_inter_annotator_agreement(topic)
         # Validate
@@ -53,8 +51,7 @@ class InterAnnotatorAgreementTests(TestCase):
 
     def test_calculate_inter_annotator_agreement_small_disagreement(self):
         # Initialize
-        annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
-        topic = annotations_list[0].topic
+        topic, annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
         # Execute
         score = calculate_inter_annotator_agreement(topic)
         # Validate
@@ -62,8 +59,7 @@ class InterAnnotatorAgreementTests(TestCase):
 
     def test_calculate_inter_annotator_agreement_big_disagreement(self):
         # Initialize
-        annotations_list = mock_topic_annotations(annotations_examples["big disagreement"])
-        topic = annotations_list[0].topic
+        topic, annotations_list = mock_topic_annotations(annotations_examples["big disagreement"])
         # Execute
         score = calculate_inter_annotator_agreement(topic)
         # Validate

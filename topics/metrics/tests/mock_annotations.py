@@ -19,7 +19,7 @@ def mock_topic_annotations(annotators_labels=[[True,True,True,True]], topic_name
             annotation = TopicAnnotation(topic=topic, thread=thread, label=label, annotator=a)
             annotation.save()
             annotations_list.append(annotation)
-    return annotations_list
+    return topic, annotations_list
 
 def mock_matrix(array):
     matrix = np.matrix(array)
