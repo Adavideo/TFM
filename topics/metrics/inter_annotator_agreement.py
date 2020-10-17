@@ -1,15 +1,8 @@
 import numpy as np
 from statsmodels.stats.inter_rater import fleiss_kappa
 from .models import TopicAnnotation
+from .util_topic_annotations import get_threads_ids
 
-
-# Get a list of all the threads ids
-def get_threads_ids(annotations_list):
-    threads_ids = []
-    for annotation in annotations_list:
-        id = annotation.thread.id
-        if id not in threads_ids: threads_ids.append(id)
-    return threads_ids
 
 # Increase the counter corresponding to the thread id and the label
 def increase_annotation_counter(annotations_counter, id, label):
