@@ -82,10 +82,14 @@ class ClustersGenerator:
             document_index += 1
         return documents_by_cluster
 
-    def predict_clusters_documents(self, documents):
-        print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
+    def get_predicted_clusters(self, documents):
         documents_content = [ doc.content for doc in documents ]
         vectorized_documents = self.vectorizer.transform(documents_content)
         predicted_clusters = self.model.predict(vectorized_documents)
+        return predicted_clusters
+
+    def predict_clusters_documents(self, documents):
+        print(str(datetime.datetime.now().time())+" - Predicting documents clusters")
+        predicted_clusters = self.get_predicted_clusters(documents)
         clusters_documents = self.get_documents_grouped_by_cluster(documents, predicted_clusters)
         return clusters_documents
