@@ -38,7 +38,7 @@ class ViewsTests(TestCase):
         # Initialize
         page = "topic_classification_metrics"
         topic = mock_topic()
-        parameters = { "topic": topic.id }
+        parameters = { "topic": topic.id, "model_name": "test" }
         response = post_response(page, parameters)
         # Validate
         validate_page(self, response, head_text)
@@ -49,7 +49,7 @@ class ViewsTests(TestCase):
         page = "topic_classification_metrics"
         topic, annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
         # Execute
-        parameters = { "topic": topic.id }
+        parameters = { "topic": topic.id, "model_name": "test" }
         response = post_response(page, parameters)
         # Validate
         validate_page(self, response, head_text)

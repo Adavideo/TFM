@@ -33,5 +33,6 @@ def topic_classification_metrics_view(request):
         topic = Topic.objects.get(id=request.POST["topic"])
         annotations = TopicAnnotation.objects.filter(topic=topic)
         agreement_score = calculate_inter_annotator_agreement(annotations)
+        model_name = request.POST["model_name"]
         context = { "topic": topic.name, "agreement_score": agreement_score }
     return render(request, template, context)
