@@ -3,6 +3,7 @@ from timeline.models import Topic
 from .models import TopicAnnotation
 from .forms import GenerateSampleForm, TopicClassificationForm
 from .SampleGenerator import SampleGenerator
+from .RelevanceCalculator import RelevanceCalculator
 from .inter_annotator_agreement import calculate_inter_annotator_agreement
 
 
@@ -31,8 +32,13 @@ def topic_classification_metrics_view(request):
         context = { "form": form }
     else:
         topic = Topic.objects.get(id=request.POST["topic"])
+        context = { "topic": topic.name }
         annotations = TopicAnnotation.objects.filter(topic=topic)
-        agreement_score = calculate_inter_annotator_agreement(annotations)
-        model_name = request.POST["model_name"]
-        context = { "topic": topic.name, "agreement_score": agreement_score }
+        if annotations:
+            context["agreement_score"] = calculate_inter_annotator_agreement(annotations)
+            model_name = request.POST["model_name"]
+            relevance_calulator = RelevanceCalculator(topic, model_name)
+            precision, recall = relevance_calulator.get_relevance_metrics(annotations)
+            context["precision"] = precision
+            context["recall"] = recall
     return render(request, template, context)

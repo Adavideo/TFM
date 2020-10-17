@@ -1,4 +1,6 @@
 import numpy as np
+from topics_identifier.tests.mock_clusters import mock_cluster
+from topics_identifier.models import ClusterTopic
 from metrics.models import TopicAnnotation
 from .mocks import mock_threads_list, mock_topic
 
@@ -24,3 +26,8 @@ def mock_topic_annotations(annotators_labels=[[True,True,True,True]], topic_name
 def mock_matrix(array):
     matrix = np.matrix(array)
     return matrix
+
+def mock_topic_cluster(topic, num_cluster):
+    cluster = mock_cluster(num_cluster=num_cluster)
+    cluster_topic = ClusterTopic(topic=topic, cluster=cluster)
+    cluster_topic.save()

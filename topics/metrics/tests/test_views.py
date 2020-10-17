@@ -2,7 +2,8 @@ from django.test import TestCase
 from .mocks import *
 from .validations_views import *
 from .examples_annotations import annotations_examples
-from .mock_annotations import mock_topic_annotations
+from .mock_annotations import mock_topic_annotations, mock_topic_cluster
+
 
 head_text = "Metrics"
 
@@ -38,6 +39,7 @@ class ViewsTests(TestCase):
         # Initialize
         page = "topic_classification_metrics"
         topic = mock_topic()
+        mock_topic_cluster(topic, num_cluster=0)
         parameters = { "topic": topic.id, "model_name": "test" }
         response = post_response(page, parameters)
         # Validate
@@ -48,6 +50,7 @@ class ViewsTests(TestCase):
         # Initialize
         page = "topic_classification_metrics"
         topic, annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
+        mock_topic_cluster(topic, num_cluster=0)
         # Execute
         parameters = { "topic": topic.id, "model_name": "test" }
         response = post_response(page, parameters)
@@ -55,3 +58,5 @@ class ViewsTests(TestCase):
         validate_page(self, response, head_text)
         self.assertContains(response, "Topic:</b> "+topic.name)
         self.assertContains(response, "Agreement score:</b> 0.6")
+        self.assertContains(response, "Precision:</b> 0.5")
+        self.assertContains(response, "Recall:</b> 1")
