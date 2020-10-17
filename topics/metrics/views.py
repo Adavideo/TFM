@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from timeline.models import Topic
+from .models import TopicAnnotation
 from .forms import GenerateSampleForm, TopicClassificationForm
 from .SampleGenerator import SampleGenerator
 from .inter_annotator_agreement import calculate_inter_annotator_agreement
@@ -29,8 +30,8 @@ def topic_classification_metrics_view(request):
         form = TopicClassificationForm()
         context = { "form": form }
     else:
-        topic_id = request.POST["topic"]
-        topic = Topic.objects.get(id=topic_id)
-        agreement_score = calculate_inter_annotator_agreement(topic)
+        topic = Topic.objects.get(id=request.POST["topic"])
+        annotations = TopicAnnotation.objects.filter(topic=topic)
+        agreement_score = calculate_inter_annotator_agreement(annotations)
         context = { "topic": topic.name, "agreement_score": agreement_score }
     return render(request, template, context)

@@ -37,13 +37,12 @@ def get_annotations_counter(annotations_list):
 
 # Gets a Numpy matrix with shape: threads_ids x labels
 # The matrix contains the number of times that each thread is annotated with each label.
-def get_annotations_matrix(topic):
-    annotations_list = TopicAnnotation.objects.filter(topic=topic)
-    annotations_counter = get_annotations_counter(annotations_list)
+def get_annotations_matrix(annotations):
+    annotations_counter = get_annotations_counter(annotations)
     matrix = np.matrix(annotations_counter)
     return matrix
 
-def calculate_inter_annotator_agreement(topic):
-    matrix = get_annotations_matrix(topic)
+def calculate_inter_annotator_agreement(annotations):
+    matrix = get_annotations_matrix(annotations)
     fleiss_kappa_score = fleiss_kappa(matrix)
     return fleiss_kappa_score

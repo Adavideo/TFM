@@ -33,7 +33,7 @@ class InterAnnotatorAgreementTests(TestCase):
         # Initialize
         topic, annotations_list = mock_topic_annotations(annotations_examples["agreement"])
         # Execute
-        matrix = get_annotations_matrix(topic)
+        matrix = get_annotations_matrix(annotations_list)
         # Validate
         num_threads, num_labels = matrix.shape
         self.assertEqual(num_threads, 4)
@@ -45,7 +45,7 @@ class InterAnnotatorAgreementTests(TestCase):
         # Initialize
         topic, annotations_list = mock_topic_annotations(annotations_examples["agreement"])
         # Execute
-        score = calculate_inter_annotator_agreement(topic)
+        score = calculate_inter_annotator_agreement(annotations_list)
         # Validate
         self.assertEqual(score, 1.0)
 
@@ -53,7 +53,7 @@ class InterAnnotatorAgreementTests(TestCase):
         # Initialize
         topic, annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
         # Execute
-        score = calculate_inter_annotator_agreement(topic)
+        score = calculate_inter_annotator_agreement(annotations_list)
         # Validate
         self.assertEqual(score, 0.6571428571428569)
 
@@ -61,6 +61,6 @@ class InterAnnotatorAgreementTests(TestCase):
         # Initialize
         topic, annotations_list = mock_topic_annotations(annotations_examples["big disagreement"])
         # Execute
-        score = calculate_inter_annotator_agreement(topic)
+        score = calculate_inter_annotator_agreement(annotations_list)
         # Validate
         self.assertEqual(score, -0.33333333333333337)
