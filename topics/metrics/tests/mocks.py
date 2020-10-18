@@ -1,4 +1,4 @@
 from common.testing.mock_web_client import get_response, post_response
-from common.testing.mock_threads import mock_threads_list
+from common.testing.mock_threads import mock_threads_list, mock_thread_with_news
 from common.testing.mock_topics import mock_topic
 from topics_identifier.tests.mock_topics import mock_threads_and_clusters_with_topic
