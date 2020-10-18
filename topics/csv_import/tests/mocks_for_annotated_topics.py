@@ -1,5 +1,5 @@
-from timeline.models import Thread
-from .mocks import mock_document, mock_topic
+from timeline.models import Thread, Topic
+from .mocks import mock_document
 
 
 def mock_thread_with_news(title, content, thread_number=0):
@@ -10,10 +10,10 @@ def mock_thread_with_news(title, content, thread_number=0):
     news.save()
     return thread
 
-def mock_thread_for_annotated_topics(annotation, topic_name, thread_number=0):
+def mock_thread_for_annotated_topic(annotation, topic_name, thread_number=0):
     title = annotation[0]
     content = annotation[1]
     thread = mock_thread_with_news(title, content, thread_number)
-    topic = mock_topic(topic_name)
+    topic, _ = Topic.objects.get_or_create(name=topic_name)
     thread.assign_topic(topic)
     return thread
