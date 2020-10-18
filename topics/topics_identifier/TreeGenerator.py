@@ -40,7 +40,6 @@ class TreeGenerator:
         clusters_documents = clusters_generator.predict_clusters_documents(documents)
         print(str(datetime.datetime.now().time())+" - Adding documents to clusters")
         for i in range(len(clusters_documents)):
-            print("Cluster "+str(i))
             self.tree.add_documents_to_cluster(level, i, clusters_documents[i])
 
     def add_documents_level0(self, clusters_generator, level):
