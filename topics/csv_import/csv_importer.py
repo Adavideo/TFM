@@ -60,30 +60,17 @@ def process_comment(column):
     store_document(info, is_news=False)
     return info
 
-def find_thread(title, content):
-    thread_search = Thread.objects.filter(title=title)
-    if len(thread_search)==0: return None
-    # If there is more than one thread with the same title
-    if len(thread_search) > 1:
-        # Search thread using the news content
-        expected_content = title + "\n" + content
-        for t in thread_search:
-            news_content = t.news().content
-            if news_content == expected_content: thread = t
-    else:
-        thread = thread_search[0]
-    return thread
-
 def process_topic_annotation(column):
     title = clean_text(column[0])
     content = clean_text(column[1])
-    thread = find_thread(title, content)
+    document = Document.objects.get(content=title+ "\n" + content)
     topic_name = column[2]
     topic = Topic.objects.get(name=topic_name)
     label = (column[3]=="x" or column[3]=="X")
     annotator = int(column[4])
-    annotation = TopicAnnotation(topic=topic,thread=thread,label=label,annotator=annotator)
-    annotation.save()
+    annotation, created = TopicAnnotation.objects.get_or_create(topic=topic,document=document,label=label,annotator=annotator)
+    if created: annotation.save()
+    else: print("\nWARNING: Annotation duplicated.\n\n"+str(column)+"\n\n"+str(annotation)+"\n")
     info = { "title": title, "content": content }
     return info
 

@@ -2,15 +2,15 @@ from django.test import TestCase
 from metrics.inter_annotator_agreement import *
 from .examples_annotations import annotations_examples
 from .mock_annotations import mock_topic_annotations, mock_matrix
-from .mocks import mock_topic, mock_thread_with_news
+from .mocks import mock_topic, mock_documents
 
 
 class InterAnnotatorAgreementTests(TestCase):
 
-    def test_get_threads_ids(self):
+    def test_get_documents_ids(self):
         _, annotations_list = mock_topic_annotations()
-        threads_ids = get_threads_ids(annotations_list)
-        self.assertEqual(threads_ids, [1, 2, 3, 4])
+        documents_ids = get_documents_ids(annotations_list)
+        self.assertEqual(documents_ids, [1, 2, 3, 4])
 
     def test_increase_annotation_counter(self):
         annotations_counter = [{"id":1, "counter":[1, 1]}, {"id":1, "counter":[0, 0]}]
@@ -30,7 +30,7 @@ class InterAnnotatorAgreementTests(TestCase):
         expected_array = [[2, 0], [0, 2], [0, 2], [2, 0]]
         self.assertEqual(counters_array, expected_array)
 
-    def test_get_annotations_counter_two_threads_with_same_title(self):
+    def test_get_annotations_counter_two_documents_with_same_title(self):
         # Initialize
         topic = mock_topic('Renta basica')
         title = 'El Gobierno trabaja en una renta mínima vital que beneficiará a más de 5 millones de ciudadanos frente al Covid-19'
@@ -38,16 +38,14 @@ class InterAnnotatorAgreementTests(TestCase):
         content1 = 'Diferent content'
         input_annotation0 = [title, content0, topic.name, 'x', '1']
         input_annotation1 = [title, content1, topic.name, 'x', '2']
-        #thread0 = mock_thread_for_annotated_topic(input_annotation0, topic.name, thread_number=0)
-        thread0 = mock_thread_with_news(title, content0, thread_number=0)
-        thread1 = mock_thread_with_news(title, content1, thread_number=1)
-        annotation0 = TopicAnnotation(topic=topic, thread=thread0, label=True, annotator=1)
+        documents = mock_documents()
+        annotation0 = TopicAnnotation(topic=topic, document=documents[0], label=True, annotator=1)
         annotation0.save()
-        annotation1 = TopicAnnotation(topic=topic, thread=thread0, label=True, annotator=2)
+        annotation1 = TopicAnnotation(topic=topic, document=documents[0], label=True, annotator=2)
         annotation1.save()
-        annotation2 = TopicAnnotation(topic=topic, thread=thread1, label=True, annotator=1)
+        annotation2 = TopicAnnotation(topic=topic, document=documents[1], label=True, annotator=1)
         annotation2.save()
-        annotation3 = TopicAnnotation(topic=topic, thread=thread1, label=True, annotator=2)
+        annotation3 = TopicAnnotation(topic=topic, document=documents[1], label=True, annotator=2)
         annotation3.save()
         annotations_list = [annotation0, annotation1, annotation2, annotation3]
         # Execute
@@ -62,8 +60,8 @@ class InterAnnotatorAgreementTests(TestCase):
         # Execute
         matrix = get_annotations_matrix(annotations_list)
         # Validate
-        num_threads, num_labels = matrix.shape
-        self.assertEqual(num_threads, 4)
+        num_documents, num_labels = matrix.shape
+        self.assertEqual(num_documents, 4)
         self.assertEqual(num_labels, 2)
         num_annotators = np.sum(matrix[0, :])
         self.assertEqual(num_annotators, 3)

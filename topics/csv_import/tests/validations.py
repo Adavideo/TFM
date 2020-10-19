@@ -24,10 +24,10 @@ def validate_document_with_thread(test, doc, expected, is_news):
     test.assertEqual(doc.date, expected["date"])
     validate_thread(test, doc.thread, expected, is_news)
 
-def validate_stored_annotation(test, topic_name, thread, label, annotator):
+def validate_stored_annotation(test, topic, document, label, annotator):
     stored_annotations = TopicAnnotation.objects.all()
     test.assertEqual(len(stored_annotations), 1)
-    test.assertEqual(stored_annotations[0].topic.name, topic_name)
-    test.assertEqual(stored_annotations[0].thread, thread)
+    test.assertEqual(stored_annotations[0].topic, topic)
+    test.assertEqual(stored_annotations[0].document, document)
     test.assertEqual(stored_annotations[0].label, label)
     test.assertEqual(stored_annotations[0].annotator, annotator)

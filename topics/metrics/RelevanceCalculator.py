@@ -1,32 +1,6 @@
-from topics_identifier.topic_clusters import get_topic_clusters
 from topics_identifier.ClustersGenerator import ClustersGenerator
-from .util_topic_annotations import get_threads_ids
+from .util_topic_annotations import *
 
-
-def get_topic_clusters_numbers(topic):
-    numbers = [ topic_cluster.cluster.number for topic_cluster in get_topic_clusters(topic) ]
-    return numbers
-
-def get_documents_from_annotations(annotations):
-    documents = []
-    for a in annotations:
-        doc = a.thread.news()
-        if doc not in documents:
-            documents.append(doc)
-    return documents
-
-def get_labels(annotations):
-    threads_ids = get_threads_ids(annotations)
-    labels = []
-    for id in threads_ids:
-        labels_true = 0
-        labels_false = 0
-        for a in annotations:
-            if a.thread.id==id:
-                if a.label == True: labels_true += 1
-                else: labels_false += 1
-        labels.append(labels_true > labels_false)
-    return labels
 
 def predict_clusters(model_name, documents):
     clusters_generator = ClustersGenerator(model_name, level=0)

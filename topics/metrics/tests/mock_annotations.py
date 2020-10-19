@@ -2,23 +2,23 @@ import numpy as np
 from topics_identifier.tests.mock_clusters import mock_cluster
 from topics_identifier.models import ClusterTopic
 from metrics.models import TopicAnnotation
-from .mocks import mock_threads_list, mock_topic
+from .mocks import mock_documents, mock_topic
 
 
 def mock_topic_annotations(annotators_labels=[[True,True,True,True]], topic_name="test_topic"):
     topic = mock_topic(topic_name)
-    # Annotators labels is an array that contains the labels that each annotator has put to each thread.
+    # Annotators labels is an array that contains the labels that each annotator has put to each document.
     num_annotators = len(annotators_labels)
-    # Mock as many threads as labels per annotator
-    num_threads = len(annotators_labels[0])
-    threads_list = mock_threads_list(num_threads)
-    # Assign labels to threads
+    # Mock as many documents as labels per annotator
+    num_documents = len(annotators_labels[0])
+    documents_list = mock_documents(is_news=True)
+    # Assign labels to documents
     annotations_list = []
-    for t in range(num_threads):
+    for t in range(num_documents):
         for a in range(num_annotators):
-            thread = threads_list[t]
+            document = documents_list[t]
             label = annotators_labels[a][t]
-            annotation = TopicAnnotation(topic=topic, thread=thread, label=label, annotator=a)
+            annotation = TopicAnnotation(topic=topic, document=document, label=label, annotator=a)
             annotation.save()
             annotations_list.append(annotation)
     return topic, annotations_list

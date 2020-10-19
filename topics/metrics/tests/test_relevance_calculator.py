@@ -8,7 +8,7 @@ from metrics.RelevanceCalculator import RelevanceCalculator, get_labels
 class RelevanceCalculatorTests(TestCase):
 
     def test_create_relevance_calculator(self):
-        topic, annotations = mock_topic_annotations(annotations_examples["agreement"])
+        topic, _ = mock_topic_annotations(annotations_examples["agreement"])
         relevance_calculator = RelevanceCalculator(topic, test_model_name)
 
     def test_get_labels_agreement(self):

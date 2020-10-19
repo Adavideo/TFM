@@ -1,11 +1,12 @@
 from timeline.models import Topic
-from .mocks import mock_thread_with_news
+from .mocks import mock_document
 
 
-def mock_thread_for_annotated_topic(annotation, topic_name, thread_number=0):
+def mock_annotated_topic(annotation):
     title = annotation[0]
-    content = annotation[1]
-    thread = mock_thread_with_news(title, content, thread_number)
+    content = title + "\n" + annotation[1]
+    document = mock_document(content=content, is_news=True)
+    document.save()
+    topic_name = annotation[2]
     topic, _ = Topic.objects.get_or_create(name=topic_name)
-    thread.assign_topic(topic)
-    return thread
+    return topic, document

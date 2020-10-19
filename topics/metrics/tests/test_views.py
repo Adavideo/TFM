@@ -49,7 +49,7 @@ class ViewsTests(TestCase):
     def test_topic_classification_metrics_view_post_small_disagreement(self):
         # Initialize
         page = "topic_classification_metrics"
-        topic, annotations_list = mock_topic_annotations(annotations_examples["small disagreement"])
+        topic, _ = mock_topic_annotations(annotations_examples["small disagreement"])
         mock_topic_cluster(topic, num_cluster=0)
         # Execute
         parameters = { "topic": topic.id, "model_name": "test" }
