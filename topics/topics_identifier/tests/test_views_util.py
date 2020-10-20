@@ -20,6 +20,8 @@ class ViewsUtilTests(TestCase):
         #Validate
         self.assertEqual(str(type(tree_generator)), "<class 'topics_identifier.TreeGenerator.TreeGenerator'>")
         self.assertEqual(tree_generator.tree.name, tree_name)
+        self.assertEqual(tree_generator.documents_types, "both")
+        self.assertEqual(tree_generator.max_level, level)
 
     def test_prepare_documents_for_select_field(self):
         documents = mock_documents()

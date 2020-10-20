@@ -44,7 +44,9 @@ class TreeGenerator:
 
     def add_documents_level0(self, clusters_generator, level):
         num_documents = get_number_of_documents(self.documents_types)
+        print(str(num_documents)+" of "+self.documents_types+" types of documents found.")
         num_of_batches = get_number_of_batches(num_documents)
+        print(str(num_of_batches)+" batches.")
         for batch_number in range(1, num_of_batches+1):
             documents = select_documents(self.documents_types, batch_number)
             self.add_documents_to_clusters(clusters_generator, documents, level)
