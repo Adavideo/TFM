@@ -27,7 +27,8 @@ class SampleGenerator:
     def get_clusters_documents(self):
         documents = []
         for cluster in self.clusters:
-            documents.extend( cluster.documents() )
+            for doc in cluster.documents():
+                if doc.is_news: documents.append(doc)
         return documents
 
     def select_document(self, from_clusters):
@@ -38,11 +39,20 @@ class SampleGenerator:
             doc = Document.objects.filter(is_news=True)[i]
         return doc
 
+    def enough_clusters_documents(self):
+        num_documents = len(self.clusters_documents)
+        if num_documents < sample_size/2:
+            warning = "There is only "+str(num_documents)+" news documents in the topic clusters."
+            print("WARNING: " + warning)
+        return (num_documents > sample_size/2)
+
     def generate_partial_sample(self, from_clusters):
+        if not self.enough_clusters_documents():
+            return [ doc.content for doc in self.clusters_documents]
         sample = []
         while len(sample) < sample_size/2:
             doc = self.select_document(from_clusters)
-            if doc not in sample:
+            if doc.content not in sample:
                 sample.append(doc.content)
         return sample
 
