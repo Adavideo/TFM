@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% include "arguments/arguments_menu.html" %}
+
+  {% if not topic_name %}
+      <h3>Generate tree with topic documents</h3>
+      <hr>
+      <form action="" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Generate tree">
+      </form>
+
+  {% else %}
+
+    <h3>{{ topic_name }}</h3>
+
+    {% if tree %}
+      <a href="{% url 'tree' tree.id %}">Tree {{ tree.name }}</a>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

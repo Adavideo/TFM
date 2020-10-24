@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'csv_import.apps.CsvImportConfig',
     'models_generator.apps.ModelsGeneratorConfig',
     'timeline.apps.TimelineConfig',
+    'arguments.apps.ArgumentsConfig',
     'metrics.apps.MetricsConfig',
 ]
 
