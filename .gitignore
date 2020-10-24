@@ -128,9 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-topics/duplicates.txt
-topics/test_sample_test.txt
-topics/models/sklearn/delete_me*
-topics/models/sklearn/news_v1*
-topics/models/sklearn/Renta*
+debate_classifier/duplicates.txt
+debate_classifier/test_sample_test.txt
+debate_classifier/models/sklearn/delete_me*
+debate_classifier/models/sklearn/news_v1*
+debate_classifier/models/sklearn/Renta*
 
